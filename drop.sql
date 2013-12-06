@@ -1,0 +1,10 @@
+DROP TABLE Tags;
+DROP TABLE Pin;
+DROP TABLE Rating;
+DROP SEQUENCE object_seq;
+DROP TRIGGER object_trg;
+DROP TABLE Object;
+DROP TABLE Board;
+DROP TABLE Friendship;
+DROP TABLE Interest;
+DROP TABLE Users;

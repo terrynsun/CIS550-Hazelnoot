@@ -1,0 +1,11 @@
+oracle:
+  user: redacted
+  password: redacted
+  hostname: cis550project.c7sfruawvmcm.us-east-1.rds.amazonaws.com
+  database: PENNTERE
+
+mysql:
+  user: redacted
+  password: redacted
+  hostname: cis550project-mysql.c7sfruawvmcm.us-east-1.rds.amazonaws.com
+  database: redacted

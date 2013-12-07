@@ -24,6 +24,7 @@ module.exports = function(sequelize, DataTypes) {
             }
         }
     }, {
-        tableName: "Object"
+        tableName: "Object",
+        timestamps: false
     })
 };

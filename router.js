@@ -4,6 +4,7 @@ var routes = require('./routes');
 var auth = require('./routes/auth');
 var user = require('./routes/user');
 var board = require('./routes/board');
+var upProf = require('./routes/updateProfile');
 
 var ensureAuthenticated = function(req, res, next) {
     if (req.isAuthenticated()) {
@@ -36,4 +37,7 @@ module.exports = function(app) {
     app.get('/user/:user_name', user.index);
 
     app.get('/boards/:user_name/:board_name', board.index);
+
+    //Richie Testing
+    app.get('/updateProfile', ensureAuthenticated, upProf.me);
 };

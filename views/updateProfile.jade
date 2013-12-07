@@ -1,0 +1,30 @@
+extends layout
+
+block header    
+    p: h1 Editing #{current_user.user_name}'s Account
+
+    form.well.col-lg-4.col-mo-6(role='form', method='POST', action='/updateProfile')
+        .form-group
+            label(for='firstName') First Name
+            input.form-control(name='firstName', type='text', value='#{current_user.first_name}')
+        .form-group
+            label(for='lastName') Last Name
+            input.form-control(name='lastName', type='text', value='#{current_user.last_name}')
+        .form-group
+            label(for='email') Email Address
+            input.form-control(name='email', type='text', value='#{current_user.email}')
+        .form-group
+            label(for='affiliation') Network
+            input.form-control(name='affiliation', type='text', value='#{current_user.affiliation}')
+        .form-group
+            label(for='newPassword1', for='newPassword2') Change Password
+            input.form-control(name='newPassword1', type='password', placeholder='New Password')
+            input.form-control(name='newPassword2', type='password', placeholder='Re-Enter New Password')
+        .form-group
+            label(for='password') Enter Old Password to Save Changes
+            input.form-control(name='password', type='password', placeholder='Old Password')
+        
+
+
+        input.btn.btn-primary.btn-block(type='submit', value='Save Changes DONT PRESS ME YET')
+        p: a(href='/user/me') Ignore Changes

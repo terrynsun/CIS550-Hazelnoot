@@ -67,6 +67,29 @@ module.exports = function(sequelize, DataTypes) {
                 return Q(this.find({ where: { user_name: user_name } }));
             }
         },
+        instanceMethods: {
+            // Gets all information about a user
+            nsa: function() {
+                // Accumulating dictionary.
+                // Do not modify outside of the promise chain
+                var acc = {};
+                var self = this;
+                return Q(self.getInterests())
+                    .then(function(interests) {
+                        acc.interests = interests;
+                        return Q(self.getFriends());
+                    })
+                    .then(function(friends) {
+                        acc.friends = friends;
+                        return acc;
+                    });
+            },
+
+            // Gets the full name
+            full_name: function() {
+                return this.first_name + ' ' + this.last_name
+            }
+        },
         timestamps: false
-    })
+    });
 };

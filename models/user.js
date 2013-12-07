@@ -62,6 +62,10 @@ module.exports = function(sequelize, DataTypes) {
                     query = ["user_name = ? OR email = ?", user_name, email];
                 }
                 return Q(this.findAll({ where: query }));
+            },
+
+            findByUsername: function(user_name) {
+                return Q(this.find({ where: { user_name: user_name } }));
             }
         },
         timestamps: false

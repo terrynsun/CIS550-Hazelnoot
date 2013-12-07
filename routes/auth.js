@@ -1,6 +1,6 @@
 var User = require('../models').User;
 var bcrypt = require('bcrypt');
-var Q = require('Q');
+var Q = require('q');
 
 /*
  * GET /login

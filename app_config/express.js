@@ -3,6 +3,10 @@ var path = require('path');
 var passport = require('passport');
 var flash = require('connect-flash');
 
+var locals = {
+    moment: require('moment')
+};
+
 module.exports = function(app) {
     // all environments
     app.set('port', process.env.PORT || 3000);
@@ -25,4 +29,6 @@ module.exports = function(app) {
     if ('development' == app.get('env')) {
         app.use(express.errorHandler());
     }
+
+    app.locals(locals);
 };

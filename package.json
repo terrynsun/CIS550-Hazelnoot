@@ -18,6 +18,7 @@
 
     "q": "*",
     "js-yaml": "*",
-    "underscore": "*"
+    "underscore": "*",
+    "moment": "*"
   }
 }

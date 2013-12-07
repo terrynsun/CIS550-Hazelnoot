@@ -9,3 +9,7 @@ block content
   - if (user.birthday)
     p Birthday: #{moment(user.birthday).format("MMM YYYY")}
   p User since: #{moment(user.time_created).format("MMM D YYYY")}
+  - if (interests)
+    p Interests: #{interests.join(", ")}
+  - else
+    p Interests: (None)

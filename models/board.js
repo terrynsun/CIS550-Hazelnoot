@@ -1,3 +1,5 @@
+var Q = require('q');
+
 module.exports = function(sequelize, DataTypes) {
     return sequelize.define("Board", {
         owner_name: {
@@ -21,6 +23,12 @@ module.exports = function(sequelize, DataTypes) {
         time_created: DataTypes.DATE
     }, {
         tableName: "Board",
-        timestamps: false
+        timestamps: false,
+        classMethods: {
+            findByName: function(user_name, board_name) {
+                query = { owner_name: user_name, name: board_name };
+                return Q(this.find({ where: query }));
+            }
+        }
     });
 };

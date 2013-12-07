@@ -47,10 +47,10 @@ exports.index = function(req, res) {
                 return render_user(user, req.user, res);
             })
             .fail(function(err) {
-                res.render('user/error', {
+                res.render('error', {
                     title: 'Sorry, this user does not exist',
                     current_user: req.user,
-                    message: 'The link you followed may be broken, or this user may ' +
+                    message: 'The link you followed may be broken, or this page may ' +
                         'have been deleted.'
                 })
             })

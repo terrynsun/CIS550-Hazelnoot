@@ -68,7 +68,7 @@ module.exports = function(sequelize, DataTypes) {
             }
         },
         instanceMethods: {
-            // Gets all information about a user
+            // Gets all information about a user (HAHA I get the joke. -Richie)
             nsa: function() {
                 // Accumulating dictionary.
                 // Do not modify outside of the promise chain

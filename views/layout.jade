@@ -14,8 +14,8 @@ html(lang='en')
           a.navbar-brand(href='/') Pennterest
         .collapse.navbar-collapse
           ul.nav.navbar-nav.navbar-right
-            if !!user
-              li.navbar-text Logged in as #{user.user_name}
+            if !!current_user
+              li: a(href='/user/me')= current_user.full_name()
               li: a(href='/logout') Logout
             else
               li: a(href='/login') Login

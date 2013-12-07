@@ -1,6 +1,4 @@
-var Sequelize = require('sequelize');
 var Q = require('q');
-
 
 module.exports = function(sequelize, DataTypes) {
     return sequelize.define("User", {

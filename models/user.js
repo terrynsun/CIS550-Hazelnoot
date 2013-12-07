@@ -1,4 +1,6 @@
 var Sequelize = require('sequelize');
+var Q = require('q');
+
 
 module.exports = function(sequelize, DataTypes) {
     return sequelize.define("User", {
@@ -47,6 +49,21 @@ module.exports = function(sequelize, DataTypes) {
         },
         birthday: DataTypes.DATE
     }, {
-        tableName: 'Users'
+        tableName: 'Users',
+        classMethods: {
+            exists: function(user_name, email) {
+                var query;
+
+                if (!email) {
+                    query = { user_name: user_name };
+                } else if (!user_name) {
+                    query = { email: email };
+                } else {
+                    query = ["user_name = ? OR email = ?", user_name, email];
+                }
+                return Q(this.findAll({ where: query }));
+            }
+        },
+        timestamps: false
     })
 };

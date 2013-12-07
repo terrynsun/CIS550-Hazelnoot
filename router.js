@@ -15,4 +15,6 @@ module.exports = function(app) {
     });
     app.get('/login', auth.login_page);
     app.get('/logout', auth.logout);
+    app.get('/register', auth.register_page);
+    app.post('/register', auth.register);
 };

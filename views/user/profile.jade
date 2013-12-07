@@ -1,0 +1,11 @@
+extends ../layout
+
+block header
+  h1 #{title} <small>#{user.user_name}</small>
+
+block content
+  - if (user.affiliation)
+    p Network: #{user.affiliation}
+  - if (user.birthday)
+    p Birthday: #{moment(user.birthday).format("MMM YYYY")}
+  p User since: #{moment(user.time_created).format("MMM D YYYY")}

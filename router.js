@@ -2,6 +2,7 @@ var passport = require('passport');
 
 var routes = require('./routes');
 var auth = require('./routes/auth');
+var user = require('./routes/user');
 
 module.exports = function(app) {
     app.get('/', routes.index);
@@ -17,4 +18,6 @@ module.exports = function(app) {
     app.get('/logout', auth.logout);
     app.get('/register', auth.register_page);
     app.post('/register', auth.register);
+
+    app.get('/user/:user_name', user.index);
 };

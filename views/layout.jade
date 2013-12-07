@@ -1,8 +1,11 @@
 doctype 5
 html(lang='en')
   head
+    meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
     title= title
+
+    link(href='/stylesheets/bootstrap.min.css', rel='stylesheet')
     block scripts
   body
     nav.navbar.navbar-inverse(role='navigation')
@@ -10,9 +13,6 @@ html(lang='en')
         .navbar-header
           a.navbar-brand(href='/') Pennterest
         .collapse.navbar-collapse
-          ul.nav.navbar-nav
-            li: a(href='/settings') Settings
-
           ul.nav.navbar-nav.navbar-right
             if !!user
               li.navbar-text Logged in as #{user.user_name}
@@ -34,3 +34,6 @@ html(lang='en')
             li= messages
 
       block content
+
+    script(src='/javascripts/jquery.min.js')
+    script(src='/javascripts/bootstrap.min.js')

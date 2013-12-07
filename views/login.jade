@@ -1,6 +1,8 @@
 extends layout
 
 block content
+  p: a(href='/register') Don't have an account yet?
+
   form.well.col-lg-4.col-md-6(role='form', method='POST', action=action_url)
     .form-group
       label(for='username') Username
@@ -12,6 +14,4 @@ block content
       label(for='remember-me') Remember me (doesn't work yet!)
       input#remember-me(type='checkbox')
 
-    input.btn.btn-default(type='submit') Submit
-
-  a(href='/register') Register
+    input.btn.btn-primary.btn-block(type='submit') Submit

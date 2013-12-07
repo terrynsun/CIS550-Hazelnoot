@@ -55,5 +55,8 @@ Board.hasMany(Pin, {
 exports.User = User;
 exports.PinObject = PinObject;
 exports.Interest = Interest;
+exports.Friendship = Friendship;
 exports.Board = Board;
 exports.Rating = Rating;
+exports.Pin = Pin;
+exports.Tags = Tags;

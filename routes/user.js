@@ -9,29 +9,34 @@ exports.index = function(req, res) {
     var user_name = req.params.user_name;
     User.findByUsername(user_name)
         .then(function(user) {
-            Q(user.getInterests())
-                .then(function(interests) {
-                    var interest_names = _.map(interests, function(interest) {
-                        return interest.name;
-                    });
+            return Q(user.nsa()).then(function(info) {
+                var interest_names = _.map(info.interests, function(interest) {
+                    return interest.name;
+                });
+                var friends_names = _.map(info.friends, function(friend) {
+                    return friend.name();
+                });
 
-                    res.render('user/profile', {
-                        title: user.first_name + ' ' + user.last_name,
-                        user: user,
-                        interests: interest_names
-                    });
-                })
-                .fail(function(err) {
-                    res.render('user/profile', {
-                        title: user.first_name + ' ' + user.last_name,
-                        user: user
-                    });
-                })
-                .done();
+                res.render('user/profile', {
+                    title: user.full_name(),
+                    user: user,
+                    interests: interest_names,
+                    friends: friends_names
+                });
+            }).fail(function(err) {
+                console.error(err);
+                res.render('user/error', {
+                    title: 'Oh noes!',
+                    message: 'Something went wrong on our end while loading this user. ' +
+                        'Please try again later.'
+                });
+            });
         })
         .fail(function(err) {
-            res.render('user/not_found', {
-                title: 'Sorry, this user does not exist'
+            res.render('user/error', {
+                title: 'Sorry, this user does not exist',
+                message: 'The link you followed may be broken, or this user may have ' +
+                    'been deleted.'
             })
         })
         .done();

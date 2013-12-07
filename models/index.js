@@ -5,6 +5,7 @@ var Object = sequelize.import(__dirname + '/object');
 var Interest = sequelize.import(__dirname + '/interest');
 var Friendship = sequelize.import(__dirname + '/friendship');
 var Board = sequelize.import(__dirname + '/board');
+var Rating = sequelize.import(__dirname + '/rating');
 
 User.hasMany(Interest, {
     as: 'Interests',
@@ -18,8 +19,18 @@ User.hasMany(Board, {
     as: 'Boards',
     foreignKey: 'owner_name'
 });
+User.hasMany(Rating, {
+    as: 'Ratings',
+    foreignKey: 'user_name'
+}),
+Object.hasMany(Rating, {
+    as: 'Ratings',
+    foreignKey: 'object_id'
+});
+
 
 exports.User = User;
 exports.Object = Object;
 exports.Interest = Interest;
 exports.Board = Board;
+exports.Rating = Rating;

@@ -1,5 +1,5 @@
 module.exports = function(sequelize, DataTypes) {
-    return sequelize.define("Object", {
+    return sequelize.define("PinObject", {
         id: {
             type: DataTypes.INTEGER(11),
             primaryKey: true,

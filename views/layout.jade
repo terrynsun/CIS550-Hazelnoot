@@ -15,11 +15,12 @@ html(lang='en')
           img(src="http://img163.imageshack.us/img163/8641/z6bb.png")
         .collapse.navbar-collapse
           ul.nav.navbar-nav.navbar-right
-            if !!user
-              li.navbar-text Logged in as #{user.user_name}
+            if !!current_user
+              li: a(href='/user/me')= current_user.full_name()
               li: a(href='/logout') Logout
             else
               li: a(href='/login') Login
+              li: a(href='/register') Register
 
     .container
       block header

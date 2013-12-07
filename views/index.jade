@@ -2,3 +2,7 @@ extends layout
 
 block content
   p Welcome to #{title}
+  if current_user
+    | Welcome to your home page! Please pretend there's content here!
+  else
+    | Log in or register at the top right!

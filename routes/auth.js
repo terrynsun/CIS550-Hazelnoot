@@ -36,6 +36,11 @@ exports.logout = function(req, res) {
  * GET /register
  */
 exports.register_page = function(req, res) {
+    if (req.isAuthenticated()) {
+        res.redirect('/');
+        return;
+    }
+
     res.render('register', { title: 'Register', messages: req.flash('error') });
 };
 

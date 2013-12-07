@@ -4,6 +4,18 @@ var routes = require('./routes');
 var auth = require('./routes/auth');
 var user = require('./routes/user');
 
+
+var ensureAuthenticated = function(req, res, next) {
+    if (req.isAuthenticated()) {
+        next();
+        return;
+    }
+
+    // WARN: Potential security vulnerability if req.originalUrl isn't escaped properly
+    var login_url = '/login?redirect=' + req.originalUrl;
+    res.redirect(login_url);
+};
+
 module.exports = function(app) {
     app.get('/', routes.index);
 
@@ -19,5 +31,7 @@ module.exports = function(app) {
     app.get('/register', auth.register_page);
     app.post('/register', auth.register);
 
+    // Order matters here
+    app.get('/user/me', ensureAuthenticated, user.me);
     app.get('/user/:user_name', user.index);
 };

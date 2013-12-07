@@ -3,7 +3,7 @@ var passport = require('passport');
 var routes = require('./routes');
 var auth = require('./routes/auth');
 var user = require('./routes/user');
-
+var board = require('./routes/board');
 
 var ensureAuthenticated = function(req, res, next) {
     if (req.isAuthenticated()) {
@@ -34,4 +34,6 @@ module.exports = function(app) {
     // Order matters here
     app.get('/user/me', ensureAuthenticated, user.me);
     app.get('/user/:user_name', user.index);
+
+    app.get('/boards/:user_name/:board_name', board.index);
 };

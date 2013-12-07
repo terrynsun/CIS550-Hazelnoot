@@ -10,7 +10,7 @@ module.exports = function(sequelize, DataTypes) {
         other_id: DataTypes.INTEGER(11),
         source: DataTypes.STRING(32),
         type: {
-            type: STRING(16),
+            type: DataTypes.STRING(16),
             allowNull : false,
             validate:{
                 notEmpty: true,

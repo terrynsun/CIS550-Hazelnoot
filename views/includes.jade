@@ -9,3 +9,8 @@ mixin pin ( img )
       if(img)
         if(img.type == 'image')
           img(src=img.url, style='width: 100%').tiles
+
+mixin formTextElem ( name, text, placeholder )
+  .form-group
+    label(for=name) #{text}
+    input.form-control(name=name, type='text', placeholder=placeholder)

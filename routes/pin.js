@@ -1,10 +1,13 @@
 var Q = require('q');
+var _ = require('underscore');
 
 var models = require('../models');
 var Board = models.Board;
 var Pin = models.Pin;
 var PinObject = models.PinObject;
-var Tag = models.Tags;
+var Tags = models.Tags;
+
+var utils = require('../utils');
 
 /*
  * GET /pin/new?url=<url>
@@ -19,26 +22,28 @@ exports.newPinsPage = function(req, res) {
                         title: 'New pin',
                         url: url,
                         pins: [],
-                        tags: tags,
-                        type: pinObject.type
+                        tags: _.map(tags, function(tag) { return tag.tag; }),
+                        objectType: pinObject.type
                     });
                 })
                 .fail(function(err) {
-                    req.flash('error', 'Failed to lookup tags');
-
                     res.render('pin/new', {
                         title: 'New pin',
+                        flash_messages: {error: ['Failed to lookup tags']},
                         url: url,
                         pins: [],
-                        type: pinObject.type
+                        objectType: pinObject.type
                     });
                 })
+                .done();
         })
         .fail(function(err) {
-            req.flash('info', "Hey there! You're the first to pin this!");
+            var type = utils.isImage(url) ? "image" : "object";
             res.render('pin/new', {
                 title: 'New pin',
-                url: url
+                flash_messages: {info: ["Hey there! You're the first to pin this!"]},
+                url: url,
+                objectType: type
             });
         })
         .done();

@@ -4,7 +4,7 @@ block content
   .pin-object.row
     .col-md-6
       .preview-container.well
-        if type === 'image'
+        if objectType === 'image'
           img#preview(src=url)
         else
           p No preview available for this content

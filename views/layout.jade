@@ -35,12 +35,12 @@ html(lang='en')
         h1= title
 
       if !(flash_messages === null || flash_messages === undefined)
-        - for (var type in flash_messages)
-          - for (var i = 0; i < flash_messages[type].length; i += 1)
-            if (type === 'error')
-              .alert.alert-danger= flash_messages[type][i]
+        - for (var flash_type in flash_messages)
+          - for (var i = 0; i < flash_messages[flash_type].length; i += 1)
+            if (flash_type === 'error')
+              .alert.alert-danger= flash_messages[flash_type][i]
             else
-              .alert(class="alert-#{type}")= flass_messages[type][i]
+              .alert(class="alert-#{flash_type}")= flash_messages[flash_type][i]
 
       block content
 

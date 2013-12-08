@@ -1,7 +1,6 @@
 var User = require('../models').User;
 var Board = require('../models').Board;
 var Q = require('q');
-var _ = require('underscore');
 
 var render_board = function(user, board, res) {
     return res.render('boards/board', {

@@ -1,9 +1,16 @@
+mixin pin ( img )
+    .col-4.col-sm-4.col-lg-3.tile
+      if(img)
+        img(src=img.url, style='width: 100%').tiles
+
 extends ../layout
 
 block header
   h1 #{board.name} <small>~ #{board.owner_name}</small>
 
 block content
-  p
-    - for (var i = 0; i < images.length; i += 1)
-      img(src=images[i].url)
+  ul
+    - for (var i = 0; i < images.length; i += 4)
+      .row
+      - for (var k = 0; k < 4; ++k)
+        mixin pin (images[i+k])

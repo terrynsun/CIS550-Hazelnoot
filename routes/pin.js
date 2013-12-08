@@ -4,6 +4,7 @@ var models = require('../models');
 var Board = models.Board;
 var Pin = models.Pin;
 var PinObject = models.PinObject;
+var Tag = models.Tags;
 
 /*
  * GET /pin/new?url=<url>
@@ -12,13 +13,26 @@ exports.newPinsPage = function(req, res) {
     var url = req.query.url;
     PinObject.findByURL(url)
         .then(function(pinObject) {
-            res.render('pin/new', {
-                title: 'New pin',
-                url: url,
-                pins: [],
-                type: pinObject.type,
-                current_user: req.user
-            });
+            Q(pinObject.getTags())
+                .then(function(tags) {
+                    res.render('pin/new', {
+                        title: 'New pin',
+                        url: url,
+                        pins: [],
+                        tags: tags,
+                        type: pinObject.type
+                    });
+                })
+                .fail(function(err) {
+                    req.flash('error', 'Failed to lookup tags');
+
+                    res.render('pin/new', {
+                        title: 'New pin',
+                        url: url,
+                        pins: [],
+                        type: pinObject.type
+                    });
+                })
         })
         .fail(function(err) {
             req.flash('info', "Hey there! You're the first to pin this!");

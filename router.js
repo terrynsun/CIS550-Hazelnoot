@@ -39,5 +39,5 @@ module.exports = function(app) {
     app.get('/boards/:user_name/:board_name', board.index);
 
     //Richie Testing
-    app.get('/updateProfile', ensureAuthenticated, upProf.me);
+    app.get('/updateProfile', ensureAuthenticated, upProf.updateProfilePage);
 };

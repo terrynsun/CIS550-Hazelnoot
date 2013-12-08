@@ -1,9 +1,10 @@
 var User = require('../models').User;
+var bcrypt = require('bcrypt');
 var Q = require('q');
 var _ = require('underscore');
 
 
-var render_user = function(current_user, res) {
+var renderUserUpdate = function(current_user, res) {
     return Q(current_user.nsa())
         .then(function(info) {
 
@@ -22,30 +23,26 @@ var render_user = function(current_user, res) {
         });
 };
 
-/*
- * GET /user/:user_name
- */
-exports.index = function(req, res) {
-    var user_name = req.params.user_name;
 
-    // micro-optimization so we don't have to fetch info about myself
-    if (req.isAuthenticated() && user_name === req.user.user_name) {
-        render_user(req.user, res).done();
-    } else {    
-                res.render('error', {
-                    title: 'I just don\'t knw what went wrong!',
-                    current_user: req.user,
-                    message: 'Something went wrong on our end while loading your account. ' +
-                        'Pleasetry again later.'
-                })
-            .done();
-    }
+/*
+ * GET /updateProfile.updateProfilePage
+ */
+exports.updateProfilePage = function(req, res) {
+    renderUserUpdate(req.user, res).done();
 };
 
 
+
 /*
- * GET /user/me
+ * POST /updateProfile.updateProfile
  */
-exports.me = function(req, res) {
-    render_user(req.user, res).done();
+exports.updateProfile = function(req, res) {
+    var firstName = req.body.firstName;
+    var lastName = req.body.lastName;
+    var email = req.body.email;
+    var association = req.body.association;
+    var newPassword1 = req.body.newPassword1;
+    var newPassword2 = req.body.newPassword2;
+    var password = req.body.password;
+
 };

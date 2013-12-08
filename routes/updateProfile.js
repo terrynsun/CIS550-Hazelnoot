@@ -1,7 +1,6 @@
 var User = require('../models').User;
 var bcrypt = require('bcrypt');
 var Q = require('q');
-var _ = require('underscore');
 
 
 var renderUserUpdate = function(current_user, res) {

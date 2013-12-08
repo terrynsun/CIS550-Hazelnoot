@@ -28,7 +28,7 @@ User.hasMany(Rating, {
 User.hasMany(Pin, {
     as: 'Pin',
     foreignKey: 'user_name'
-}),
+});
 
 PinObject.hasMany(Rating, {
     as: 'Ratings',

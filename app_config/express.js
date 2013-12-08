@@ -25,6 +25,13 @@ module.exports = function(app) {
     app.use(flash());
     app.use(passport.initialize());
     app.use(passport.session());
+    app.locals(locals);
+    // Middleware for common request-specific locals
+    app.use(function(req, res, next) {
+        res.locals.current_user = req.user;
+        res.locals.flash_messages = req.flash();
+        next();
+    });
     app.use(app.router);
     app.use(express.static(path.join(__dirname, '..', 'public')));
 
@@ -32,6 +39,4 @@ module.exports = function(app) {
     if ('development' == app.get('env')) {
         app.use(express.errorHandler());
     }
-
-    app.locals(locals);
 };

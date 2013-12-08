@@ -8,14 +8,13 @@ var renderUserUpdate = function(current_user, res) {
         .then(function(info) {
 
             res.render('updateProfile', {
-                current_user: current_user,
+                title: 'Update your profile'
             });
         })
         .fail(function(err) {
             console.error(err);
             res.render('user/error', {
                 title: 'Oh noes!',
-                current_user: current_user,
                 message: 'Something went wrong on our end while loading your account. ' +
                     'Please try again later.'
             });

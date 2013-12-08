@@ -29,7 +29,6 @@ var postSearch = function(req, res) {
 
         return res.render('search', {
             searchTerm: searchTerm,
-            current_user: req.user,
             images: taggedImages
         });
     })
@@ -54,7 +53,6 @@ var getSearch = function(req, res) {
 var noParam = function(req, res) {
     return res.render('error', {
         title: 'No search term given!',
-        current_under: req.user,
         message: 'Search through the handy-dandy toolbar up there!'
     });
 };

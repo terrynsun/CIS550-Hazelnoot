@@ -25,7 +25,6 @@ var renderBoard = function(board, current_user, res) {
         });
         return res.render('user/board', {
             title: board.name,
-            current_user: current_user,
             board: board,
             images: boardObjects
         });
@@ -46,7 +45,6 @@ exports.index = function(req, res) {
     .fail(function(err) {
         res.render('error', {
             title: 'Sorry, this board is gone!',
-            current_user: req.user,
             message: 'I guess someone ate it. Sorry. You should look at ' +
                 'some gifs instead.'
         })

@@ -21,10 +21,10 @@ exports.newPinsPage = function(req, res) {
             });
         })
         .fail(function(err) {
+            req.flash('info', "Hey there! You're the first to pin this!");
             res.render('pin/new', {
                 title: 'New pin',
-                url: url,
-                current_user: req.user
+                url: url
             });
         })
         .done();

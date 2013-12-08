@@ -16,8 +16,7 @@ exports.login_page = function(req, res) {
 
     res.render('login', {
         title: "Login",
-        action_url: '/login?redirect=' + redirect_url,
-        messages: req.flash('error')
+        action_url: '/login?redirect=' + redirect_url
     });
 };
 
@@ -41,7 +40,7 @@ exports.register_page = function(req, res) {
         return;
     }
 
-    res.render('register', { title: 'Register', messages: req.flash('error') });
+    res.render('register', { title: 'Register' });
 };
 
 /*

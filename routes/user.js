@@ -19,7 +19,6 @@ var render_user = function(user, current_user, res) {
 
             res.render('user/profile', {
                 title: user.full_name(),
-                current_user: current_user,
                 user: user,
                 interests: interest_names,
                 friends: friends_names,
@@ -30,7 +29,6 @@ var render_user = function(user, current_user, res) {
             console.error(err);
             res.render('error', {
                 title: 'Oh noes!',
-                current_user: current_user,
                 message: 'Something went wrong on our end while loading this user. ' +
                     'Please try again later.'
             });
@@ -54,7 +52,6 @@ exports.index = function(req, res) {
             .fail(function(err) {
                 res.render('error', {
                     title: 'Sorry, this user does not exist',
-                    current_user: req.user,
                     message: 'The link you followed may be broken, or this page may ' +
                         'have been deleted.'
                 })

@@ -6,6 +6,7 @@ var Q = require('q');
 var sequelize = require('../app_config/sequelize');
 var _ = require('underscore');
 
+// don't mind this function awkwardly being in this place
 var getPinnedObjects = function(board) {
     var query = 'SELECT * from Pin, Object ' + 
                  'WHERE Pin.user_name = :user_name ' + 
@@ -13,10 +14,10 @@ var getPinnedObjects = function(board) {
                  'AND   Object.id = Pin.object_id';
     var parms = { user_name: board.owner_name, board_name: board.name };
     // of the chicken variety (because my typo deserves to live)
-    return Q(sequelize.query(query, Pin, PinObject, parms ));
+    return Q(sequelize.query(query, Pin, PinObject, parms));
 };
 
-var renderBoard = function(current_user, board, res) {
+var renderBoard = function(board, current_user, res) {
     getPinnedObjects(board)
     .then(function(pinnedObjects) {
         var boardObjects = _.map(pinnedObjects, function(obj) {
@@ -38,9 +39,10 @@ var renderBoard = function(current_user, board, res) {
 exports.index = function(req, res) {
     var user_name = req.params.user_name;
     var board_name = req.params.board_name;
+    console.log(req.user);
     Board.findByName(user_name, board_name)
     .then(function(board) {
-        return renderBoard(req.current_user, board, res);
+        return renderBoard(board, req.user, res);
     })
     .fail(function(err) {
         res.render('error', {

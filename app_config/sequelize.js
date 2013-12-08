@@ -7,11 +7,14 @@ var sequelize = new Sequelize(dbConfig.database, dbConfig.user, dbConfig.passwor
     host: dbConfig.hostname,
     dialect: 'mysql',
 
-    // Don't add updatedAt/createdAt
-    timestamps: false,
+    define: {
+        // Don't add updatedAt/createdAt
+        freezeTableName: true,
+        timestamps: false
+    },
 
-    // Sequelize does opinionated stuff with table names. Disable that shit
-    freezeTableName: true
+    native: true,
+    syncOnAssociation: false
 });
 
 module.exports = sequelize;

@@ -27,7 +27,6 @@ module.exports = function(sequelize, DataTypes) {
         }
     }, {
         tableName: "Object",
-        timestamps: false,
 
         classMethods: {
             findByURL: function(url) {

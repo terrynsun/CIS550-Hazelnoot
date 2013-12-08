@@ -20,7 +20,6 @@ module.exports = function(sequelize, DataTypes) {
         },
         time_created: DataTypes.DATE
     }, {
-        tableName: 'Rating',
-        timestamps: false
+        tableName: 'Rating'
     });
 };

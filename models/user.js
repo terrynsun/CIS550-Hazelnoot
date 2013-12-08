@@ -93,7 +93,6 @@ module.exports = function(sequelize, DataTypes) {
             full_name: function() {
                 return this.first_name + ' ' + this.last_name
             }
-        },
-        timestamps: false
+        }
     });
 };

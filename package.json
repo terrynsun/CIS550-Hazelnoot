@@ -19,6 +19,9 @@
     "q": "*",
     "js-yaml": "*",
     "underscore": "*",
-    "moment": "*"
+    "moment": "*",
+
+    "mongodb": "*",
+    "request": "*"
   }
 }

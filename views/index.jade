@@ -4,16 +4,20 @@ block scripts
   script(src='/javascripts/index.js')
 
 block content
-  a.btn.btn-success#new-pin(href='#')
-    | New pin &nbsp;
-    span.glyphicon.glyphicon-plus
+  if current_user
+    a.btn.btn-success#new-pin(href='#')
+      | New pin &nbsp;
+      span.glyphicon.glyphicon-plus
 
-  form.form-horizontal.hidden#new-pin-form(method='GET', action='/pin/new')
-    .form-group.col-md-10
+    form.form-horizontal.hidden#new-pin-form(method='GET', action='/pin/new')
       label.sr-only(for='url') URL
-      input.form-control#url-input(name='url', type='url',
-        placeholder='Enter the URL of the object')
-    .col-md-2
-      button.btn.btn-primary(type='submit')
-        | Next &nbsp;
-        span.glyphicon.glyphicon-arrow-right
+      .input-group
+        input.form-control#url-input(name='url', type='url',
+          placeholder='Enter the URL of the object')
+        span.input-group-btn
+          button.btn.btn-primary(type='submit')
+            | Next &nbsp;
+            span.glyphicon.glyphicon-arrow-right
+
+  else
+    p Looks like you poor sucker will need an account

@@ -46,7 +46,8 @@ CREATE TABLE Object (
     url VARCHAR(256)        NOT NULL,
     time_created TIMESTAMP  DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    UNIQUE (other_id, source)
+    UNIQUE (other_id, source),
+    UNIQUE (url)
 );
 
 CREATE TABLE Rating (
@@ -67,7 +68,7 @@ CREATE TABLE Pin (
     PRIMARY KEY (object_id, user_name, board_name),
     FOREIGN KEY (object_id) REFERENCES Object(id),
     FOREIGN KEY (user_name) REFERENCES Users(user_name),
-    FOREIGN KEY (user_name, board_name) REFERENCES Board(owner_name, name)
+    FOREIGN KEY (user_name, board_name) REFERENCES BoaRD(owner_name, name)
 );
  
 CREATE TABLE Tags (

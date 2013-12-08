@@ -1,3 +1,5 @@
+var Q = require('q');
+
 module.exports = function(sequelize, DataTypes) {
     return sequelize.define("PinObject", {
         id: {
@@ -25,6 +27,12 @@ module.exports = function(sequelize, DataTypes) {
         }
     }, {
         tableName: "Object",
-        timestamps: false
+        timestamps: false,
+
+        classMethods: {
+            findByURL: function(url) {
+                return Q(this.find({ where: { url: url } }));
+            }
+        }
     })
 };

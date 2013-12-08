@@ -39,7 +39,6 @@ var renderBoard = function(board, current_user, res) {
 exports.index = function(req, res) {
     var user_name = req.params.user_name;
     var board_name = req.params.board_name;
-    console.log(req.user);
     Board.findByBoardName(user_name, board_name)
     .then(function(board) {
         return renderBoard(board, req.user, res);

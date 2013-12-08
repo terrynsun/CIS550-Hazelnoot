@@ -41,9 +41,8 @@ module.exports = function(app) {
     app.get('/pin/new', ensureAuthenticated, pin.newPinsPage);
     app.post('/pin/new', ensureAuthenticated, pin.newPin);
 
-    //Richie Testing
     app.get('/user/me/update', ensureAuthenticated, upProf.updateProfilePage);
-    app.post('/updateProfile', ensureAuthenticated, upProf.updateProfile);
+    app.post('/user/me/update', ensureAuthenticated, upProf.updateProfile);
 
     app.get('/user/:user_name/:board_name', board.index);
 

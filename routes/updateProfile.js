@@ -21,23 +21,23 @@ var renderUserUpdate = function(current_user, res) {
 };
 
 /*
- * GET /updateProfile.updateProfilePage
+ * GET /user/me/update
  */
 exports.updateProfilePage = function(req, res) {
     renderUserUpdate(req.user, res).done();
 };
 
 /*
- * POST /updateProfile.updateProfile
+ * POST /user/me/update
  */
 exports.updateProfile = function(req, res) {
-    var firstName = req.body.firstName || "";
-    var lastName = req.body.lastName || "";
-    var email = req.body.email || "";
-    var affiliation = req.body.affiliation || "";
-    var newPassword1 = req.body.newPassword1 || "";
-    var newPassword2 = req.body.newPassword2 || "";
-    var password = req.body.password || "";
+    var firstName = req.body.firstName;
+    var lastName = req.body.lastName;
+    var email = req.body.email;
+    var affiliation = req.body.affiliation;
+    var newPassword1 = req.body.newPassword1;
+    var newPassword2 = req.body.newPassword2;
+    var password = req.body.password;
 
     Q.nfcall(bcrypt.compare, password, req.user.password_hash)
         .then(function(res){

@@ -11,8 +11,7 @@ module.exports = function(sequelize, DataTypes) {
                 notEmpty: true,
                 max: 64
             }
-        },
-        time_created: DataTypes.DATE
+        }
     }, {
         tableName: "Tags"
     });

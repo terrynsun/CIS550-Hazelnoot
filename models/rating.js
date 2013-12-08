@@ -21,8 +21,7 @@ module.exports = function(sequelize, DataTypes) {
                 min: 1,
                 max: 5
             }
-        },
-        time_created: DataTypes.DATE
+        }
     }, {
         tableName: 'Rating'
     });

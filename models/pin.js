@@ -27,8 +27,7 @@ module.exports = function(sequelize, DataTypes) {
             validate: {
                 max: 512
             }
-        },
-        time_created: DataTypes.DATE
+        }
     }, {
         tableName: "Pin"
     });

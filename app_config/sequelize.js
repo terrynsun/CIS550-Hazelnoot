@@ -8,9 +8,8 @@ var sequelize = new Sequelize(dbConfig.database, dbConfig.user, dbConfig.passwor
     dialect: 'mysql',
 
     define: {
-        // Don't add updatedAt/createdAt
-        freezeTableName: true,
-        timestamps: false
+        underscored: true,
+        freezeTableName: true
     },
 
     native: true,

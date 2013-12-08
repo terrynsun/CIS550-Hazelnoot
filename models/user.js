@@ -45,8 +45,7 @@ module.exports = function(sequelize, DataTypes) {
                 max: 60
             }
         },
-        birthday: DataTypes.DATE,
-        time_created: DataTypes.DATE
+        birthday: DataTypes.DATE
     }, {
         tableName: 'Users',
         classMethods: {

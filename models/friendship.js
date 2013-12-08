@@ -15,8 +15,7 @@ module.exports = function(sequelize, DataTypes) {
                 notEmpty: true,
                 max: 32
             }
-        },
-        time_created: DataTypes.DATE
+        }
     }, {
         tableName: "Friendship",
 

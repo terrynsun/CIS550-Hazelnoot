@@ -14,7 +14,7 @@ var ensureAuthenticated = function(req, res, next) {
         return;
     }
 
-    // WARN: Potential security vulnerability if req.originalUrl isn't escaped properly
+    // FIXME: Open redirect vulnerability
     var login_url = '/login?redirect=' + req.originalUrl;
     res.redirect(login_url);
 };

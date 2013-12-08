@@ -22,4 +22,4 @@ block content
     h4 Boards
     ul
       - for (var i = 0; i < boards.length; i += 1)
-        li: a(href="/user/#{boards[i]}")= boards[i]
+        li: a(href="/user/#{user.user_name}/#{boards[i]}")= boards[i]

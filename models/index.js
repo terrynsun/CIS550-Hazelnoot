@@ -43,15 +43,6 @@ PinObject.hasMany(Tags, {
     foreignKey: 'object_id'
 });
 
-/* Let's pretend this is actual code n' stuff.
-Board.hasMany(Pin, {
-    as: 'Pin',
-    foreignKey: 'user_name',
-    foreignKey: 'board_name'
-});
-*/
-
-
 exports.User = User;
 exports.PinObject = PinObject;
 exports.Interest = Interest;

@@ -1,0 +1,9 @@
+extends ../layout
+
+block header
+  h1 #{board.name} <small>~ #{board_owner.user_name}</small>
+
+block content
+  p
+    - for (var i = 0; i < images.length; i += 1)
+      img(src=images[i].url)

@@ -13,19 +13,18 @@ var getPinnedObjects = function(board) {
                  'AND   Object.id = Pin.object_id';
     var parms = { user_name: board.owner_name, board_name: board.name };
     // of the chicken variety (because my typo deserves to live)
-    console.log(parms);
     return Q(sequelize.query(query, Pin, PinObject, parms ));
 };
 
-var renderBoard = function(user, board, res) {
+var renderBoard = function(current_user, board, res) {
     getPinnedObjects(board)
     .then(function(pinnedObjects) {
         var boardObjects = _.map(pinnedObjects, function(obj) {
             return obj.dataValues;
         });
-        console.log(boardObjects);
         return res.render('user/board', {
-            board_owner: user,
+            title: board.name,
+            current_user: current_user,
             board: board,
             images: boardObjects
         });
@@ -40,12 +39,16 @@ exports.index = function(req, res) {
     var user_name = req.params.user_name;
     var board_name = req.params.board_name;
     Board.findByName(user_name, board_name)
-         .then(function(board) {
-             User.findByUsername(user_name) 
-                 .then(function(user) {
-                return renderBoard(user, board, res);
-             })
-             .done()
-         })
-         .done();
+    .then(function(board) {
+        return renderBoard(req.current_user, board, res);
+    })
+    .fail(function(err) {
+        res.render('error', {
+            title: 'Sorry, this board is gone!',
+            current_user: req.user,
+            message: 'I guess someone ate it. Sorry. You should look at ' +
+                'some gifs instead.'
+        })
+    })
+    .done();
 };

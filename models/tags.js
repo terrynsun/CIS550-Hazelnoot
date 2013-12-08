@@ -3,6 +3,10 @@ module.exports = function(sequelize, DataTypes) {
         object_id: {
             type: DataTypes.INTEGER(11),
             allowNull: false,
+
+            // IGNORE THIS
+            // Sequelize wants to insert an 'id' column if we don't have this
+            primaryKey: true
         },
         tag: {
             type: DataTypes.STRING(64),

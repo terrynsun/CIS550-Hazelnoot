@@ -4,7 +4,7 @@ block header
   h1 Search results for '#{searchTerm}'
 
 block content
-  if images > 0
+  if (images.length > 0)
     p
       - for (var i = 0; i < images.length; i += 1)
         img(src=images[i].url)

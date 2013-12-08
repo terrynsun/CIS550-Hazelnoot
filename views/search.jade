@@ -1,13 +1,12 @@
 extends layout
+include includes
 
 block header
   h1 Search results for '#{searchTerm}'
 
 block content
   if (images.length > 0)
-    p
-      - for (var i = 0; i < images.length; i += 1)
-        img(src=images[i].url)
+    mixin displayPins (images)
   else
     p
       | Oh shucks, looks like there's no pictures for that. Why don't you go pin

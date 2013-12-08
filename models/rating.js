@@ -16,11 +16,14 @@ module.exports = function(sequelize, DataTypes) {
         },
         rating: {
             type: DataTypes.INTEGER(11),
-            allowNull: false
+            allowNull: false,
+            validate: {
+                min: 1,
+                max: 5
+            }
         },
         time_created: DataTypes.DATE
     }, {
-        tableName: 'Rating',
-        timestamps: false
+        tableName: 'Rating'
     });
 };

@@ -1,8 +1,23 @@
 extends layout
 
+block scripts
+  script(src='/javascripts/index.js')
+
 block content
-  p Welcome to #{title}
   if current_user
-    | Welcome to your home page! Please pretend there's content here!
+    a.btn.btn-success#new-pin(href='#')
+      | New pin &nbsp;
+      span.glyphicon.glyphicon-plus
+
+    form.form-horizontal.hidden#new-pin-form(method='GET', action='/pin/new')
+      label.sr-only(for='url') URL
+      .input-group
+        input.form-control#url-input(name='url', type='url',
+          placeholder='Enter the URL of the object')
+        span.input-group-btn
+          button.btn.btn-primary(type='submit')
+            | Next &nbsp;
+            span.glyphicon.glyphicon-arrow-right
+
   else
-    | Log in or register at the top right!
+    p Looks like you poor sucker will need an account

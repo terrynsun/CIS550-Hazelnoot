@@ -1,0 +1,38 @@
+extends ../layout
+
+block content
+  .pin-object.row
+    .col-md-6
+      .preview-container.well
+        if type === 'image'
+          img#preview(src=url)
+        else
+          p No preview available for this content
+
+    .col-md-6.pin-form-container
+      .panel.panel-default
+        .panel-heading
+          h3.panel-title New pin
+        .panel-body
+          form(method='POST', action='/pin/new')
+            input(type='hidden', name='url', value=url)
+
+            .form-group
+              label(for='board_name') Board name
+              input.form-control(type='text', name='board_name', placeholder='Board name',
+                  required)
+
+            .form-group
+              label(for='description') Description
+              textarea.form-control(type='text', name='description', rows=5,
+                  placeholder='Description (up to 512 characters)')
+
+            button.btn.btn-success(type=submit) Pin it
+
+  if !!pins
+    .pins.row
+      p Fill this in with actual pins
+  else
+    .pins.row
+      p You're the first to pin this!
+

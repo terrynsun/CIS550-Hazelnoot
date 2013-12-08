@@ -36,12 +36,12 @@ INSERT INTO Board (owner_name, name) VALUES ('suntzu',  'Vladimir Putin');
            
 -- Not sure if the multi-insert thing guarantees an order, but this will
 -- certainly guarantee an order
-INSERT INTO Object (type, url) VALUES ('photo', 'http://i.imgur.com/r1OK5bD.gif');
-INSERT INTO Object (type, url) VALUES ('photo', 'http://i.imgur.com/Y7MlV.jpg');
-INSERT INTO Object (type, url) VALUES ('photo', 'http://i.imgur.com/QFqtA.gif');
-INSERT INTO Object (type, url) VALUES ('photo', 'http://i.imgur.com/gJO3nLB.gif');
-INSERT INTO Object (type, url) VALUES ('photo', 'http://i.imgur.com/CGu8E.gif');
-INSERT INTO Object (type, url) VALUES ('photo', 'http://i.imgur.com/1mRKPEh.gif');
+INSERT INTO Object (type, url) VALUES ('image', 'http://i.imgur.com/r1OK5bD.gif');
+INSERT INTO Object (type, url) VALUES ('image', 'http://i.imgur.com/Y7MlV.jpg');
+INSERT INTO Object (type, url) VALUES ('image', 'http://i.imgur.com/QFqtA.gif');
+INSERT INTO Object (type, url) VALUES ('image', 'http://i.imgur.com/gJO3nLB.gif');
+INSERT INTO Object (type, url) VALUES ('image', 'http://i.imgur.com/CGu8E.gif');
+INSERT INTO Object (type, url) VALUES ('image', 'http://i.imgur.com/1mRKPEh.gif');
 INSERT INTO Object (type, url) VALUES ('pdf'  , 'https://research.microsoft.com/en-us/people/mickens/thenightwatch.pdf');
            
 INSERT INTO Rating (object_id, user_name, rating) VALUES (1, 'dange',   4);

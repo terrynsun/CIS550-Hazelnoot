@@ -19,7 +19,6 @@ module.exports = function(sequelize, DataTypes) {
         time_created: DataTypes.DATE
     }, {
         tableName: "Friendship",
-        timestamps: false,
 
         instanceMethods: {
             name: function() {

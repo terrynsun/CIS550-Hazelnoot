@@ -14,7 +14,6 @@ module.exports = function(sequelize, DataTypes) {
         },
         time_created: DataTypes.DATE
     }, {
-        tableName: "Tags",
-        timestamps: false,
+        tableName: "Tags"
     });
 };

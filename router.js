@@ -3,6 +3,7 @@ var passport = require('passport');
 var routes = require('./routes');
 var auth = require('./routes/auth');
 var user = require('./routes/user');
+var pin = require('./routes/pin');
 var board = require('./routes/board');
 var upProf = require('./routes/updateProfile');
 var search = require('./routes/search');
@@ -36,6 +37,9 @@ module.exports = function(app) {
     // Order matters here
     app.get('/user/me', ensureAuthenticated, user.me);
     app.get('/user/:user_name', user.index);
+
+    app.get('/pin/new', ensureAuthenticated, pin.newPinsPage);
+    app.post('/pin/new', ensureAuthenticated, pin.newPin);
 
     //Richie Testing
     app.get('/user/me/update', ensureAuthenticated, upProf.updateProfilePage);

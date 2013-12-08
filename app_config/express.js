@@ -3,8 +3,11 @@ var path = require('path');
 var passport = require('passport');
 var flash = require('connect-flash');
 
+var utils = require('../utils');
+
 var locals = {
-    moment: require('moment')
+    moment: require('moment'),
+    isImage: utils.isImage
 };
 
 module.exports = function(app) {

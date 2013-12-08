@@ -36,8 +36,8 @@ module.exports = function(app) {
     app.get('/user/me', ensureAuthenticated, user.me);
     app.get('/user/:user_name', user.index);
 
-    app.get('/user/:user_name/:board_name', board.index);
-
     //Richie Testing
     app.get('/user/me/update', ensureAuthenticated, upProf.updateProfilePage);
+
+    app.get('/user/:user_name/:board_name', board.index);
 };

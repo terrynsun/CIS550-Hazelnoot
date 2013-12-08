@@ -9,9 +9,4 @@ $(document).ready(function() {
         e.preventDefault();
     });
 
-    $newPinForm.focusout(function() {
-        $newPin.removeClass('hidden');
-        $(this).addClass('hidden');
-    })
-
 });

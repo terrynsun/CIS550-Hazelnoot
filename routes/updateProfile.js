@@ -39,9 +39,39 @@ exports.updateProfile = function(req, res) {
     var firstName = req.body.firstName;
     var lastName = req.body.lastName;
     var email = req.body.email;
-    var association = req.body.association;
+    var affiliation = req.body.affiliation;
     var newPassword1 = req.body.newPassword1;
     var newPassword2 = req.body.newPassword2;
     var password = req.body.password;
 
+    Q.nfcall(bcrypt.compare, password, req.user.password_hash)
+        .then(function(res){
+            if (!res) {
+                return done(null, false, { message: 'Invalid old password'});
+            }
+            return (Q.nfcall(bcrypt.hash, newPassword1, 10), Q.nfcall(bcrypt.hash, newPassword2, 10));
+        })
+        .then(function(hash1, hash2) {
+            if(newPassword1){
+                if(hash1 != hash2){
+                    return done(null, false, { message : 'New passwords do not match'});
+                }
+                req.user.password_hash = hash1;
+            }
+            req.user.first_name = firstName;
+            req.user.last_name = lastName;
+            req.user.email = email;
+            req.user.affiliation = affiliation;
+            return (req.user.save());
+        })
+        .then(function(user) {
+            console.log("Updated user " + user.user_name + ".");
+            return res.redirect('/user/me');
+        })
+        .fail(function(err) {
+            console.error(err);
+            req.flash('error', err.message);
+            return res.redirect('/user/me/update');
+        })
+        .done();
 };

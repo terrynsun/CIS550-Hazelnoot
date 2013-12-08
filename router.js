@@ -43,6 +43,7 @@ module.exports = function(app) {
 
     //Richie Testing
     app.get('/user/me/update', ensureAuthenticated, upProf.updateProfilePage);
+    app.post('/updateProfile', ensureAuthenticated, upProf.updateProfile);
 
     app.get('/user/:user_name/:board_name', board.index);
 

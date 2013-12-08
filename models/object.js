@@ -1,5 +1,7 @@
 var Q = require('q');
 
+var utils = require('../utils');
+
 module.exports = function(sequelize, DataTypes) {
     return sequelize.define("PinObject", {
         id: {
@@ -31,6 +33,13 @@ module.exports = function(sequelize, DataTypes) {
         classMethods: {
             findByURL: function(url) {
                 return Q(this.find({ where: { url: url } }));
+            },
+            findOrCreateByURL: function(url) {
+                var type = 'object';
+                if (utils.isImage(url)) {
+                    type = 'image';
+                }
+                return Q(this.findOrCreate({ url: url }, { type: type }));
             }
         }
     })

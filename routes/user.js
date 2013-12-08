@@ -1,4 +1,5 @@
 var User = require('../models').User;
+var Board = require('../models').Board;
 var Q = require('q');
 var _ = require('underscore');
 
@@ -12,18 +13,22 @@ var render_user = function(user, current_user, res) {
             var friends_names = _.map(info.friends, function(friend) {
                 return friend.name();
             });
+            var board_names = _.map(info.boards, function(board) {
+                return board.name;
+            });
 
             res.render('user/profile', {
                 title: user.full_name(),
                 current_user: current_user,
                 user: user,
                 interests: interest_names,
-                friends: friends_names
+                friends: friends_names,
+                boards: board_names
             });
         })
         .fail(function(err) {
             console.error(err);
-            res.render('user/error', {
+            res.render('error', {
                 title: 'Oh noes!',
                 current_user: current_user,
                 message: 'Something went wrong on our end while loading this user. ' +

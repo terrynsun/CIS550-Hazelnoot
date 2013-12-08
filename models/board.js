@@ -25,7 +25,7 @@ module.exports = function(sequelize, DataTypes) {
         tableName: "Board",
         timestamps: false,
         classMethods: {
-            findByName: function(user_name, board_name) {
+            findByBoardName: function(user_name, board_name) {
                 var query = { owner_name: user_name, name: board_name };
                 return Q(this.find({ where: query }));
             }

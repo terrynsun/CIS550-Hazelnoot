@@ -81,6 +81,10 @@ module.exports = function(sequelize, DataTypes) {
                     })
                     .then(function(friends) {
                         acc.friends = friends;
+                        return Q(self.getBoards());
+                    })
+                    .then(function(boards) {
+                        acc.boards = boards;
                         return acc;
                     });
             },

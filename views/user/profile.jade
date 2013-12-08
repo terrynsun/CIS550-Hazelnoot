@@ -19,3 +19,7 @@ block content
     ul
       - for (var i = 0; i < friends.length; i += 1)
         li: a(href="/user/#{friends[i]}")= friends[i]
+    h4 Boards
+    ul
+      - for (var i = 0; i < boards.length; i += 1)
+        li: a(href="/user/#{boards[i]}")= boards[i]

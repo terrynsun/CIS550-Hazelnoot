@@ -17,6 +17,12 @@ module.exports = function(sequelize, DataTypes) {
                 max: 64
             }
         },
+        description: {
+            type: DataTypes.STRING(512),
+            validate: {
+                max: 512
+            }
+        },
         time_created: DataTypes.DATE
     }, {
         tableName: "Pin"

@@ -64,6 +64,7 @@ CREATE TABLE Pin (
     object_id INTEGER,
     user_name VARCHAR(32),
     board_name VARCHAR(64),
+    description VARCHAR(512),
     time_created TIMESTAMP  DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (object_id, user_name, board_name),
     FOREIGN KEY (object_id) REFERENCES Object(id),

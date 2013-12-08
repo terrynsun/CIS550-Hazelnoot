@@ -5,6 +5,7 @@ var auth = require('./routes/auth');
 var user = require('./routes/user');
 var board = require('./routes/board');
 var upProf = require('./routes/updateProfile');
+var search = require('./routes/search');
 
 var ensureAuthenticated = function(req, res, next) {
     if (req.isAuthenticated()) {
@@ -40,4 +41,8 @@ module.exports = function(app) {
     app.get('/user/me/update', ensureAuthenticated, upProf.updateProfilePage);
 
     app.get('/user/:user_name/:board_name', board.index);
+
+    app.post('/search', search.postSearch);
+    app.get('/search', search.noParam);
+    app.get('/search/:term', search.getSearch);
 };

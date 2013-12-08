@@ -14,6 +14,13 @@ html(lang='en')
           a(href='/')
             img(src="/images/HazelnootLogoSmall.png", height=70)
         .collapse.navbar-collapse
+          ul.navbar-form-navbar-form.navbar-left(role='search')
+            form(role='form', method='POST', action='/search')
+              .form-group
+                label.hidden(for='search term') Search term
+                input(name='term' type='text', placeholder='search me',
+                                  style='margin-top: 10%')
+                input.btn.btn-navbar.btn-inverse(type='submit')
           ul.nav.navbar-nav.navbar-right
             if !!current_user
               li: a(href='/user/me')= current_user.full_name()

@@ -2,7 +2,6 @@ var User = require('../models').User;
 var bcrypt = require('bcrypt');
 var Q = require('q');
 
-
 var renderUserUpdate = function(current_user, res) {
     return Q(current_user.nsa())
         .then(function(info) {
@@ -21,15 +20,12 @@ var renderUserUpdate = function(current_user, res) {
         });
 };
 
-
 /*
  * GET /updateProfile.updateProfilePage
  */
 exports.updateProfilePage = function(req, res) {
     renderUserUpdate(req.user, res).done();
 };
-
-
 
 /*
  * POST /updateProfile.updateProfile

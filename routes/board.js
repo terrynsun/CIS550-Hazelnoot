@@ -17,7 +17,7 @@ var getPinnedObjects = function(board) {
     return Q(sequelize.query(query, Pin, PinObject, parms));
 };
 
-var renderBoard = function(board, current_user, res) {
+var renderBoard = function(board, res) {
     getPinnedObjects(board)
     .then(function(pinnedObjects) {
         var boardObjects = _.map(pinnedObjects, function(obj) {
@@ -40,7 +40,7 @@ exports.index = function(req, res) {
     var board_name = req.params.board_name;
     Board.findByBoardName(user_name, board_name)
     .then(function(board) {
-        return renderBoard(board, req.user, res);
+        return renderBoard(board, res);
     })
     .fail(function(err) {
         res.render('error', {

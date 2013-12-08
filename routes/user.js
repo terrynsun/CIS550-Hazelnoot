@@ -4,7 +4,7 @@ var Q = require('q');
 var _ = require('underscore');
 
 
-var render_user = function(user, current_user, res) {
+var render_user = function(user, res) {
     return Q(user.nsa())
         .then(function(info) {
             var interest_names = _.map(info.interests, function(interest) {
@@ -43,11 +43,11 @@ exports.index = function(req, res) {
 
     // micro-optimization so we don't have to fetch info about myself
     if (req.isAuthenticated() && user_name === req.user.user_name) {
-        render_user(req.user, req.user, res).done();
+        render_user(req.user, res).done();
     } else {
         User.findByUsername(user_name)
             .then(function(user) {
-                return render_user(user, req.user, res);
+                return render_user(user, res);
             })
             .fail(function(err) {
                 res.render('error', {
@@ -65,5 +65,5 @@ exports.index = function(req, res) {
  * GET /user/me
  */
 exports.me = function(req, res) {
-    render_user(req.user, req.user, res).done();
+    render_user(req.user, res).done();
 };

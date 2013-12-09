@@ -62,10 +62,16 @@ exports.newPin = function(req, res) {
     var url = req.body.url;
     var board_name = req.body.board_name;
     var description = req.body.description;
+    var tags = (req.body.tags || '').split(' ');
 
     PinObject.findOrCreateByURL(url)
         .then(function(pinObject) {
-            return Board.findByBoardName(req.user.user_name, board_name)
+            return Q(Tags.bulkCreate(_.map(tags, function(tag) {
+                return { object_id: pinObject.id, tag: tag };
+            })))
+                .then(function() {
+                    return Board.findByBoardName(req.user.user_name, board_name);
+                })
                 .then(function(board) {
                     return Pin.create({
                         user_name: req.user.user_name,
@@ -81,12 +87,42 @@ exports.newPin = function(req, res) {
                     console.error(err);
                     res.send(500, "Failed to pin");
                 })
-                .done();
         })
         .fail(function(err) {
             console.error('WTF?');
             console.error(err);
             res.send(500, "Internal server error");
+        })
+        .done();
+};
+
+/*
+ * GET /pin/:user_name/:board_name/:object_id
+ */
+exports.getPin = function(req, res) {
+    var user_name = req.params.user_name;
+    var board_name = req.params.board_name;
+    var object_id = parseInt(req.params.object_id, 10);
+
+    Pin.findWithObject(user_name, board_name, object_id)
+        .then(function(pin) {
+            return Tags.findAll({ where: { object_id: object_id } })
+                .then(function(tags) {
+                    res.render('pin/pin', {
+                        board_name: board_name,
+                        description: pin.description,
+                        objectType: pin.type,
+                        object_created_at: pin.obj_created_at,
+                        pin_created_at: pin.pin_created_at,
+                        source: pin.source,
+                        tags: _.map(tags, function(tag) { return tag.tag; }),
+                        url: pin.url
+                    });
+                });
+        })
+        .fail(function(err) {
+            console.error(err);
+            res.render_error('Uh oh! Something went wrong on our end.');
         })
         .done();
 };

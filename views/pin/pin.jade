@@ -1,0 +1,24 @@
+extends ../layout
+
+block content
+  .pin-object.row.well
+    .col-md-6
+      .preview-container
+        a(href=url)
+          if objectType === 'image'
+            img(src=url)
+          else
+            p.no-preview No preview available for this content
+
+    .col-md-6.pin-descr-container
+      .panel
+        if !source
+          h3= board_name
+        else
+          h3 #{board_name} <small>Imported from #{source}</small>
+        h5 Pinned on #{moment(pin_created_at).format("MMMM D YYYY")}
+        p.lead= description
+
+        if tags && tags.length > 0
+          h5 Tags
+          p= tags.join(' ')

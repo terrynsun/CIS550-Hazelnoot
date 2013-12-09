@@ -40,6 +40,7 @@ module.exports = function(app) {
 
     app.get('/pin/new', ensureAuthenticated, pin.newPinsPage);
     app.post('/pin/new', ensureAuthenticated, pin.newPin);
+    app.get('/pin/:user_name/:board_name/:object_id', pin.getPin);
 
     app.get('/user/me/update', ensureAuthenticated, upProf.updateProfilePage);
     app.post('/user/me/update', ensureAuthenticated, upProf.updateProfile);

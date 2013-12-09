@@ -14,6 +14,11 @@ var utils = require('../utils');
  */
 exports.newPinsPage = function(req, res) {
     var url = req.query.url;
+    if (!url) {
+        res.redirect('/');
+        return;
+    }
+
     PinObject.findByURL(url)
         .then(function(pinObject) {
             Q(pinObject.getTags())

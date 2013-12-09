@@ -30,6 +30,13 @@ module.exports = function(app) {
     app.use(function(req, res, next) {
         res.locals.current_user = req.user;
         res.locals.flash_messages = req.flash();
+
+        res.render_error = function(message) {
+            res.render('error', {
+                title: 'Oh noes!',
+                message: message
+            });
+        };
         next();
     });
     app.use(app.router);

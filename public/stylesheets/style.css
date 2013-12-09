@@ -5,3 +5,8 @@
 .tile {
   padding: 20px;
 }
+
+.no-preview {
+  color: #777;
+  font-style: oblique;
+}

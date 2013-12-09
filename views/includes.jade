@@ -1,0 +1,16 @@
+mixin displayPins ( images )
+  - for (var i = 0; i < images.length; i += 4)
+    .row
+      - for (var k = 0; k < 4; ++k)
+        mixin pin (images[i+k])
+
+mixin pin ( img )
+    .col-4.col-sm-4.col-lg-3.tile
+      if(img)
+        if(img.type == 'image')
+          img(src=img.url, style='width: 100%').tiles
+
+mixin formTextElem ( name, text, placeholder )
+  .form-group
+    label(for=name) #{text}
+    input.form-control(name=name, type='text', placeholder=placeholder)

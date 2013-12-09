@@ -31,13 +31,13 @@ exports.updateProfilePage = function(req, res) {
  * POST /updateProfile.updateProfile
  */
 exports.updateProfile = function(req, res) {
-    var firstName = req.body.firstName;
-    var lastName = req.body.lastName;
-    var email = req.body.email;
-    var affiliation = req.body.affiliation;
-    var newPassword1 = req.body.newPassword1;
-    var newPassword2 = req.body.newPassword2;
-    var password = req.body.password;
+    var firstName = req.body.firstName || "";
+    var lastName = req.body.lastName || "";
+    var email = req.body.email || "";
+    var affiliation = req.body.affiliation || "";
+    var newPassword1 = req.body.newPassword1 || "";
+    var newPassword2 = req.body.newPassword2 || "";
+    var password = req.body.password || "";
 
     Q.nfcall(bcrypt.compare, password, req.user.password_hash)
         .then(function(res){
@@ -53,10 +53,10 @@ exports.updateProfile = function(req, res) {
                 }
                 req.user.password_hash = hash1;
             }
-            req.user.first_name = firstName;
-            req.user.last_name = lastName;
-            req.user.email = email;
-            req.user.affiliation = affiliation;
+            if(firstName) req.user.first_name = firstName;
+            if(lastName) req.user.last_name = lastName;
+            if(email) req.user.email = email;
+            if(affiliation) req.user.affiliation = affiliation;
             return (req.user.save());
         })
         .then(function(user) {

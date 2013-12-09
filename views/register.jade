@@ -1,24 +1,15 @@
 extends layout
+include includes
 
 block content
   p: a(href='/login') Have an account already?
 
   form.well.col-lg-4.col-md-6(role='form', method='POST', action='/register')
-    .form-group
-      label(for='first_name') First name
-      input.form-control(name='first_name', type='text', placeholder='Bob', autofocus)
-    .form-group
-      label(for='first_name') Last name
-      input.form-control(name='last_name', type='text', placeholder='Boberts')
-    .form-group
-      label(for='affiliation') Affiliation
-      input.form-control(name='affiliation', type='text', placeholder='UPenn')
-    .form-group
-      label(for='username') Username
-      input.form-control(name='user_name', type='text', placeholder='h4xx0r')
-    .form-group
-      label(for='email') Email
-      input.form-control(name='email', type='text', placeholder='l33t@internet.com')
+    mixin formTextElem('first_name', 'First name', 'Bob')
+    mixin formTextElem('last_name', 'Last name', 'Boberts')
+    mixin formTextElem('affiliation', 'Affiliation', 'the internets')
+    mixin formTextElem('user_name', 'Username', 'h4xx0rs')
+    mixin formTextElem('email', 'Email', 'l33t@internet.com')
     .form-group
       label(for='password') Password
       input.form-control(name='password', type='password', placeholder='Password')

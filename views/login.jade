@@ -1,12 +1,11 @@
 extends layout
+include includes
 
 block content
   p: a(href='/register') Don't have an account yet?
 
   form.well.col-lg-4.col-md-6(role='form', method='POST', action=action_url)
-    .form-group
-      label(for='username') Username
-      input.form-control(name='username', type='text', placeholder='Username', autofocus)
+    mixin formTextElem('username', 'Username', 'Username')
     .form-group
       label(for='password') Password
       input.form-control(name='password', type='password', placeholder='Password')

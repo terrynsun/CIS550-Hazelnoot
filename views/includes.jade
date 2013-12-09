@@ -6,8 +6,12 @@ mixin displayPins ( images )
 
 mixin pin ( image )
   .col-4.col-sm-4.col-lg-3.tile
-    if (image && image.type === 'image')
-      img(src=image.url, style='width: 100%').tiles
+    if (image)
+      if (image.type === 'image')
+        img(src=image.url, style='width: 100%').tiles
+      else
+        p
+          | No preview for this - have a <a href=#{image.url}>link</a> instead!
 
 mixin formTextElem ( name, text, placeholder )
   .form-group

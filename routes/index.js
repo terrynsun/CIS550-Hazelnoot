@@ -15,12 +15,13 @@ var getPinsByFriends = function(username) {
     return Q(sequelize.query(query, null, { raw: true }, parms));
 };
 
-var getNewPins = function() {
+var getNewPins = function(n) {
     var query = 'SELECT * FROM Pin, Object ' +
                 'WHERE Pin.object_id = Object.id ' +
                 'ORDER BY Pin.created_at DESC ' +
-                'LIMIT 5';
-    return Q(sequelize.query(query, null, { raw: true }));
+                'LIMIT 20';
+    var parms = { num: n };
+    return Q(sequelize.query(query, null, { raw: true }, parms));
 };
 
 var getInterestingPins = function(username) {
@@ -38,7 +39,7 @@ var renderLoggedInPage = function(req, res) {
     getPinsByFriends(req.user.user_name)
     .then(function(results) {
         display.friendPins = results;
-        return getNewPins();
+        return getNewPins(5);
     })
     .then(function(results) {
         display.newPins = results;
@@ -48,7 +49,6 @@ var renderLoggedInPage = function(req, res) {
         display.interestingPins = results;
     })
     .then(function() {
-          console.log(display.interestingPins);
           res.render('index', { 
           title: 'Hazlenoot',
           col1: display.friendPins,
@@ -62,12 +62,11 @@ var renderLoggedInPage = function(req, res) {
 
 var renderLoggedOutPage = function(req, res) {
     var display = {};
-    getNewPins()
+    getNewPins(20)
     .then(function(results) {
         display.newPins = results;
     })
     .then(function() {
-          console.log(display.newPins);
           res.render('index', { 
           title: 'Hazlenoot',
           newPins: display.newPins

@@ -47,9 +47,9 @@ exports.updateProfile = function(req, res) {
             return (Q.nfcall(bcrypt.hash, newPassword1, 10), Q.nfcall(bcrypt.hash, newPassword2, 10));
         })
         .then(function(hash1, hash2) {
-            if(newPassword1){
+            if(newPassword{
                 if(hash1 != hash2){
-                    return done(null, false, { message : 'New passwords do not match'});
+                    
                 }
                 req.user.password_hash = hash1;
             }

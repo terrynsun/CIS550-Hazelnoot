@@ -1,5 +1,6 @@
 var Q = require('q');
 var _ = require('underscore');
+var format = require('util').format;
 
 var models = require('../models');
 var Board = models.Board;
@@ -81,17 +82,21 @@ exports.newPin = function(req, res) {
                     })
                 })
                 .then(function(pin) {
-                    res.send(200, "Successfully created pin");
+                    req.flash('success', 'Successfully pinned!');
+                    res.redirect(format('/pin/%s/%s/%d',
+                        req.user.user_name,
+                        board_name,
+                        pinObject.id
+                    ));
                 })
                 .fail(function(err) {
                     console.error(err);
-                    res.send(500, "Failed to pin");
+                    res.render_error("We couldn't make your pin. Try again later.");
                 })
         })
         .fail(function(err) {
-            console.error('WTF?');
             console.error(err);
-            res.send(500, "Internal server error");
+            res.render_error("We couldn't make your pin. Try again later. :(");
         })
         .done();
 };

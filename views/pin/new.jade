@@ -27,7 +27,13 @@ block content
               textarea.form-control(type='text', name='description', rows=5,
                   placeholder='Description (up to 512 characters)')
 
-            button.btn.btn-success(type=submit) Pin it
+            .form-group
+              label(for='tags') Tags
+              if (tags && tags.length > 0)
+                p.form-control-static= tags.join(' ')
+              input.form-control(type='text', name='tags', placeholder='Enter additional tags')
+
+            button.btn.btn-success(type='submit') Pin it
 
   if !!pins
     .pins.row

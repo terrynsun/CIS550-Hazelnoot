@@ -20,16 +20,12 @@ var getPinnedObjects = function(board) {
 var renderBoard = function(board, res) {
     getPinnedObjects(board)
     .then(function(pinnedObjects) {
-        var boardObjects = _.map(pinnedObjects, function(obj) {
-            return obj.dataValues;
-        });
         return res.render('user/board', {
             title: board.name,
             board: board,
-            images: boardObjects
+            images: pinnedObjects
         });
-    })
-    .done();
+    });
 };
 
 /*

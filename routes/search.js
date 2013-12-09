@@ -13,50 +13,28 @@ var getTagged = function(term) {
 };
 
 /*
- * POST /search
+ * GET /search?term=<term>
  */
-var postSearch = function(req, res) {
-    var searchTerm = req.body.term;
-    if(!searchTerm) {
-        noParam(req, res);
+exports.getSearch = function(req, res) {
+    var term = req.query.term;
+    if(term) {
+        req.body.term = req.params.term;
+        getTagged(term)
+            .then(function(returnedObjects) {
+                var taggedImages = _.map(returnedObjects, function(img) {
+                    return img.dataValues;
+                });
+
+                return res.render('search', {
+                    searchTerm: term,
+                    images: taggedImages
+                });
+            })
+            .done();
+    } else {
+        res.render('error', {
+            title: 'No search term given!',
+            message: 'Search through the handy-dandy toolbar up there!'
+        });
     }
-
-    getTagged(searchTerm)
-    .then(function(returnedObjects) {
-        var taggedImages = _.map(returnedObjects, function(img) {
-            return img.dataValues;
-        });
-
-        return res.render('search', {
-            searchTerm: searchTerm,
-            images: taggedImages
-        });
-    })
-    .done();
 };
-
-/*
- * GET /search/:term
- */
-var getSearch = function(req, res) {
-  if(req.params.term) {
-    req.body.term = req.params.term;
-    postSearch(req, res);
-  } else {
-    noParam(req, res);
-  }
-};
-
-/*
- * GET /search/
- */
-var noParam = function(req, res) {
-    return res.render('error', {
-        title: 'No search term given!',
-        message: 'Search through the handy-dandy toolbar up there!'
-    });
-};
-
-exports.postSearch = postSearch;
-exports.getSearch = getSearch;
-exports.noParam = noParam;

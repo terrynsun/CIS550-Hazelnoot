@@ -15,7 +15,7 @@ html(lang='en')
             img(src="/images/HazelnootLogoSmall.png", height=50)
 
         .collapse.navbar-collapse
-          form.navbar-form.navbar-left(role='form', method='POST', action='/search')
+          form.navbar-form.navbar-left(role='form', method='GET', action='/search')
             .form-group
               label.sr-only(for='term') Search
               input.form-control(name='term' type='text', placeholder='Search')

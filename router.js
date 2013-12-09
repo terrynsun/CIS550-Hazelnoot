@@ -47,7 +47,5 @@ module.exports = function(app) {
 
     app.get('/user/:user_name/:board_name', board.index);
 
-    app.post('/search', search.postSearch);
-    app.get('/search', search.noParam);
-    app.get('/search/:term', search.getSearch);
+    app.get('/search', search.getSearch);
 };

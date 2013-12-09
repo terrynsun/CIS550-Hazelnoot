@@ -18,53 +18,28 @@ var http = require('http');
 
 exports.do_work = function(req, res){
 	MongoClient.connect('mongodb://readonly:y#HWU-Jnh45ts6lJ@ds053828.mongolab.com:53828/hazelnoot_cache', function(err, db) {
-		  if(!err) {
-		    console.log("We are connected");
-		  }
-		var gridStore = new GridStore(db, 'ourexamplefiletowrite2.txt', 'r', {"content-type": "image/jpeg"});
-		gridStore.open(function(err, gridStore) {
-			response.on('end', function() {
-		  		console.log('done reading data');
+		if(!err) {
+			console.log("We are connected");
+		}
 
-		        image = new Buffer(image2,"binary");
-		        
-		        // Write some data to the file
-		        gridStore.write(image, function(err, gridStore) {
-		          assert.equal(null, err);
-
-		          // Close (Flushes the data to MongoDB)
-		          gridStore.close(function(err, result) {
-		            assert.equal(null, err);
-
-		                GridStore.read(db, fileId, function(err, fileData) {
-		                assert.equal(image.toString('base64'), fileData.toString('base64'));
-		                
-		                console.log('Done, writing local images for testing purposes');
-		                
-		                // var fd =  fs.openSync('image.jpg', 'w');
-
-		                // fs.write(fd, image, 0, image.length, 0, function(err,written){
-
-		                // });
-
-		                // var fd2 =  fs.openSync('image_copy.jpg', 'w');
-		                // fs.write(fd2, fileData, 0, fileData.length, 0, function(err,written){
-
-		                // });
-		                
-		                res.writeHead(200, {
-		                    'Content-Type': 'image/jpeg',
-		                    'Content-Length':fileData.length});
-
-		                console.log("File length is " +fileData.length);
-		                res.write(fileData, "binary");
-		                res.end(fileData,"binary");
-		                console.log('Really done');
-
-		                  });
-		        	  });
-		            });
-				});
-			});
 		
+		var fileId = 'http://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Golden_jackal_small.jpg/50px-Golden_jackal_small.jpg';
+		// Create a new instance of the gridstore
+		var gridStore = new GridStore(db, fileId, 'r');
+		gridStore.open(function(err, gridStore) {
+			GridStore.read(db, fileId, function(err, fileData) {
+				// assert.equal(image.toString('base64'), fileData.toString('base64'));	                  
+
+				res.writeHead(200, {
+					'Content-Type': 'image/jpeg',
+					'Content-Length':fileData.length});
+
+				console.log("File length is " +fileData.length);
+				res.write(fileData, "binary");
+				res.end(fileData,"binary");
+				console.log('Really done');
+
+			});
+		});
+	});
 }

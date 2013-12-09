@@ -31,7 +31,8 @@ module.exports = function(app) {
         res.locals.current_user = req.user;
         res.locals.flash_messages = req.flash();
 
-        res.render_error = function(message) {
+        res.render_error = function(message, code) {
+            res.status(code || 500);
             res.render('error', {
                 title: 'Oh noes!',
                 message: message

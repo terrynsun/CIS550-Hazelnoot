@@ -37,7 +37,12 @@ block content
 
   if !!pins
     .pins.row
-      p Fill this in with actual pins
+      - for (var i = 0; i < pins.length; i++)
+        ul
+          li 
+            | #{pins[i].user_name} --
+            | #{moment(pins[i].created_at).format("MMM DD YYYY")} --
+            | <a | href="/pin/#{pins[i].user_name}/#{pins[i].board_name}/#{pins[i].object_id}">#{pins[i].description}</a>
   else
     .pins.row
       p You're the first to pin this!

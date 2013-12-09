@@ -26,7 +26,7 @@ User.hasMany(Rating, {
     foreignKey: 'user_name'
 }),
 User.hasMany(Pin, {
-    as: 'Pin',
+    as: 'Pins',
     foreignKey: 'user_name'
 });
 
@@ -35,7 +35,7 @@ PinObject.hasMany(Rating, {
     foreignKey: 'object_id'
 });
 PinObject.hasMany(Pin, {
-    as: 'Pin',
+    as: 'Pins',
     foreignKey: 'object_id'
 });
 PinObject.hasMany(Tags, {

@@ -21,30 +21,38 @@ exports.newPinsPage = function(req, res) {
         return;
     }
 
+    var acc = {};
     PinObject.findByURL(url)
         .then(function(pinObject) {
-            Q(pinObject.getTags())
-                .then(function(tags) {
-                    res.render('pin/new', {
-                        title: 'New pin',
-                        url: url,
-                        pins: [],
-                        tags: _.map(tags, function(tag) { return tag.tag; }),
-                        objectType: pinObject.type
-                    });
-                })
-                .fail(function(err) {
-                    res.render('pin/new', {
-                        title: 'New pin',
-                        flash_messages: {error: ['Failed to lookup tags']},
-                        url: url,
-                        pins: [],
-                        objectType: pinObject.type
-                    });
-                })
-                .done();
+            Q(pinObject.getPins())
+            .then(function(pins) {
+                acc.pins = pins;
+            })
+            .then(function () {
+                Q(pinObject.getTags())
+                    .then(function(tags) {
+                        res.render('pin/new', {
+                            title: 'New pin',
+                            url: url,
+                            pins: acc.pins,
+                            tags: _.map(tags, function(tag) { return tag.tag; }),
+                            objectType: pinObject.type
+                        });
+                    })
+                    .fail(function(err) {
+                        res.render('pin/new', {
+                            title: 'New pin',
+                            flash_messages: {error: ['Failed to lookup tags']},
+                            url: url,
+                            pins: [],
+                            objectType: pinObject.type
+                        });
+                    })
+                    .done();
+            });
         })
         .fail(function(err) {
+            console.log(err);
             var type = utils.isImage(url) ? "image" : "object";
             res.render('pin/new', {
                 title: 'New pin',

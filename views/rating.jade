@@ -8,9 +8,12 @@ block content
     p Object id = #{id}
     p Average Rating = #{avgDisplay}
     
-    div(class='btn-group')
-        button(type='button', class='btn btn-default') 1
-        button(type='button', class='btn btn-default') 2
-        button(type='button', class='btn btn-default') 3
-        button(type='button', class='btn btn-default') 4 
-        button(type='button', class='btn btn-default') 5
+    div.btn-group#ratings
+        button.btn.btn-default(type='button', data-rating=1) 1
+        button.btn.btn-default(type='button', data-rating=2) 2
+        button.btn.btn-default(type='button', data-rating=3) 3
+        button.btn.btn-default(type='button', data-rating=4) 4
+        button.btn.btn-default(type='button', data-rating=5) 5
+
+block scripts
+  script(src='/javascripts/rating.js')

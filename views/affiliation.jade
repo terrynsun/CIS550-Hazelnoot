@@ -1,0 +1,9 @@
+extends layout
+
+block header
+  h1 Affiliation page for #{affiliation}
+
+block content
+  ul
+    - for (var i = 0; i < users.length; i += 1)
+      li: a(href="/user/#{users[i]}")= users[i]

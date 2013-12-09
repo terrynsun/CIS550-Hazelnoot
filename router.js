@@ -7,6 +7,7 @@ var pin = require('./routes/pin');
 var board = require('./routes/board');
 var search = require('./routes/search');
 var rating = require('./routes/rating');
+var affiliation = require('./routes/affiliation');
 
 var ensureAuthenticated = function(req, res, next) {
     if (req.isAuthenticated()) {
@@ -52,4 +53,5 @@ module.exports = function(app) {
 
     app.get('/rating/:id', rating.rating);
 
+    app.get('/affiliation/:name', affiliation.index);
 };

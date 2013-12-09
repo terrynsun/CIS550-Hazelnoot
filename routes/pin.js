@@ -64,7 +64,7 @@ exports.newPin = function(req, res) {
 
     PinObject.findOrCreateByURL(url)
         .then(function(pinObject) {
-            return Board.findByName(req.user.user_name, board_name)
+            return Board.findByBoardName(req.user.user_name, board_name)
                 .then(function(board) {
                     return Pin.create({
                         user_name: req.user.user_name,

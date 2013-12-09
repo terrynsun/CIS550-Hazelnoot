@@ -39,7 +39,39 @@ module.exports = function(sequelize, DataTypes) {
                 if (utils.isImage(url)) {
                     type = 'image';
                 }
-                return Q(this.findOrCreate({ url: url }, { type: type }));
+                var deferred = Q.defer();
+                var self = this;
+                console.log("findOrCreateByURL");
+
+                self.find({ where: { url: url } })
+                    .success(function(obj) {
+                        if (obj) {
+                            deferred.resolve(obj);
+                        }
+
+                        self.create({ url: url, type: type })
+                            .success(function() {
+                                self.find({ where: { url: url } })
+                                    .success(function(obj){
+                                        if (obj) {
+                                            deferred.resolve(obj);
+                                        } else {
+                                            deferred.reject(new Error('Null object'));
+                                        }
+                                    })
+                                    .failure(function(err) {
+                                        deferred.reject(err);
+                                    })
+                            })
+                            .failure(function(err) {
+                                deferred.reject(err);
+                            })
+                    })
+                    .failure(function(err) {
+                        deferred.reject(err);
+                    });
+
+                return deferred.promise;
             }
         }
     })

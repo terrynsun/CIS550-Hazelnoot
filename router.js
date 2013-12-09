@@ -6,6 +6,7 @@ var user = require('./routes/user');
 var pin = require('./routes/pin');
 var board = require('./routes/board');
 var search = require('./routes/search');
+var rating = require('./routes/rating');
 
 var ensureAuthenticated = function(req, res, next) {
     if (req.isAuthenticated()) {
@@ -48,4 +49,7 @@ module.exports = function(app) {
     app.get('/user/:user_name/:board_name', board.index);
 
     app.get('/search', search.getSearch);
+
+    app.get('/rating/:id', rating.rating);
+
 };

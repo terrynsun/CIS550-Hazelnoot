@@ -72,6 +72,9 @@ module.exports = function(sequelize, DataTypes) {
                     });
 
                 return deferred.promise;
+            },
+            findByID: function(id) {
+                return Q(this.find({ where: { id: id } }));
             }
         }
     })

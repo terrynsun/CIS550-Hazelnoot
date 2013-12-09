@@ -51,7 +51,6 @@ var renderLoggedInPage = function(req, res) {
           console.log(display.interestingPins);
           res.render('index', { 
           title: 'Hazlenoot',
-          images: display.friendPins,
           col1: display.friendPins,
           col2: display.newPins,
           col3: display.interestingPins,
@@ -61,13 +60,32 @@ var renderLoggedInPage = function(req, res) {
     .done();
 };
 
+var renderLoggedOutPage = function(req, res) {
+    var display = {};
+    getNewPins()
+    .then(function(results) {
+        display.newPins = results;
+    })
+    .then(function() {
+          console.log(display.newPins);
+          res.render('index', { 
+          title: 'Hazlenoot',
+          newPins: display.newPins
+        });
+    })
+    .fail(function(err) {
+        console.log("Error: " + err);
+    })
+    .done();
+};
+
 /*
  * GET home page.
  */
 exports.index = function(req, res){
     if(req.user) {
-         renderLoggedInPage(req, res);
+        renderLoggedInPage(req, res);
+    } else {
+        renderLoggedOutPage(req, res);
     }
-    else
-      res.render('index', { title: 'Hazelnoot' });
 };

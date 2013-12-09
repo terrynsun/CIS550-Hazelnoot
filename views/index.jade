@@ -1,4 +1,12 @@
 extends layout
+include includes
+
+mixin displayColumns ( c1, c2, c3, c4 )
+  - for (var i = 0; i < 5; ++i)
+    .row
+      mixin pin (c1[i])
+      mixin pin (c2[i])
+      mixin pin (c3[i])
 
 block scripts
   script(src='/javascripts/index.js')
@@ -19,5 +27,7 @@ block content
             | Next &nbsp;
             span.glyphicon.glyphicon-arrow-right
 
+    mixin displayColumns ( col1, col2, col3 )
+
   else
-    p Looks like you poor sucker will need an account
+    displayPins ( col1 )

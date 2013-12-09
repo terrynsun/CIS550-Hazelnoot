@@ -1,7 +1,9 @@
-var User = require('../models').User;
-var Board = require('../models').Board;
+var bcrypt = require('bcrypt');
 var Q = require('q');
 var _ = require('underscore');
+
+var User = require('../models').User;
+var Board = require('../models').Board;
 
 
 var render_user = function(user, res) {
@@ -66,4 +68,109 @@ exports.index = function(req, res) {
  */
 exports.me = function(req, res) {
     render_user(req.user, res).done();
+};
+
+
+var renderUserUpdate = function(current_user, res) {
+    return Q(current_user.nsa())
+        .then(function(info) {
+
+            res.render('user/update', {
+                title: 'Update your profile'
+            });
+        })
+        .fail(function(err) {
+            console.error(err);
+            res.render('user/error', {
+                title: 'Oh noes!',
+                message: 'Something went wrong on our end while loading your account. ' +
+                    'Please try again later.'
+            });
+        });
+};
+
+/*
+ * GET /user/me/update
+ */
+exports.updateProfilePage = function(req, res) {
+    renderUserUpdate(req.user, res).done();
+};
+
+/*
+ * POST /user/me/update
+ */
+exports.updateProfile = function(req, res) {
+    var firstName = req.body.firstName;
+    var lastName = req.body.lastName;
+    var email = req.body.email;
+    var affiliation = req.body.affiliation;
+
+    if(firstName) req.user.first_name = firstName;
+    if(lastName) req.user.last_name = lastName;
+    if(email) req.user.email = email;
+    if(affiliation) req.user.affiliation = affiliation;
+
+    Q(req.user.save())
+        .then(function(user) {
+            req.flash('success', 'Updated your profile.');
+            return res.redirect('/user/me/update');
+        })
+        .fail(function(err) {
+            console.error(err);
+            req.flash('error', err.message);
+            return res.redirect('/user/me/update');
+        })
+        .done();
+};
+
+/*
+ * POST /user/me/update/password
+ */
+exports.updatePassword = function(req, res) {
+    var oldPassword = req.body.old_password;
+    var newPassword = req.body.new_password;
+    var confirmPassword = req.body.new_password_confirm;
+
+    var go_back = function(message, flash_type) {
+        flash_type = flash_type || 'error';
+        req.flash(flash_type, message);
+        res.redirect('/user/me/update');
+    };
+
+    if (!(oldPassword && newPassword && confirmPassword)) {
+        go_back('You need to fill out all password fields');
+        return;
+    }
+
+    if (newPassword !== confirmPassword) {
+        go_back('New passwords did not match.');
+        return;
+    }
+
+    Q.nfcall(bcrypt.compare, oldPassword, req.user.password_hash)
+        .then(function(res) {
+            if (!res) {
+                var e = new Error('Old password does not match');
+                e.name = 'PEBKACError';
+                throw e;
+            }
+
+            return Q.nfcall(bcrypt.hash, newPassword, 10);
+        })
+        .then(function(hash) {
+            req.user.password_hash = hash;
+            return Q(req.user.save());
+        })
+        .then(function() {
+            // Success!
+            go_back('Successfully updated your password!', 'success');
+        })
+        .fail(function(err) {
+            if (err.name === 'PEBKACError') {
+                go_back(err.message);
+            } else {
+                go_back('Something went wrong on our end :(');
+            }
+        })
+        .done();
 };

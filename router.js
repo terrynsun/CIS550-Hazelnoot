@@ -5,7 +5,6 @@ var auth = require('./routes/auth');
 var user = require('./routes/user');
 var pin = require('./routes/pin');
 var board = require('./routes/board');
-var upProf = require('./routes/updateProfile');
 var search = require('./routes/search');
 
 var ensureAuthenticated = function(req, res, next) {
@@ -42,8 +41,9 @@ module.exports = function(app) {
     app.post('/pin/new', ensureAuthenticated, pin.newPin);
     app.get('/pin/:user_name/:board_name/:object_id', pin.getPin);
 
-    app.get('/user/me/update', ensureAuthenticated, upProf.updateProfilePage);
-    app.post('/user/me/update', ensureAuthenticated, upProf.updateProfile);
+    app.get('/user/me/update', ensureAuthenticated, user.updateProfilePage);
+    app.post('/user/me/update', ensureAuthenticated, user.updateProfile);
+    app.post('/user/me/update/password', ensureAuthenticated, user.updatePassword);
 
     app.get('/user/:user_name/:board_name', board.index);
 

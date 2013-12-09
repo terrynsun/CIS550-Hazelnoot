@@ -29,8 +29,9 @@ block content
 
             .form-group
               label(for='tags') Tags
-              if (tags && tags.length > 0)
-                p.form-control-static= tags.join(' ')
+                ul.list-inline
+                  - for (var i = 0; i < tags.length; i += 1)
+                    li: a(href='/search?term=#{tags[i]}')= tags[i]
               input.form-control(type='text', name='tags', placeholder='Enter additional tags')
 
             button.btn.btn-success(type='submit') Pin it

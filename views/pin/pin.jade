@@ -21,4 +21,6 @@ block content
 
         if tags && tags.length > 0
           h5 Tags
-          p= tags.join(' ')
+          ul.list-inline
+            - for (var i = 0; i < tags.length; i += 1)
+              li: a(href='/search?term=#{tags[i]}')= tags[i]

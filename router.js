@@ -8,6 +8,7 @@ var board = require('./routes/board');
 var search = require('./routes/search');
 var rating = require('./routes/rating');
 var affiliation = require('./routes/affiliation');
+var mongo = require('./routes/mongo');
 
 var ensureAuthenticated = function(req, res, next) {
     if (req.isAuthenticated()) {
@@ -55,4 +56,10 @@ module.exports = function(app) {
     app.post('/rating/:id', ensureAuthenticated, rating.changeRating);
 
     app.get('/affiliation/:name', affiliation.index);
+
+    app.post('/search', search.postSearch);
+    app.get('/search', search.noParam);
+    app.get('/search/:term', search.getSearch);
+
+    app.get('/mongo/bigtest', mongo.do_work);
 };

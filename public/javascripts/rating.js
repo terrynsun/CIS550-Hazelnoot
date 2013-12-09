@@ -11,7 +11,7 @@ $(document).ready(function() {
             console.log('clicked ' + rating);
             // Asynchronous POST request
             // See http://api.jquery.com/jQuery.post/
-            $.post('URL HERE', { rating: rating }, success);
+            $.post('/rating/:id', { rating: rating }, success);
             e.preventDefault();
         });
     })

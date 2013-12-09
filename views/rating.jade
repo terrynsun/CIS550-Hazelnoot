@@ -6,14 +6,19 @@ block header
 block content
     img(src='#{pic}')
     p Object id = #{id}
-    p Average Rating = #{avgDisplay}
-    
-    div.btn-group#ratings
-        button.btn.btn-default(type='button', data-rating=1) 1
-        button.btn.btn-default(type='button', data-rating=2) 2
-        button.btn.btn-default(type='button', data-rating=3) 3
-        button.btn.btn-default(type='button', data-rating=4) 4
-        button.btn.btn-default(type='button', data-rating=5) 5
+    p Average Rating = #{avgDisplay}/5
+ 
+    if !!current_user
+        p Your current rating: #{lastRating}/5
+        div.btn-group#ratings
+            button.btn.btn-default(type='button', data-rating=1) 1
+            button.btn.btn-default(type='button', data-rating=2) 2
+            button.btn.btn-default(type='button', data-rating=3) 3
+            button.btn.btn-default(type='button', data-rating=4) 4
+            button.btn.btn-default(type='button', data-rating=5) 5
+    else
+        a(href='/login') Login to rate objects!
+        
 
 block scripts
   script(src='/javascripts/rating.js')

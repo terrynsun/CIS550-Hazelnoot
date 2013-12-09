@@ -36,10 +36,10 @@ module.exports = function(sequelize, DataTypes) {
                     'HAVING object_id = :id';
                 var params = { id: lookup_id };
                 return Q(sequelize.query(query, null, { raw: true }, params));
-                }
             },
             findByUserID: function(user_name, object_id) {
                 return Q(this.find({ where: { object_id: object_id, user_name: user_name } }));
             }
+        }
     });
 };

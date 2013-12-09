@@ -15,6 +15,7 @@ var utils = require('../utils');
 exports.newPinsPage = function(req, res) {
     var url = req.query.url;
     if (!url) {
+        req.flash('warning', 'Please provide a valid URL to pin.');
         res.redirect('/');
         return;
     }

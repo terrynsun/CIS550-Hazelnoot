@@ -47,7 +47,7 @@ exports.updateProfile = function(req, res) {
             return (Q.nfcall(bcrypt.hash, newPassword1, 10), Q.nfcall(bcrypt.hash, newPassword2, 10));
         })
         .then(function(hash1, hash2) {
-            if(newPassword{
+            if(newPasswor1){
                 if(hash1 != hash2){
                     
                 }

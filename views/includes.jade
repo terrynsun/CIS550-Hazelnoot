@@ -9,6 +9,10 @@ mixin pin ( image )
     if (image)
       if (image.type === 'image')
         img(src=image.url, style='width: 100%').tiles
+        center
+          form(role='form', method='GET', action='/pin/new')
+            input.sr-only.form-control#url-inpput(name='url', value=image.url)
+            button.btn.btn-default(type='submit') Pin me!
       else
         p
           | No preview for this - have a <a href=#{image.url}>link</a> instead!

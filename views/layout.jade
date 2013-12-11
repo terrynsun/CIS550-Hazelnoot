@@ -32,7 +32,7 @@ html(lang='en')
                     li: a(href='/user/me/interests')
                         span(class='glyphicon glyphicon-star')= ' Interests'
                     if !!current_user.affiliation
-                      li: a(href='/user/affiliation/#{current_user.affiliation}')
+                      li: a(href='/affiliation/#{current_user.affiliation}')
                         span(class='glyphicon glyphicon-globe')= ' ' + current_user.affiliation
                     li.divider
                     li: a(href='/user/me/update') 

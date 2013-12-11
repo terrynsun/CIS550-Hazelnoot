@@ -52,7 +52,7 @@ module.exports = function(app) {
     app.get('/search', search.getSearch);
 
     app.get('/rating/:id', rating.rating);
-    app.post('/rating/:id', ensureAuthenticated, rating.changeRating);
+    app.post('/rating/', ensureAuthenticated, rating.changeRating);
 
     app.get('/affiliation/:name', affiliation.index);
 };

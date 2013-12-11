@@ -6,6 +6,7 @@ var PinObject = models.PinObject;
 var Rating = models.Rating;
 var User = models.User;
 var utils = require('../utils');
+var flash = require('../utils');
 
 /*
  * GET /rating/:id
@@ -74,12 +75,11 @@ exports.rating = function(req, res) {
 
 
 /*
- *  POST /rating/:id
+ *  POST /rating/:obj_id
  */
 exports.changeRating = function(req, res) {
-    /*TODO ID = ':id' ALWAYS. How can we get the actual object id? */
-
-    var id = req.params.id;
+    var id = req.body.id;
+    var rating = req.body.rating;
     var userName = req.user.user_name;
 
     Rating.findByUserID(userName, id)
@@ -91,10 +91,13 @@ exports.changeRating = function(req, res) {
             });
         }
 
-        /*TODO Fix this to get the actual rating and not just 1! */
-        oldRating.rating = 1;
+        oldRating.rating = rating;
 
         return Q(oldRating.save());
+    })
+    .then(function() {
+        req.flash('success', "Saved your rating: " + rating);
+        res.redirect('/rating/' + id);
     })
     .fail(function(err) {
         console.log(err);
@@ -105,5 +108,4 @@ exports.changeRating = function(req, res) {
         });
     })
     .done();
-
 };

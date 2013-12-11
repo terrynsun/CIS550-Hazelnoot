@@ -5,8 +5,6 @@ var models = require('../models');
 var PinObject = models.PinObject;
 var Rating = models.Rating;
 var User = models.User;
-
-
 var utils = require('../utils');
 
 /*
@@ -25,7 +23,6 @@ exports.rating = function(req, res) {
 
     Rating.getAverageByID(id)
     .then(function(avgLoc) {
-        
         avgVar = avgLoc;
         
         return(PinObject.findByID(id));
@@ -34,13 +31,11 @@ exports.rating = function(req, res) {
         if(curObj){
             if(avgVar[0]){
                 avgVar = avgVar[0].avg;
-            }
-            else{
+            } else{
                 avgVar = 0;
             }
             pic = curObj.url;
-        }
-        else{
+        } else{
             res.render('error', {
                 title: 'This photo doesn\'t appear to exist!',
                 message: 'The link you followed may be broken, or this page may ' +
@@ -51,8 +46,7 @@ exports.rating = function(req, res) {
 
         if(req.user){
             return(Rating.findByUserID(req.user.user_name, id));
-        }
-        else{
+        } else {
             return(null);
         }
     })
@@ -73,7 +67,7 @@ exports.rating = function(req, res) {
             title: 'An error occured while looking up ratings',
             message: 'The link you followed may be broken, or this page may ' +
                 'have been deleted.'
-            })
+        });
     })
     .done();
 };
@@ -83,7 +77,6 @@ exports.rating = function(req, res) {
  *  POST /rating/:id
  */
 exports.changeRating = function(req, res) {
-
     /*TODO ID = ':id' ALWAYS. How can we get the actual object id? */
 
     var id = req.params.id;

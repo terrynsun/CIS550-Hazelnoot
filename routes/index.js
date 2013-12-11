@@ -33,7 +33,7 @@ var getInterestingPins = function(username, n) {
                 'WHERE Interest.user_name = :name ' +
                 'AND   Tags.tag = Interest.name ' +
                 'AND   Tags.object_id = Object.id ' +
-                'ORDER BY Pin.created_at DESC ' +
+                'ORDER BY Object.created_at DESC ' +
                 'LIMIT :num';
     var parms = { name: username, num:n };
     return Q(sequelize.query(query, null, { raw: true }, parms));
@@ -65,7 +65,7 @@ var renderLoggedInPage = function(req, res) {
     .fail(function(err) {
         console.log(err);
         res.render('error', {
-            title: 'Something has gone terribly wrong',
+            title: 'Something has gone terribly wrong.',
             message: 'Our bad! Try again in a little while.'
         });
     })
@@ -85,7 +85,11 @@ var renderLoggedOutPage = function(req, res) {
         });
     })
     .fail(function(err) {
-        console.log("Error: " + err);
+        console.log(err);
+        res.render('error', {
+            title: 'Something has gone terribly wrong.',
+            message: 'Our bad! Try again in a little while.'
+        });
     })
     .done();
 };

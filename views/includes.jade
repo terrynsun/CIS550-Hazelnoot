@@ -1,13 +1,3 @@
-mixin ratingForm ( id )
-  form(role='form', method='POST', action='/rating/')
-  input.hidden(name='id', value=id)
-  div.btn-group
-    button.btn.btn-default(type='submit', name='rating', value=1) 1
-    button.btn.btn-default(type='submit', name='rating', value=2) 2
-    button.btn.btn-default(type='submit', name='rating', value=3) 3
-    button.btn.btn-default(type='submit', name='rating', value=4) 4
-    button.btn.btn-default(type='submit', name='rating', value=5) 5
-
 mixin displayPins ( images )
   - for (var i = 0; i < images.length; i += 4)
     .row
@@ -30,7 +20,6 @@ mixin pin ( image )
             form(role='form', method='GET', action='/pin/new')
               input.sr-only.form-control#url-inpput(name='url', value=image.url)
               button.btn.btn-default(type='submit') Pin It!
-            mixin ratingForm(4)
 
 mixin formTextElem ( name, text, placeholder )
   .form-group

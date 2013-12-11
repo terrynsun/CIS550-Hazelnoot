@@ -16,19 +16,19 @@ var request = require('request');
 var http = require('http');
 
 
-exports.do_work = function(req, res){
+exports.cache = function(req, res){
 	MongoClient.connect('mongodb://pennterest:tMUHaBz8G4vdfZ@ds053828.mongolab.com:53828/hazelnoot_cache', function(err, db) {
 		if(!err) {
 			console.log("We are connected");
 		}
-
-		var fileId = 'http://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Golden_jackal_small.jpg/50px-Golden_jackal_small.jpg';
+		// http%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F8%2F88%2FGolden_jackal_small.jpg%2F50px-Golden_jackal_small.jpg
+		var fileId = decodeURIComponent(req.query.url);
 		// Create a new instance of the gridstore
 		var gridStore = new GridStore(db, fileId, 'w');
 		// Open the file
 		gridStore.open(function(err, gridStore) {
 
-			http.get('http://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Golden_jackal_small.jpg/50px-Golden_jackal_small.jpg', function (response) {
+			http.get(fileId, function (response) {
 
 				response.setEncoding('binary');
 

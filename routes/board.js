@@ -6,15 +6,15 @@ var Q = require('q');
 var sequelize = require('../app_config/sequelize');
 var _ = require('underscore');
 
-// don't mind this function awkwardly being in this place
+// get all pinned objects of a board, newest first
 var getPinnedObjects = function(board) {
     var query = 'SELECT * from Pin, Object ' + 
                  'WHERE Pin.user_name = :user_name ' + 
                  'AND   Pin.board_name = :board_name ' + 
-                 'AND   Object.id = Pin.object_id';
-    var parms = { user_name: board.owner_name, board_name: board.name };
-    // of the chicken variety (because my typo deserves to live)
-    return Q(sequelize.query(query, Pin, PinObject, parms));
+                 'AND   Object.id = Pin.object_id ' +
+                 'ORDER BY Pin.created_at DESC';
+    var params = { user_name: board.owner_name, board_name: board.name };
+    return Q(sequelize.query(query, Pin, PinObject, params));
 };
 
 var renderBoard = function(board, res) {
@@ -25,7 +25,8 @@ var renderBoard = function(board, res) {
             board: board,
             images: pinnedObjects
         });
-    });
+    })
+    .done();
 };
 
 /*

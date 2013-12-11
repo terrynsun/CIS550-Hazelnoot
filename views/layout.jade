@@ -23,8 +23,14 @@ html(lang='en')
 
           ul.nav.navbar-nav.navbar-right
             if !!current_user
-              li: a(href='/user/me')= current_user.full_name()
-              li: a(href='/user/me/update') Update Profile
+              li.dropdown
+                  a.dropdown-toggle(data-toggle='dropdown')= current_user.full_name()
+                    b.caret
+                  ul.dropdown-menu
+                    li: a(href='/user/me') Profile
+                    li: a(href='/user/me/interests') Interests
+                    li.divider
+                    li: a(href='/user/me/update') Update Profile
               li: a(href='/logout') Logout
             else
               li: a(href='/login') Login

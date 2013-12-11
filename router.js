@@ -47,6 +47,8 @@ module.exports = function(app) {
     app.post('/user/me/update', ensureAuthenticated, user.updateProfile);
     app.post('/user/me/update/password', ensureAuthenticated, user.updatePassword);
 
+    app.get('/user/me/interests', ensureAuthenticated, user.updateInterestsPage);
+
     app.get('/user/:user_name/:board_name', board.index);
 
     app.get('/search', search.getSearch);

@@ -174,3 +174,33 @@ exports.updatePassword = function(req, res) {
         })
         .done();
 };
+
+
+var renderUserInterests = function(current_user, res) {
+    return Q(current_user.nsa())
+        .then(function(info) {
+            var interest_names = _.map(info.interests, function(interest) {
+                return interest.name;
+            });
+            res.render('user/interests', {
+                title: 'Your Interests',
+                interests: interest_names
+            });
+        })
+        .fail(function(err) {
+            console.error(err);
+            res.render('user/error', {
+                title: 'Oh noes!',
+                message: 'Something went wrong on our end while loading your interests. ' +
+                    'Please try again later.'
+            });
+        });
+};            
+
+/*
+ * GET user/me/interests
+ */
+exports.updateInterestsPage = function(req, res) {
+    renderUserInterests(req.user, res).done();
+};
+

@@ -11,7 +11,7 @@ var flash = require('../utils');
 /*
  * GET /rating/:id
  */
-exports.rating = function(req, res) {
+exports.index = function(req, res) {
     var id = req.params.id;
     var avgVar;
     var pic;
@@ -55,7 +55,7 @@ exports.rating = function(req, res) {
         if(prevRating){
             lastRating = prevRating.rating;
         }
-        res.render('rating', {
+        res.render('object', {
             id: id,
             avgDisplay: avgVar,
             pic: pic,
@@ -97,7 +97,7 @@ exports.changeRating = function(req, res) {
     })
     .then(function() {
         req.flash('success', "Saved your rating: " + rating);
-        res.redirect('/rating/' + id);
+        res.redirect('/object/' + id);
     })
     .fail(function(err) {
         console.log(err);

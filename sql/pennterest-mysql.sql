@@ -36,6 +36,7 @@ CREATE TABLE Friendship (
 CREATE TABLE Board (
     owner_name VARCHAR(32)  NOT NULL,
     name VARCHAR(64)        NOT NULL,
+    description VARCHAR(512),
     created_at TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (owner_name, name),

@@ -6,7 +6,7 @@ var user = require('./routes/user');
 var pin = require('./routes/pin');
 var board = require('./routes/board');
 var search = require('./routes/search');
-var rating = require('./routes/rating');
+var object = require('./routes/object');
 var affiliation = require('./routes/affiliation');
 
 var ensureAuthenticated = function(req, res, next) {
@@ -55,8 +55,8 @@ module.exports = function(app) {
 
     app.get('/search', search.getSearch);
 
-    app.get('/rating/:id', rating.rating);
-    app.post('/rating/', ensureAuthenticated, rating.changeRating);
+    app.get('/object/:id', object.index);
+    app.post('/object/', ensureAuthenticated, object.changeRating);
 
     app.get('/affiliation/:name', affiliation.index);
 };

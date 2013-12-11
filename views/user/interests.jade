@@ -7,11 +7,18 @@ block header
 block content
   - if (interests.length > 0)
     h4 Interests
-    ul
-      - for (var i = 0; i < interests.length - 1; i += 1)
-        a(href="/search?term=#{interests[i]}")= interests[i]
-        , 
-      a(href="/search?term=#{interests[interests.length - 1]}")= interests[interests.length - 1]
+    - for (var i = 0; i < interests.length; i += 1)
+        div.btn-group-hotizontal
+          a(href="/search?term=#{interests[i]}")
+            div.btn.btn-default(type='button')= interests[i]
+        form(role='form', method='POST', action='/user/me/interests/remove')
+          button.btn.btn-danger(type='submit', name='oldInterest', value=interests[i])
+            span.glyphicon.glyphicon-remove-circle
+
   - else
     p Interests: You have no interests!
+  h4 Add a new interest
+    form(role='form', method='POST', action='/user/me/interests/add')
+      mixin formTextElem('newInterest', '', 'New Interest')
+      input.btn.btn-primary(type='submit') Add!
 

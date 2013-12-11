@@ -4,7 +4,7 @@ var _ = require('underscore');
 
 var User = require('../models').User;
 var Board = require('../models').Board;
-
+var Interest = require('../models').Interest;
 
 var render_user = function(user, res) {
     return Q(user.nsa())
@@ -203,4 +203,72 @@ var renderUserInterests = function(current_user, res) {
 exports.updateInterestsPage = function(req, res) {
     renderUserInterests(req.user, res).done();
 };
+
+
+/*
+ * POST user/me/interests/add
+ */
+
+exports.updateInterestsAdd = function(req, res) {
+    var newInterest = req.body.newInterest;
+    var current_name = req.user.user_name;
+
+    return Q(Interest.findByUserInterest(current_name, newInterest))
+    .then(function(wasThere) {
+        if(wasThere) {
+            var e = new Error('You are already interested in that.');
+            e.name = 'AlreadyInterestedError';
+            throw e;
+        }
+        var interest = Interest.build({
+            user_name: current_name,
+            name: newInterest
+        });
+        return Q(interest.save());
+    })
+    .then(function(interest) {
+        req.flash('info', 'You\'re now interested in ' + interest.name + ' !');
+        return;
+    })
+    .fail(function(err) {
+        console.error(err);
+        req.flash('error', err.message);
+        return;
+    })
+    .done(function() {
+        res.redirect('/user/me/interests');
+        return;
+    });
+    
+};
+
+
+
+/* 
+ * POST user/me/interests/remove
+ */
+
+exports.updateInterestsRemove = function(req, res) {
+    var oldInterest = req.body.oldInterest;
+    var current_name = req.user.user_name;
+
+    return Q(Interest.findByUserInterest(current_name, oldInterest))
+    .then(function(removed) {
+        removed.destroy();
+        req.flash('info', 'You have removed ' + oldInterest + ' from your interests.');
+        return;
+    })
+    .fail(function(err) {
+        console.error(err);
+        req.flash('error'. err.message);
+        return;
+    })
+    .done(function() {
+        res.redirect('/user/me/interests');
+        return;
+    });
+};
+
+
+
 

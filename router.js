@@ -48,6 +48,8 @@ module.exports = function(app) {
     app.post('/user/me/update/password', ensureAuthenticated, user.updatePassword);
 
     app.get('/user/me/interests', ensureAuthenticated, user.updateInterestsPage);
+    app.post('/user/me/interests/add', ensureAuthenticated, user.updateInterestsAdd);
+    app.post('/user/me/interests/remove', ensureAuthenticated, user.updateInterestsRemove);
 
     app.get('/user/:user_name/:board_name', board.index);
 

@@ -29,6 +29,7 @@ block content
 
             .form-group
               label(for='tags') Tags
+              if(tags)
                 ul.list-inline
                   - for (var i = 0; i < tags.length; i += 1)
                     li: a(href='/search?term=#{tags[i]}')= tags[i]
@@ -42,8 +43,8 @@ block content
         ul
           li 
             | #{pins[i].user_name} --
-            | #{moment(pins[i].created_at).format("MMM DD YYYY")} --
-            | <a | href="/pin/#{pins[i].user_name}/#{pins[i].board_name}/#{pins[i].object_id}">#{pins[i].description}</a>
+            | <a href="/pin/#{pins[i].user_name}/#{pins[i].board_name}/#{pins[i].object_id}">#{moment(pins[i].created_at).format("MMM DD YYYY")}</a>
+            | -- #{pins[i].description}
   else
     .pins.row
       p You're the first to pin this!

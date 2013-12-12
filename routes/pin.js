@@ -20,48 +20,37 @@ exports.newPinsPage = function(req, res) {
         res.redirect('/');
         return;
     }
-
+    var pin;
     var acc = {};
+
     PinObject.findByURL(url)
-        .then(function(pinObject) {
-            Q(pinObject.getPins())
-            .then(function(pins) {
-                acc.pins = pins;
-            })
-            .then(function () {
-                Q(pinObject.getTags())
-                    .then(function(tags) {
-                        res.render('pin/new', {
-                            title: 'New pin',
-                            url: url,
-                            pins: acc.pins,
-                            tags: _.map(tags, function(tag) { return tag.tag; }),
-                            objectType: pinObject.type
-                        });
-                    })
-                    .fail(function(err) {
-                        res.render('pin/new', {
-                            title: 'New pin',
-                            flash_messages: {error: ['Failed to lookup tags']},
-                            url: url,
-                            pins: [],
-                            objectType: pinObject.type
-                        });
-                    })
-                    .done();
-            });
-        })
-        .fail(function(err) {
-            console.log(err);
-            var type = utils.isImage(url) ? "image" : "object";
-            res.render('pin/new', {
-                title: 'New pin',
-                flash_messages: {info: ["Hey there! You're the first to pin this!"]},
-                url: url,
-                objectType: type
-            });
-        })
-        .done();
+    .then(function(pinObject) {
+        pin = pinObject;
+        return Q(pinObject.getPins());
+    })
+    .then(function(pins) {
+        acc.pins = pins;
+        return Q(pin.getTags())
+    })
+    .then(function(tags) {
+        res.render('pin/new', {
+            title: 'New pin',
+            url: url,
+            pins: acc.pins,
+            tags: _.map(tags, function(tag) { return tag.tag; }),
+            objectType: pin.type
+        });
+    })
+    .fail(function(err) {
+      var type = utils.isImage(url) ? "image" : "object";
+      res.render('pin/new', {
+        title: 'New pin',
+        flash_messages: {info: ["Hey there! You're the first to pin this!"]},
+        url: url,
+        objectType: type
+      });
+    })
+    .done();
 };
 
 /*
@@ -74,39 +63,41 @@ exports.newPin = function(req, res) {
     var tags = (req.body.tags || '').split(' ');
 
     PinObject.findOrCreateByURL(url)
-        .then(function(pinObject) {
-            return Q(Tags.bulkCreate(_.map(tags, function(tag) {
-                return { object_id: pinObject.id, tag: tag };
-            })))
-                .then(function() {
-                    return Board.findByBoardName(req.user.user_name, board_name);
-                })
-                .then(function(board) {
-                    return Pin.create({
-                        user_name: req.user.user_name,
-                        object_id: pinObject.id,
-                        board_name: board_name,
-                        description: description
-                    })
-                })
-                .then(function(pin) {
-                    req.flash('success', 'Successfully pinned!');
-                    res.redirect(format('/pin/%s/%s/%d',
-                        req.user.user_name,
-                        board_name,
-                        pinObject.id
-                    ));
-                })
-                .fail(function(err) {
-                    console.error(err);
-                    res.render_error("We couldn't make your pin. Try again later.");
-                })
+    .then(function(pinObject) {
+        var bulkTags = _.map(tags, function(tag) {
+            return { object_id: pinObject.id, tag: tag };
+        });
+
+        if(req.body.tags)
+            return Q(Tags.bulkCreate(bulkTags, null, { validate: true } ))
+        .then(function() {
+            return Board.findByBoardName(req.user.user_name, board_name);
+        })
+        .then(function(board) {
+            return Pin.create({
+                user_name: req.user.user_name,
+                object_id: pinObject.id,
+                board_name: board_name,
+                description: description
+            })
+        })
+        .then(function(pin) {
+            req.flash('success', 'Successfully pinned!');
+            res.redirect(format('/pin/%s/%s/%d',
+                req.user.user_name,
+                board_name,
+                pinObject.id
+            ));
         })
         .fail(function(err) {
-            console.error(err);
-            res.render_error("We couldn't make your pin. Try again later. :(");
+            console.error("****\nerror 1 ", err);
+            res.render_error("We couldn't make your pin. Ya dingus.");
         })
-        .done();
+    })
+    .fail(function(err) {
+        res.render_error("We couldn't make your pin. Try again later. :(");
+    })
+    .done();
 };
 
 /*
@@ -118,24 +109,24 @@ exports.getPin = function(req, res) {
     var object_id = parseInt(req.params.object_id, 10);
 
     Pin.findWithObject(user_name, board_name, object_id)
-        .then(function(pin) {
-            return Tags.findAll({ where: { object_id: object_id } })
-                .then(function(tags) {
-                    res.render('pin/pin', {
-                        board_name: board_name,
-                        description: pin.description,
-                        objectType: pin.type,
-                        object_created_at: pin.obj_created_at,
-                        pin_created_at: pin.pin_created_at,
-                        source: pin.source,
-                        tags: _.map(tags, function(tag) { return tag.tag; }),
-                        url: pin.url
-                    });
-                });
-        })
-        .fail(function(err) {
-            console.error(err);
-            res.render_error('Uh oh! Something went wrong on our end.');
-        })
-        .done();
+    .then(function(pin) {
+        return Tags.findAll({ where: { object_id: object_id } })
+        .then(function(tags) {
+            res.render('pin/pin', {
+                board_name: board_name,
+                description: pin.description,
+                objectType: pin.type,
+                object_created_at: pin.obj_created_at,
+                pin_created_at: pin.pin_created_at,
+                source: pin.source,
+                tags: _.map(tags, function(tag) { return tag.tag; }),
+                url: pin.url
+            });
+        });
+    })
+    .fail(function(err) {
+        console.error(err);
+        res.render_error('Uh oh! Something went wrong on our end.');
+    })
+    .done();
 };

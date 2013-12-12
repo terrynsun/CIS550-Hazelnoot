@@ -41,14 +41,14 @@ var getInterestingPins = function(username, n) {
 
 var renderLoggedInPage = function(req, res) {
     var display = {};
-    getPinsByFriends(req.user.user_name, 5)
+    getPinsByFriends(req.user.user_name, 8)
     .then(function(results) {
         display.friendPins = results;
-        return getNewPins(5);
+        return getNewPins(8);
     })
     .then(function(results) {
         display.newPins = results;
-        return getInterestingPins(req.user.user_name, 5);
+        return getInterestingPins(req.user.user_name, 8);
     })
     .then(function(results) {
         display.interestingPins = results;
@@ -56,10 +56,9 @@ var renderLoggedInPage = function(req, res) {
     .then(function() {
           res.render('index', { 
           title: 'Hazlenoot',
-          col1: display.friendPins,
-          col2: display.newPins,
-          col3: display.interestingPins,
-          col4: display.newPins
+          friendPins: display.friendPins,
+          newPins: display.newPins,
+          interestingPins: display.interestingPins,
         });
     })
     .fail(function(err) {

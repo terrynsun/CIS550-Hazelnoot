@@ -3,10 +3,10 @@ extends layout
 block content
   .well
     center 
-      img(src='#{pic}')
+      img(src='#{pic.url}')
 
       p
-        Average Rating = #{avgDisplay}/5
+        | Average Rating = #{avgDisplay}/5
   
       if !!current_user
         if avgDisplay != 0
@@ -14,16 +14,20 @@ block content
         else
           p You haven't rated this yet!
 
+        p Rate me: 
         form(role='form', method='POST', action='/object/')
           input.hidden(name='id', value=id)
-          div.btn-group
+          .btn-group
               button.btn.btn-default(type='submit', name='rating', value=1) 1
               button.btn.btn-default(type='submit', name='rating', value=2) 2
               button.btn.btn-default(type='submit', name='rating', value=3) 3
               button.btn.btn-default(type='submit', name='rating', value=4) 4
               button.btn.btn-default(type='submit', name='rating', value=5) 5
+
+        a.btn.btn-default(href='/pin/new?url=#{pic.url}') Pin It!
+
       else
-        a.btn.btn-default.btn-group-justified(href='/login?redirect=/object/#{id}') 
+        a.btn.btn-default(href='/login?redirect=/object/#{id}') 
           | Log in in to rate pins!
           
 block scripts

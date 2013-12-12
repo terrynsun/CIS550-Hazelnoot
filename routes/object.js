@@ -6,7 +6,6 @@ var PinObject = models.PinObject;
 var Rating = models.Rating;
 var User = models.User;
 var utils = require('../utils');
-var flash = require('../utils');
 
 /*
  * GET /rating/:id
@@ -35,7 +34,7 @@ exports.index = function(req, res) {
             } else{
                 avgVar = 0;
             }
-            pic = curObj.url;
+            pic = curObj;
         } else{
             res.render('error', {
                 title: 'This photo doesn\'t appear to exist!',

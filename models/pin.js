@@ -1,4 +1,5 @@
 var Q = require('q');
+var sequelize = require('../app_config/sequelize');
 
 module.exports = function(sequelize, DataTypes) {
     return sequelize.define('Pin', {
@@ -51,6 +52,14 @@ module.exports = function(sequelize, DataTypes) {
                         var pin = rows[0];
                         return pin;
                     });
+            },
+            deleteWithName: function(user_name, board_name, object_id) {
+                var query = 'DELETE FROM Pin ' +
+                            'WHERE user_name = :name ' +
+                            'AND   board_name = :board ' +
+                            'AND   object_id = :obj_id';
+                var params = { name: user_name, board: board_name, obj_id: object_id };
+                return Q(sequelize.query(query, null, { raw: true }, params));
             }
         }
     });

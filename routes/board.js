@@ -14,7 +14,7 @@ var getPinnedObjects = function(board) {
                  'AND   Object.id = Pin.object_id ' +
                  'ORDER BY Pin.created_at DESC';
     var params = { user_name: board.owner_name, board_name: board.name };
-    return Q(sequelize.query(query, Pin, PinObject, params));
+    return Q(sequelize.query(query, null, { raw: true }, params));
 };
 
 var renderBoard = function(board, res) {

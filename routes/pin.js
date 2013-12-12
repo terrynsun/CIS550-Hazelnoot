@@ -130,3 +130,25 @@ exports.getPin = function(req, res) {
     })
     .done();
 };
+
+/*
+ * POST /pin/remove
+ */
+exports.removePin = function(req, res) {
+  var current_name = req.user.user_name;
+  var board_name = req.body.board;
+  var object_id = req.body.obj_id;
+  console.log(current_name, board_name, object_id);
+  return Q(Pin.deleteWithName(current_name, board_name, object_id))
+      .then(function() {
+          //console.log(removed);
+          req.flash('info', 'You have removed something from your board.');
+          return;
+      })
+      .fail(function(err) {
+          console.error(err);
+      })
+      .done(function() {
+          res.redirect('/user/' + current_name + '/' + board_name);
+      });
+};

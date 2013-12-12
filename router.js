@@ -6,7 +6,7 @@ var user = require('./routes/user');
 var pin = require('./routes/pin');
 var board = require('./routes/board');
 var search = require('./routes/search');
-var rating = require('./routes/rating');
+var object = require('./routes/object');
 var affiliation = require('./routes/affiliation');
 var mongo = require('./routes/mongo');
 var retrieve = require('./routes/retrieve');
@@ -49,12 +49,16 @@ module.exports = function(app) {
     app.post('/user/me/update', ensureAuthenticated, user.updateProfile);
     app.post('/user/me/update/password', ensureAuthenticated, user.updatePassword);
 
+    app.get('/user/me/interests', ensureAuthenticated, user.updateInterestsPage);
+    app.post('/user/me/interests/add', ensureAuthenticated, user.updateInterestsAdd);
+    app.post('/user/me/interests/remove', ensureAuthenticated, user.updateInterestsRemove);
+
     app.get('/user/:user_name/:board_name', board.index);
 
     app.get('/search', search.getSearch);
 
-    app.get('/rating/:id', rating.rating);
-    app.post('/rating/:id', ensureAuthenticated, rating.changeRating);
+    app.get('/object/:id', object.index);
+    app.post('/object/', ensureAuthenticated, object.changeRating);
 
     app.get('/affiliation/:name', affiliation.index);
 

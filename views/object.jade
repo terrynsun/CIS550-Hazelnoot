@@ -1,0 +1,30 @@
+extends layout
+
+block content
+  .well
+    center 
+      img(src='#{pic}')
+
+      p
+        Average Rating = #{avgDisplay}/5
+  
+      if !!current_user
+        if avgDisplay != 0
+          p Your current rating: #{lastRating}/5
+        else
+          p You haven't rated this yet!
+
+        form(role='form', method='POST', action='/object/')
+          input.hidden(name='id', value=id)
+          div.btn-group
+              button.btn.btn-default(type='submit', name='rating', value=1) 1
+              button.btn.btn-default(type='submit', name='rating', value=2) 2
+              button.btn.btn-default(type='submit', name='rating', value=3) 3
+              button.btn.btn-default(type='submit', name='rating', value=4) 4
+              button.btn.btn-default(type='submit', name='rating', value=5) 5
+      else
+        a.btn.btn-default.btn-group-justified(href='/login?redirect=/object/#{id}') 
+          | Log in in to rate pins!
+          
+block scripts
+  script(src='/javascripts/rating.js')

@@ -5,14 +5,13 @@ var models = require('../models');
 var PinObject = models.PinObject;
 var Rating = models.Rating;
 var User = models.User;
-
-
 var utils = require('../utils');
+var flash = require('../utils');
 
 /*
  * GET /rating/:id
  */
-exports.rating = function(req, res) {
+exports.index = function(req, res) {
     var id = req.params.id;
     var avgVar;
     var pic;
@@ -25,7 +24,6 @@ exports.rating = function(req, res) {
 
     Rating.getAverageByID(id)
     .then(function(avgLoc) {
-        
         avgVar = avgLoc;
         
         return(PinObject.findByID(id));
@@ -34,13 +32,11 @@ exports.rating = function(req, res) {
         if(curObj){
             if(avgVar[0]){
                 avgVar = avgVar[0].avg;
-            }
-            else{
+            } else{
                 avgVar = 0;
             }
             pic = curObj.url;
-        }
-        else{
+        } else{
             res.render('error', {
                 title: 'This photo doesn\'t appear to exist!',
                 message: 'The link you followed may be broken, or this page may ' +
@@ -51,8 +47,7 @@ exports.rating = function(req, res) {
 
         if(req.user){
             return(Rating.findByUserID(req.user.user_name, id));
-        }
-        else{
+        } else {
             return(null);
         }
     })
@@ -60,7 +55,7 @@ exports.rating = function(req, res) {
         if(prevRating){
             lastRating = prevRating.rating;
         }
-        res.render('rating', {
+        res.render('object', {
             id: id,
             avgDisplay: avgVar,
             pic: pic,
@@ -73,20 +68,18 @@ exports.rating = function(req, res) {
             title: 'An error occured while looking up ratings',
             message: 'The link you followed may be broken, or this page may ' +
                 'have been deleted.'
-            })
+        });
     })
     .done();
 };
 
 
 /*
- *  POST /rating/:id
+ *  POST /rating/:obj_id
  */
 exports.changeRating = function(req, res) {
-
-    /*TODO ID = ':id' ALWAYS. How can we get the actual object id? */
-
-    var id = req.params.id;
+    var id = req.body.id;
+    var rating = req.body.rating;
     var userName = req.user.user_name;
 
     Rating.findByUserID(userName, id)
@@ -98,10 +91,13 @@ exports.changeRating = function(req, res) {
             });
         }
 
-        /*TODO Fix this to get the actual rating and not just 1! */
-        oldRating.rating = 1;
+        oldRating.rating = rating;
 
         return Q(oldRating.save());
+    })
+    .then(function() {
+        req.flash('success', "Saved your rating: " + rating);
+        res.redirect('/object/' + id);
     })
     .fail(function(err) {
         console.log(err);
@@ -112,5 +108,4 @@ exports.changeRating = function(req, res) {
         });
     })
     .done();
-
 };

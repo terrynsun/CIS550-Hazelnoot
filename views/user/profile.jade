@@ -11,7 +11,12 @@ block content
     p Birthday: #{moment(user.birthday).format("MMM YYYY")}
   p User since: #{moment(user.time_created).format("MMM D YYYY")}
   - if (interests.length > 0)
-    p Interests: #{interests.join(", ")}
+    h4 Interests
+    ul
+      - for (var i = 0; i < interests.length - 1; i += 1)
+        a(href="/search?term=#{interests[i]}")= interests[i]
+        , 
+      a(href="/search?term=#{interests[interests.length - 1]}")= interests[interests.length - 1]
   - else
     p Interests: (None)
 

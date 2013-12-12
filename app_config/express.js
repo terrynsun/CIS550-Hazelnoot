@@ -43,6 +43,13 @@ module.exports = function(app) {
     app.use(app.router);
     app.use(express.static(path.join(__dirname, '..', 'public')));
 
+    app.use(function(req, res) {
+        res.status(400);
+        res.render('404', {
+            title: '404'
+        })
+    });
+
     // development only
     if ('development' == app.get('env')) {
         app.use(express.errorHandler());

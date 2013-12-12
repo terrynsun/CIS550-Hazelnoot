@@ -6,16 +6,20 @@ mixin displayPins ( images )
 
 mixin pin ( image )
   .col-4.col-sm-4.col-lg-3.tile
-    if (image)
-      if (image.type === 'image')
-        img(src=image.url, style='width: 100%').tiles
-        center
-          form(role='form', method='GET', action='/pin/new')
-            input.sr-only.form-control#url-inpput(name='url', value=image.url)
-            button.btn.btn-default(type='submit') Pin me!
-      else
-        p
-          | No preview for this - have a <a href=#{image.url}>link</a> instead!
+      if (image)
+        .imgtile
+          if (image.type === 'image')
+            a(href="/object/#{image.id}") 
+              img(src=image.url, style='width: 100%').tiles
+          else
+            p
+              | No preview for this - have a <a href=#{image.url}>link</a> instead!
+
+        if current_user
+          center
+            form(role='form', method='GET', action='/pin/new')
+              input.sr-only.form-control#url-inpput(name='url', value=image.url)
+              button.btn.btn-default(type='submit') Pin It!
 
 mixin formTextElem ( name, text, placeholder )
   .form-group

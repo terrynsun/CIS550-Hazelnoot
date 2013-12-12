@@ -1,0 +1,24 @@
+extends ../layout
+include ../includes
+
+block header
+  h1 #{title} <small>#{current_user.user_name}'s Interests</small>
+
+block content
+  - if (interests.length > 0)
+    h4 Interests
+    - for (var i = 0; i < interests.length; i += 1)
+        div.btn-group-hotizontal
+          a(href="/search?term=#{interests[i]}")
+            div.btn.btn-default(type='button')= interests[i]
+        form(role='form', method='POST', action='/user/me/interests/remove')
+          button.btn.btn-danger(type='submit', name='oldInterest', value=interests[i])
+            span.glyphicon.glyphicon-remove-circle
+
+  - else
+    p Interests: You have no interests!
+  h4 Add a new interest
+    form(role='form', method='POST', action='/user/me/interests/add')
+      mixin formTextElem('newInterest', '', 'New Interest')
+      input.btn.btn-primary(type='submit') Add!
+

@@ -4,8 +4,16 @@ include ../includes
 block header
   h1 #{board.name} <small>~ <a href="/user/#{board.owner_name}">#{board.owner_name}</small></a>
 
+  a.btn.btn-default(onclick="$('.rm-pin').toggle('blind'); return false;") Edit pins
+
 block content
-  if current_user.user_name == board.owner_name
+  if current_user && current_user.user_name == board.owner_name
     mixin displayPins (images, board)
   else
     mixin displayPins (images)
+
+block scripts
+  script.
+    $(document).ready(function() {
+      $('.rm-pin').toggle();
+    });

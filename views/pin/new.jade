@@ -18,9 +18,12 @@ block content
             input(type='hidden', name='url', value=url)
 
             .form-group
-              label(for='board_name') Board name
-              input.form-control(type='text', name='board_name', placeholder='Board name',
-                  required)
+              label(for='description') Board 
+              br/
+              .btn-group(data-toggle='buttons')
+                - for(var k = 0; k < boards.length; k+=1)
+                  label.btn.btn-primary
+                    <input type="radio" name="board_name" value="#{boards[k].name}"> #{boards[k].name}
 
             .form-group
               label(for='description') Description
@@ -40,12 +43,21 @@ block content
   if !!pins
     .pins.row
       - for (var i = 0; i < pins.length; i++)
-        ul
-          li 
+        ul.list-group
+          li.list-group-item
             | #{pins[i].user_name} &#8212
             | <a href="/pin/#{pins[i].user_name}/#{pins[i].board_name}/#{pins[i].object_id}">#{moment(pins[i].created_at).format("MMM DD YYYY")}</a>
-            | &#8212 #{pins[i].description}
+            if pins[i].description
+              | &#8212 #{pins[i].description}
   else
     .pins.row
       p You're the first to pin this!
 
+script.
+  $(document).ready(function() {
+    $(".dropdown-menu li a").click(function(){
+      var newHeading = $(this).text();
+      $(this).closest('.dropdown').children('a.dropdown-toggle').text(text);
+      //$heading.html(newHeading + ' ').append($caret);
+    });
+ });

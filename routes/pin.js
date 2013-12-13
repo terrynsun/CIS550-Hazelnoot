@@ -15,6 +15,7 @@ var utils = require('../utils');
  */
 exports.newPinsPage = function(req, res) {
     var url = req.query.url;
+    var user = req.user;
     if (!url) {
         req.flash('warning', 'Please provide a valid URL to pin.');
         res.redirect('/');
@@ -30,6 +31,10 @@ exports.newPinsPage = function(req, res) {
     })
     .then(function(pins) {
         acc.pins = pins;
+        return Q(user.getBoards());
+    })
+    .then(function(boards) {
+        acc.boards = boards;
         return Q(pin.getTags())
     })
     .then(function(tags) {
@@ -37,6 +42,7 @@ exports.newPinsPage = function(req, res) {
             title: 'New pin',
             url: url,
             pins: acc.pins,
+            boards: acc.boards,
             tags: _.map(tags, function(tag) { return tag.tag; }),
             objectType: pin.type
         });
@@ -69,7 +75,7 @@ exports.newPin = function(req, res) {
         });
 
         if(req.body.tags)
-            return Q(Tags.bulkCreate(bulkTags, null, { validate: true } ))
+            return Q(Tags.bulkCreate(bulkTags))
         .then(function() {
             return Board.findByBoardName(req.user.user_name, board_name);
         })
@@ -141,7 +147,6 @@ exports.removePin = function(req, res) {
   console.log(current_name, board_name, object_id);
   return Q(Pin.deleteWithName(current_name, board_name, object_id))
       .then(function() {
-          //console.log(removed);
           req.flash('info', 'You have removed something from your board.');
           return;
       })

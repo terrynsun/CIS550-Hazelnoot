@@ -41,6 +41,7 @@ module.exports = function(app) {
 
     app.get('/pin/new', ensureAuthenticated, pin.newPinsPage);
     app.post('/pin/new', ensureAuthenticated, pin.newPin);
+    app.post('/pin/remove', ensureAuthenticated, pin.removePin);
     app.get('/pin/:user_name/:board_name/:object_id', pin.getPin);
 
     app.get('/user/me/update', ensureAuthenticated, user.updateProfilePage);

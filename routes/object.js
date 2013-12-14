@@ -6,7 +6,6 @@ var PinObject = models.PinObject;
 var Rating = models.Rating;
 var User = models.User;
 var utils = require('../utils');
-var flash = require('../utils');
 
 /*
  * GET /rating/:id
@@ -22,7 +21,7 @@ exports.index = function(req, res) {
         return;
     }
 
-    Rating.getAverageByID(id)
+    Q(Rating.getAverageByID(id))
     .then(function(avgLoc) {
         avgVar = avgLoc;
         
@@ -35,7 +34,7 @@ exports.index = function(req, res) {
             } else{
                 avgVar = 0;
             }
-            pic = curObj.url;
+            pic = curObj;
         } else{
             res.render('error', {
                 title: 'This photo doesn\'t appear to exist!',
@@ -46,9 +45,9 @@ exports.index = function(req, res) {
         }
 
         if(req.user){
-            return(Rating.findByUserID(req.user.user_name, id));
+            return Q(Rating.findByUserID(req.user.user_name, id));
         } else {
-            return(null);
+            return null;
         }
     })
     .then(function(prevRating){
@@ -63,7 +62,7 @@ exports.index = function(req, res) {
         });
     })
     .fail(function(err) {
-        console.log(err);
+        console.error(err);
         res.render('error', {
             title: 'An error occured while looking up ratings',
             message: 'The link you followed may be broken, or this page may ' +
@@ -82,7 +81,7 @@ exports.changeRating = function(req, res) {
     var rating = req.body.rating;
     var userName = req.user.user_name;
 
-    Rating.findByUserID(userName, id)
+    Q(Rating.findByUserID(userName, id))
     .then(function (oldRating) {
         if(!oldRating){
             var oldRating = Rating.build({
@@ -100,7 +99,7 @@ exports.changeRating = function(req, res) {
         res.redirect('/object/' + id);
     })
     .fail(function(err) {
-        console.log(err);
+        console.error(err);
         res.render('error', {
             title: 'An error occured while rating this object.',
             message: 'The link you followed may be broken, or this page may ' +

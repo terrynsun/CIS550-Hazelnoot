@@ -1,13 +1,6 @@
 extends layout
 include includes
 
-mixin displayColumns ( c1, c2, c3, c4 )
-  - for (var i = 0; i < 5; ++i)
-    .row
-      mixin pin (c1[i])
-      mixin pin (c2[i])
-      mixin pin (c3[i])
-
 block scripts
   script(src='/javascripts/index.js')
 
@@ -27,7 +20,20 @@ block content
             | Next &nbsp;
             span.glyphicon.glyphicon-arrow-right
 
-    mixin displayColumns ( col1, col2, col3 )
+    <br>
+    h3
+      | Newest Pins:
+    mixin displayPins(newPins)
+
+    if friendPins
+      h3
+        | Pins By Your Friends:
+      mixin displayPins(friendPins)
+
+    if interestingPins.length
+      h3
+        | Pins Matching Your Interests:
+      mixin displayPins(interestingPins)
 
   else
     mixin displayPins ( newPins )

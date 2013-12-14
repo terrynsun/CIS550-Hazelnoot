@@ -1,25 +1,35 @@
-mixin displayPins ( images )
+mixin displayPins ( images, board )
   - for (var i = 0; i < images.length; i += 4)
     .row
       - for (var k = 0; k < 4; ++k)
-        mixin pin (images[i+k])
+        if board
+          mixin pin (images[i+k], board)
+        else
+          mixin pin (images[i+k])
 
-mixin pin ( image )
+mixin pin ( image, board )
   .col-4.col-sm-4.col-lg-3.tile
-      if (image)
-        .imgtile
-          if (image.type === 'image')
-            a(href="/object/#{image.id}") 
-              img(src=image.url, style='width: 100%').tiles
-          else
-            p
-              | No preview for this - have a <a href=#{image.url}>link</a> instead!
+    if (image)
+      .imgtile
+        if (image.type === 'image')
+          a(href="/object/#{image.id}") 
+            img.img-responsive(src=image.url).tiles
+        else
+          p
+            | No preview for this - have a <a href=#{image.url}>link</a> instead!
 
-        if current_user
-          center
-            form(role='form', method='GET', action='/pin/new')
-              input.sr-only.form-control#url-inpput(name='url', value=image.url)
-              button.btn.btn-default(type='submit') Pin It!
+      if current_user
+        center
+          form(role='form', method='GET', action='/pin/new')
+            input.sr-only.form-control#url-inpput(name='url', value=image.url)
+            button.btn.btn-default(type='submit') Pin It!
+
+        if board
+          form.form-inline.rm-pin(role='form', method='POST', action='/pin/remove')
+            input.sr-only.form-control(name='board', value=board.name)
+            button.btn.btn-danger(style="position: absolute; top: 10px; left: 5%;", 
+                                  type='submit', name='obj_id', value=image.id)
+              span.glyphicon.glyphicon-remove-circle
 
 mixin formTextElem ( name, text, placeholder )
   .form-group

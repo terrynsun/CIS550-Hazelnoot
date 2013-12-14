@@ -1,7 +1,5 @@
 var Q = require('q');
 var _ = require('underscore');
-var PinObject = require('../models').PinObject;
-var Tags = require('../models').Tags;
 var sequelize = require('../app_config/sequelize');
 
 // get all images tagged with a certain term
@@ -11,7 +9,7 @@ var getTagged = function(term) {
                 'AND   Tags.tag = :term ' +
                 'ORDER BY Object.created_at DESC';
     var parms = { term: term };
-    return Q(sequelize.query(query, PinObject, Tags, parms));
+    return Q(sequelize.query(query, null, { raw: true }, parms));
 };
 
 /*

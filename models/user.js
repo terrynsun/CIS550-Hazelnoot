@@ -59,15 +59,20 @@ module.exports = function(sequelize, DataTypes) {
                 } else {
                     query = ["user_name = ? OR email = ?", user_name, email];
                 }
-                return Q(this.findAll({ where: query }));
+                return this.findAll({ where: query });
             },
 
             findByUsername: function(user_name) {
-                return Q(this.find({ where: { user_name: user_name } }));
+                return this.find({ where: { user_name: user_name } });
             }
         },
         instanceMethods: {
-            // Gets all information about a user (HAHA I get the joke. -Richie)
+            /**
+             * Retrieves all information about a user. Note that this method returns a Q
+             * promise.
+             *
+             * @returns {*}
+             */
             nsa: function() {
                 // Accumulating dictionary.
                 // Do not modify outside of the promise chain

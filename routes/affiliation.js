@@ -18,13 +18,13 @@ var renderAffiliation = function(name, res) {
         });
 
         res.render('affiliation', {
-            title: 'Affiliation page', 
+            title: 'Affiliation Page' + name, 
             users: memberUsernames,
             affiliation: name
         });
     })
     .fail(function(err) {
-        console.log(err);
+        console.error(err);
         res.render('error', {
             title: 'Affiliation does not exist',
             message: 'Maybe you should join this group.'

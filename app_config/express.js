@@ -20,8 +20,11 @@ module.exports = function(app) {
     app.use(express.json());
     app.use(express.urlencoded());
     app.use(express.methodOverride());
-    app.use(express.cookieParser('your secret here'));
-    app.use(express.session());
+    app.use(express.cookieParser());
+    app.use(express.cookieSession({
+        secret: 'such secret wow',
+        cookie: { maxAge: 60 * 60 * 1000 }
+    }));
     app.use(flash());
     app.use(passport.initialize());
     app.use(passport.session());

@@ -24,7 +24,7 @@ exports.newPinsPage = function(req, res) {
     var pin;
     var acc = {};
 
-    PinObject.findByURL(url)
+    Q(PinObject.findByURL(url))
     .then(function(pinObject) {
         pin = pinObject;
         return Q(pinObject.getPins());
@@ -68,7 +68,7 @@ exports.newPin = function(req, res) {
     var description = req.body.description;
     var tags = (req.body.tags || '').split(' ');
 
-    PinObject.findOrCreateByURL(url)
+    Q(PinObject.findOrCreateByURL(url))
     .then(function(pinObject) {
         var bulkTags = _.map(tags, function(tag) {
             return { object_id: pinObject.id, tag: tag };
@@ -77,7 +77,7 @@ exports.newPin = function(req, res) {
         if(req.body.tags)
             return Q(Tags.bulkCreate(bulkTags))
         .then(function() {
-            return Board.findByBoardName(req.user.user_name, board_name);
+            return Q(Board.findByBoardName(req.user.user_name, board_name));
         })
         .then(function(board) {
             return Pin.create({
@@ -114,7 +114,7 @@ exports.getPin = function(req, res) {
     var board_name = req.params.board_name;
     var object_id = parseInt(req.params.object_id, 10);
 
-    Pin.findWithObject(user_name, board_name, object_id)
+    Q(Pin.findWithObject(user_name, board_name, object_id))
     .then(function(pin) {
         return Tags.findAll({ where: { object_id: object_id } })
         .then(function(tags) {

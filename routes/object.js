@@ -21,7 +21,7 @@ exports.index = function(req, res) {
         return;
     }
 
-    Rating.getAverageByID(id)
+    Q(Rating.getAverageByID(id))
     .then(function(avgLoc) {
         avgVar = avgLoc;
         
@@ -45,9 +45,9 @@ exports.index = function(req, res) {
         }
 
         if(req.user){
-            return(Rating.findByUserID(req.user.user_name, id));
+            return Q(Rating.findByUserID(req.user.user_name, id));
         } else {
-            return(null);
+            return null;
         }
     })
     .then(function(prevRating){
@@ -81,7 +81,7 @@ exports.changeRating = function(req, res) {
     var rating = req.body.rating;
     var userName = req.user.user_name;
 
-    Rating.findByUserID(userName, id)
+    Q(Rating.findByUserID(userName, id))
     .then(function (oldRating) {
         if(!oldRating){
             var oldRating = Rating.build({

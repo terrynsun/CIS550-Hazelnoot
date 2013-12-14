@@ -52,7 +52,7 @@ exports.register = function(req, res) {
     var password = req.body.password;
 
     // Check a user doesn't already exist
-    User.exists(user_name, email)
+    Q(User.exists(user_name, email))
         .then(function(users) {
             if (users.length > 0) {
                 // Throw an error (forcing the 'fail' promise to fulfill)

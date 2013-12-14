@@ -34,7 +34,7 @@ var renderBoard = function(board, res) {
 exports.index = function(req, res) {
     var user_name = req.params.user_name;
     var board_name = req.params.board_name;
-    Board.findByBoardName(user_name, board_name)
+    Q(Board.findByBoardName(user_name, board_name))
     .then(function(board) {
         return renderBoard(board, res);
     })

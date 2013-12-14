@@ -1,4 +1,3 @@
-var Q = require('q');
 var sequelize = require('../app_config/sequelize');
 
 module.exports = function(sequelize, DataTypes) {
@@ -42,7 +41,7 @@ module.exports = function(sequelize, DataTypes) {
                     'WHERE P.object_id = O.id ' +
                     'AND P.user_name = ? AND P.board_name = ? AND P.object_id = ?';
                 var queryParams = [user_name, board_name, object_id];
-                return Q(sequelize.query(query, null, {raw: true}, queryParams))
+                return sequelize.query(query, null, {raw: true}, queryParams)
                     .then(function(rows) {
                         if (rows.length != 1) {
                             var e = new Error('Unexpected result from query');
@@ -59,7 +58,7 @@ module.exports = function(sequelize, DataTypes) {
                             'AND   board_name = :board ' +
                             'AND   object_id = :obj_id';
                 var params = { name: user_name, board: board_name, obj_id: object_id };
-                return Q(sequelize.query(query, null, { raw: true }, params));
+                return sequelize.query(query, null, { raw: true }, params);
             }
         }
     });

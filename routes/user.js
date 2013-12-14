@@ -47,7 +47,7 @@ exports.index = function(req, res) {
     if (req.isAuthenticated() && user_name === req.user.user_name) {
         render_user(req.user, res).done();
     } else {
-        User.findByUsername(user_name)
+        Q(User.findByUsername(user_name))
             .then(function(user) {
                 return render_user(user, res);
             })

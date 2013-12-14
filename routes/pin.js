@@ -73,42 +73,57 @@ exports.newPin = function(req, res) {
     var description = req.body.description;
     var tags = (req.body.tags || '').split(' ');
 
-    Q(PinObject.findOrCreateByURL(url))
-    .then(function(pinObject) {
-        var bulkTags = _.map(tags, function(tag) {
-            return { object_id: pinObject.id, tag: tag };
-        });
+    sequelize.transaction({
+        isolationLevel: 'READ UNCOMMITTED'  // TODO: replace with Transaction constant
+    }, function(transaction) {
 
-        if(req.body.tags)
-            return Q(Tags.bulkCreate(bulkTags))
-        .then(function() {
-            return Q(Board.findByBoardName(req.user.user_name, board_name));
-        })
-        .then(function(board) {
-            return Pin.create({
-                user_name: req.user.user_name,
-                object_id: pinObject.id,
-                board_name: board_name,
-                description: description
-            })
-        })
-        .then(function(pin) {
-            req.flash('success', 'Successfully pinned!');
-            res.redirect(format('/pin/%s/%s/%d',
-                req.user.user_name,
-                board_name,
-                pinObject.id
-            ));
-        })
-        .fail(function(err) {
+        var rollback = function(err) {
             console.error(err);
-            res.render_error("We couldn't make your pin. Ya dingus.");
-        })
-    })
-    .fail(function(err) {
-        res.render_error("We couldn't make your pin. Try again later. :(");
-    })
-    .done();
+            transaction.rollback();
+            res.render_error("We couldn't make your pin. Try again later. :(");
+        };
+        Q(PinObject.findOrCreateByURL(url))
+            .then(function(pinObject) {
+                return Q(Board.findByBoardName(req.user.user_name, board_name))
+                    .then(function(board) {
+                        return Pin.create({
+                            user_name: req.user.user_name,
+                            object_id: pinObject.id,
+                            board_name: board_name,
+                            description: description
+                        });
+                    })
+                    .then(function(pin) {
+                        // Adding tags will not be part of this transaction
+                        transaction.commit();
+
+                        var performRedirect = function() {
+                            req.flash('success', 'Successfully pinned!');
+                            res.redirect(format('/pin/%s/%s/%d',
+                                req.user.user_name,
+                                board_name,
+                                pinObject.id
+                            ));
+                        };
+
+                        // Attempt to add tags in bulk (try it all and ask for forgiveness
+                        // TODO: later on, add the difference instead
+                        var bulkTags = _.map(tags, function(tag) {
+                            return { object_id: pinObject.id, tag: tag };
+                        });
+
+                        if (bulkTags.length > 0) {
+                            Q(Tags.bulkCreate(bulkTags))
+                                .finally(performRedirect);
+                        } else {
+                            performRedirect();
+                        }
+                    })
+                    .fail(rollback);
+            })
+            .fail(rollback)
+            .done();
+    });
 };
 
 /*

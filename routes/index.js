@@ -1,6 +1,3 @@
-var PinObject = require('../models').PinObject;
-var Pin = require('../models').Pin;
-var Friendship = require('../models').Friendship;
 var sequelize = require('../app_config/sequelize');
 var Q = require('q');
 var _ = require('underscore');
@@ -62,7 +59,7 @@ var renderLoggedInPage = function(req, res) {
         });
     })
     .fail(function(err) {
-        console.log(err);
+        console.error(err);
         res.render('error', {
             title: 'Something has gone terribly wrong.',
             message: 'Our bad! Try again in a little while.'
@@ -84,7 +81,7 @@ var renderLoggedOutPage = function(req, res) {
         });
     })
     .fail(function(err) {
-        console.log(err);
+        console.error(err);
         res.render('error', {
             title: 'Something has gone terribly wrong.',
             message: 'Our bad! Try again in a little while.'

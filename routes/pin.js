@@ -96,7 +96,7 @@ exports.newPin = function(req, res) {
             ));
         })
         .fail(function(err) {
-            console.error("****\nerror 1 ", err);
+            console.error(err);
             res.render_error("We couldn't make your pin. Ya dingus.");
         })
     })
@@ -144,10 +144,10 @@ exports.removePin = function(req, res) {
   var current_name = req.user.user_name;
   var board_name = req.body.board;
   var object_id = req.body.obj_id;
-  console.log(current_name, board_name, object_id);
   return Q(Pin.deleteWithName(current_name, board_name, object_id))
       .then(function() {
           req.flash('info', 'You have removed something from your board.');
+          res.set('show-edit', true);
           return;
       })
       .fail(function(err) {

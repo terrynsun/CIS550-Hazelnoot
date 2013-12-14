@@ -62,7 +62,7 @@ exports.index = function(req, res) {
         });
     })
     .fail(function(err) {
-        console.log(err);
+        console.error(err);
         res.render('error', {
             title: 'An error occured while looking up ratings',
             message: 'The link you followed may be broken, or this page may ' +
@@ -99,7 +99,7 @@ exports.changeRating = function(req, res) {
         res.redirect('/object/' + id);
     })
     .fail(function(err) {
-        console.log(err);
+        console.error(err);
         res.render('error', {
             title: 'An error occured while rating this object.',
             message: 'The link you followed may be broken, or this page may ' +

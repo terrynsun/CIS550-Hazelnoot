@@ -1,6 +1,4 @@
 var User  = require('../models').User;
-var Pin   = require('../models').Pin;
-var PinObject   = require('../models').PinObject;
 var Board = require('../models').Board;
 var Q = require('q');
 var sequelize = require('../app_config/sequelize');
@@ -23,7 +21,8 @@ var renderBoard = function(board, res) {
         return res.render('user/board', {
             title: board.name,
             board: board,
-            images: pinnedObjects
+            images: pinnedObjects,
+            isEdit: res.get('show-edit')
         });
     })
     .done();

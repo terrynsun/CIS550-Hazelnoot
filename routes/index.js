@@ -1,6 +1,3 @@
-var PinObject = require('../models').PinObject;
-var Pin = require('../models').Pin;
-var Friendship = require('../models').Friendship;
 var sequelize = require('../app_config/sequelize');
 var Q = require('q');
 var _ = require('underscore');
@@ -41,14 +38,14 @@ var getInterestingPins = function(username, n) {
 
 var renderLoggedInPage = function(req, res) {
     var display = {};
-    getPinsByFriends(req.user.user_name, 5)
+    getPinsByFriends(req.user.user_name, 8)
     .then(function(results) {
         display.friendPins = results;
-        return getNewPins(5);
+        return getNewPins(8);
     })
     .then(function(results) {
         display.newPins = results;
-        return getInterestingPins(req.user.user_name, 5);
+        return getInterestingPins(req.user.user_name, 8);
     })
     .then(function(results) {
         display.interestingPins = results;
@@ -56,14 +53,13 @@ var renderLoggedInPage = function(req, res) {
     .then(function() {
           res.render('index', { 
           title: 'Hazlenoot',
-          col1: display.friendPins,
-          col2: display.newPins,
-          col3: display.interestingPins,
-          col4: display.newPins
+          friendPins: display.friendPins,
+          newPins: display.newPins,
+          interestingPins: display.interestingPins,
         });
     })
     .fail(function(err) {
-        console.log(err);
+        console.error(err);
         res.render('error', {
             title: 'Something has gone terribly wrong.',
             message: 'Our bad! Try again in a little while.'
@@ -85,7 +81,7 @@ var renderLoggedOutPage = function(req, res) {
         });
     })
     .fail(function(err) {
-        console.log(err);
+        console.error(err);
         res.render('error', {
             title: 'Something has gone terribly wrong.',
             message: 'Our bad! Try again in a little while.'

@@ -2,7 +2,19 @@ extends ../layout
 include ../includes
 
 block header
-  h1 #{board.name} <small>~ #{board.owner_name}</small>
+  h1 #{board.name} <small>~ <a href="/user/#{board.owner_name}">#{board.owner_name}</small></a>
+
+  if !!current_user && current_user.user_name == board.owner_name
+    a.btn.btn-default(onclick="$('.rm-pin').toggle('blind'); return false;") Edit pins
 
 block content
-  mixin displayPins (images)
+  if !!current_user && current_user.user_name == board.owner_name
+    mixin displayPins (images, board)
+  else
+    mixin displayPins (images)
+
+block scripts
+  script.
+    $(document).ready(function() {
+      $('.rm-pin').toggle();
+    });

@@ -2,23 +2,23 @@ extends ../layout
 include ../includes
 
 block header
-  h1 #{title} <small>#{current_user.user_name}'s Interests</small>
+  h1 #{title}
 
 block content
-  - if (interests.length > 0)
-    h4 Interests
+  if interests
     - for (var i = 0; i < interests.length; i += 1)
-        div.btn-group-hotizontal
-          a(href="/search?term=#{interests[i]}")
-            div.btn.btn-default(type='button')= interests[i]
+      .btn-group-hotizontal
         form(role='form', method='POST', action='/user/me/interests/remove')
+          a(href="/search?term=#{interests[i]}")
+            .btn.btn-default(type='button', style="width: 35%")= interests[i]
           button.btn.btn-danger(type='submit', name='oldInterest', value=interests[i])
             span.glyphicon.glyphicon-remove-circle
 
-  - else
-    p Interests: You have no interests!
+  else
+    p Interests: You have no interests! Add some below!
+
   h4 Add a new interest
-    form(role='form', method='POST', action='/user/me/interests/add')
+    form(role='form', method='POST', action='/user/me/interests/add',
+                                                              style="width:35%")
       mixin formTextElem('newInterest', '', 'New Interest')
       input.btn.btn-primary(type='submit') Add!
-

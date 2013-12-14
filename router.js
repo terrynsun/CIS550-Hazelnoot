@@ -43,6 +43,7 @@ module.exports = function(app) {
 
     app.get('/pin/new', ensureAuthenticated, pin.newPinsPage);
     app.post('/pin/new', ensureAuthenticated, pin.newPin);
+    app.post('/pin/remove', ensureAuthenticated, pin.removePin);
     app.get('/pin/:user_name/:board_name/:object_id', pin.getPin);
 
     app.get('/user/me/update', ensureAuthenticated, user.updateProfilePage);
@@ -52,6 +53,10 @@ module.exports = function(app) {
     app.get('/user/me/interests', ensureAuthenticated, user.updateInterestsPage);
     app.post('/user/me/interests/add', ensureAuthenticated, user.updateInterestsAdd);
     app.post('/user/me/interests/remove', ensureAuthenticated, user.updateInterestsRemove);
+
+    app.get('/user/me/boards', ensureAuthenticated, user.updateBoardPage);
+    app.post('/user/me/boards/add', ensureAuthenticated, user.updateBoardAdd);
+    app.post('/user/me/boards/remove', ensureAuthenticated, user.updateBoardRemove);
 
     app.get('/user/:user_name/:board_name', board.index);
 

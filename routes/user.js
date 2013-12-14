@@ -5,6 +5,7 @@ var _ = require('underscore');
 var User = require('../models').User;
 var Board = require('../models').Board;
 var Interest = require('../models').Interest;
+var Pin = require('../models').Pin;
 
 var render_user = function(user, res) {
     return Q(user.nsa())
@@ -47,7 +48,7 @@ exports.index = function(req, res) {
     if (req.isAuthenticated() && user_name === req.user.user_name) {
         render_user(req.user, res).done();
     } else {
-        User.findByUsername(user_name)
+        Q(User.findByUsername(user_name))
             .then(function(user) {
                 return render_user(user, res);
             })
@@ -271,4 +272,96 @@ exports.updateInterestsRemove = function(req, res) {
 
 
 
+var renderUserBoard = function(current_user, res) {
+    return Q(current_user.nsa())
+    .then(function(info) {
+        var board_names = _.map(info.boards, function(board) {
+            return board.name;
+        });
+        res.render('user/editBoards', {
+            title: 'Your Boards',
+            boards: board_names
+        });
+    })
+    .fail(function(err) {
+        console.error(err);
+        res.render('user/error', {
+            title: 'Oh noes!',
+            message: 'Something went wrong on our end while loading your interests. ' +
+                'Please try again later.'
+        });
+    });
+};
+
+/*
+ * GET user/me/boards
+ */
+exports.updateBoardPage = function(req, res) {
+    renderUserBoard(req.user, res).done();
+};
+
+
+/*
+ * POST user/me/boards/add
+ */
+
+exports.updateBoardAdd = function(req, res) {
+    var newBoard = req.body.newBoard;
+    var current_name = req.user.user_name;
+
+    return Q(Board.findByBoardName(current_name, newBoard))
+    .then(function(wasThere) {
+        if(wasThere) {
+            var e = new Error('You already have a board named that.');
+            e.name = 'AlreadyOwnBoardError';
+            throw e;
+        }
+        var board = Board.build({
+            owner_name: current_name,
+            name: newBoard
+        });
+        return !(board.save());
+    })
+    .then(function(board) {
+        req.flash('info', 'You\'ve made ' + board.name + ', a new board!');
+        return;
+    })
+    .fail(function (err) {
+        console.error(err);
+        req.flash('error', err.message);
+        return;
+    })
+    .done(function() {
+        res.redirect('/user/me/boards');
+        return;
+    });
+};
+
+
+/*
+ * POST user/me/boards/remove
+ */
+exports.updateBoardRemove = function(req, res) {
+    var oldBoard = req.body.oldBoard;
+    var current_name = req.user.user_name;
+
+    return Q(Pin.deleteFromBoard(current_name, oldBoard))
+    .then(function(removedPins) {
+        return Q(Board.findByBoardName(current_name, oldBoard));
+    })
+    .then(function(removedBoard) {
+        removedBoard.destroy();
+        req.flash('info', 'You have removed ' + oldBoard + ' from your boards.');
+        return;
+    })
+    .fail(function(err) {
+        console.error(err);
+        req.flash('error'. err.message);
+        return;
+    })
+    .done(function() {
+        res.redirect('/user/me/boards');
+        return;
+    });
+};
 

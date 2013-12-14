@@ -2,9 +2,10 @@ extends ../layout
 include ../includes
 
 block header  
-  h1 Update your profile
+  h1 Update Your Profile
 
 block content
+  h2 Update Your Information
   form.well.col-lg-4.col-md-6(role='form', method='POST', action='/user/me/update')
     - var firstName = current_user.first_name
     - var lastName = current_user.last_name

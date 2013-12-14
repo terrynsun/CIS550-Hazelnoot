@@ -25,7 +25,6 @@ module.exports = function(app) {
         secret: 'such secret wow',
         cookie: { maxAge: 60 * 60 * 1000 }
     }));
-    app.use(express.session());
     app.use(flash());
     app.use(passport.initialize());
     app.use(passport.session());

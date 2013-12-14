@@ -7,6 +7,7 @@ var Board = models.Board;
 var Pin = models.Pin;
 var PinObject = models.PinObject;
 var Tags = models.Tags;
+var sequelize = require('../app_config/sequelize');
 
 var utils = require('../utils');
 
@@ -23,40 +24,44 @@ exports.newPinsPage = function(req, res) {
     }
     var pin;
     var acc = {};
+    // Need: boards, pins (if they exist), actual Object itself (if it exists)
 
-    Q(PinObject.findByURL(url))
-    .then(function(pinObject) {
-        pin = pinObject;
-        return Q(pinObject.getPins());
-    })
-    .then(function(pins) {
-        acc.pins = pins;
-        return Q(user.getBoards());
-    })
-    .then(function(boards) {
-        acc.boards = boards;
-        return Q(pin.getTags())
-    })
-    .then(function(tags) {
-        res.render('pin/new', {
-            title: 'New pin',
-            url: url,
-            pins: acc.pins,
-            boards: acc.boards,
-            tags: _.map(tags, function(tag) { return tag.tag; }),
-            objectType: pin.type
-        });
-    })
-    .fail(function(err) {
-      var type = utils.isImage(url) ? "image" : "object";
-      res.render('pin/new', {
-        title: 'New pin',
-        flash_messages: {info: ["Hey there! You're the first to pin this!"]},
-        url: url,
-        objectType: type
-      });
-    })
-    .done();
+    Q(user.getBoards())
+        .then(function(boards) {
+            acc.boards = boards;
+            return Q(Pin.allByURL(url));
+        })
+        .then(function(rows) {
+            if (rows.length == 0) {
+                var type = utils.isImage(url) ? "image" : "object";
+                res.render('pin/new', {
+                    title: 'New pin',
+                    url: url,
+                    flash_messages: {info: ["Hey there! You're the first to pin this!"]},
+                    boards: acc.boards,
+                    objectType: type
+                });
+            } else {
+                var objectId = rows[0].id;
+                return Q(Tags.findAll({ where: { object_id: objectId } }))
+                    .then(function(tags) {
+                        res.render('pin/new', {
+                            title: 'New pin',
+                            url: url,
+                            pins: rows,
+                            boards: acc.boards,
+                            tags: _.map(tags, function(tag) { return tag.tag; }),
+                            objectType: pin.type
+                        })
+                    })
+            }
+        })
+        .fail(function(err) {
+            console.error(err);
+            res.render_error("Oh noes! Something went wrong on our end. Please try again " +
+                "later after we get this sorted out.");
+        })
+        .done();
 };
 
 /*
@@ -114,7 +119,7 @@ exports.getPin = function(req, res) {
     var board_name = req.params.board_name;
     var object_id = parseInt(req.params.object_id, 10);
 
-    Q(Pin.findWithObject(user_name, board_name, object_id))
+    Q(Pin.findByKeys(user_name, board_name, object_id))
     .then(function(pin) {
         return Tags.findAll({ where: { object_id: object_id } })
         .then(function(tags) {

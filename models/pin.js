@@ -33,7 +33,7 @@ module.exports = function(sequelize, DataTypes) {
     }, {
         tableName: "Pin",
         classMethods: {
-            findWithObject: function(user_name, board_name, object_id) {
+            findByKeys: function(user_name, board_name, object_id) {
                 var query = 'SELECT O.source, O.type, O.url, ' +
                     'O.created_at AS obj_created_at, P.description, ' +
                     'P.created_at AS pin_created_at, P.updated_at ' +
@@ -52,6 +52,17 @@ module.exports = function(sequelize, DataTypes) {
                         return pin;
                     });
             },
+
+            allByURL: function(url) {
+                var query = 'SELECT O.id, O.source, O.type, O.url, ' +
+                    'O.created_at AS obj_created_at, P.user_name, P.board_name,' +
+                    'P.created_at, P.updated_at, P.description ' +
+                    'FROM Object O, Pin P ' +
+                    'WHERE O.url = ? AND O.id = P.object_id';
+                var queryParams = [url];
+                return sequelize.query(query, null, {raw: true}, queryParams);
+            },
+
             deleteWithName: function(user_name, board_name, object_id) {
                 var query = 'DELETE FROM Pin ' +
                             'WHERE user_name = :name ' +

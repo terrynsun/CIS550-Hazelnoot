@@ -307,6 +307,7 @@ exports.updateBoardPage = function(req, res) {
 
 exports.updateBoardAdd = function(req, res) {
     var newBoard = req.body.newBoard;
+    var newDescription = req.body.newDescription;
     var current_name = req.user.user_name;
 
     return Q(Board.findByBoardName(current_name, newBoard))
@@ -318,7 +319,8 @@ exports.updateBoardAdd = function(req, res) {
         }
         var board = Board.build({
             owner_name: current_name,
-            name: newBoard
+            name: newBoard,
+            description: newDescription
         });
         return !(board.save());
     })

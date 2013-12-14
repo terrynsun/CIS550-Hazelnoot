@@ -8,9 +8,9 @@ block content
   - if (boards.length > 0)
     h4 Boards
     - for (var i = 0; i < boards.length; i += 1)
-        div.btn-toolbar
-          a(href="/search?term=#{boards[i]}")
-            div.btn.btn-default(type='button')= boards[i]
+        .btn-group-horizontal
+          a(href="/user/#{current_user.user_name}/#{boards[i]}")
+            .btn.btn-default(type='button', sty;e"width: 35%")= boards[i]
           form(role='form', method='POST', action='/user/me/boards/remove')
             button.btn.btn-danger(type='submit', name='oldBoard', value=boards[i])
               span.glyphicon.glyphicon-remove-circle
@@ -18,7 +18,8 @@ block content
   - else
     p Boards: You have no boards!
   h4 Add a new board!
-    form(role='form', method='POST', action='/user/me/boards/add')
+    form(role='form', method='POST', action='/user/me/boards/add', style="width: 35%")
       mixin formTextElem('newBoard', '', 'New Board')
+      mixin formTextElem('newDescription', '', 'New Description')
       input.btn.btn-primary(type='submit') Add!
 

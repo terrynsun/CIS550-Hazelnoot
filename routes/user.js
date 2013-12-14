@@ -5,6 +5,7 @@ var _ = require('underscore');
 var User = require('../models').User;
 var Board = require('../models').Board;
 var Interest = require('../models').Interest;
+var Pin = require('../models').Pin;
 
 var render_user = function(user, res) {
     return Q(user.nsa())
@@ -308,7 +309,7 @@ exports.updateBoardAdd = function(req, res) {
     var newBoard = req.body.newBoard;
     var current_name = req.user.user_name;
 
-    return Q(Interest.findByBoardName(current_name, newBoard))
+    return Q(Board.findByBoardName(current_name, newBoard))
     .then(function(wasThere) {
         if(wasThere) {
             var e = new Error('You already have a board named that.');
@@ -341,5 +342,26 @@ exports.updateBoardAdd = function(req, res) {
  * POST user/me/boards/remove
  */
 exports.updateBoardRemove = function(req, res) {
+    var oldBoard = req.body.oldBoard;
+    var current_name = req.user.user_name;
+
+    return Q(Pin.deleteFromBoard(current_name, oldBoard))
+    .then(function(removedPins) {
+        return Q(Board.findByBoardName(current_name, oldBoard));
+    })
+    .then(function(removedBoard) {
+        removedBoard.destroy();
+        req.flash('info', 'You have removed ' + oldBoard + ' from your boards.');
+        return;
+    })
+    .fail(function(err) {
+        console.error(err);
+        req.flash('error'. err.message);
+        return;
+    })
+    .done(function() {
+        res.redirect('/user/me/boards');
+        return;
+    });
 };
 

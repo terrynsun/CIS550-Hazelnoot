@@ -59,6 +59,13 @@ module.exports = function(sequelize, DataTypes) {
                             'AND   object_id = :obj_id';
                 var params = { name: user_name, board: board_name, obj_id: object_id };
                 return sequelize.query(query, null, { raw: true }, params);
+            },
+            deleteFromBoard: function(user_name, board_name) {
+                var query = 'DELETE FROM Pin ' +
+                            'WHERE user_name = :name ' +
+                            'AND board_name = :board';
+                var params = { name: user_name, board: board_name };
+                return sequelize.query(query, null, { raw: true }, params);
             }
         }
     });

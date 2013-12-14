@@ -22,7 +22,6 @@ exports.newPinsPage = function(req, res) {
         res.redirect('/');
         return;
     }
-    var pin;
     var acc = {};
     // Need: boards, pins (if they exist), actual Object itself (if it exists)
 
@@ -43,6 +42,7 @@ exports.newPinsPage = function(req, res) {
                 });
             } else {
                 var objectId = rows[0].id;
+                var objectType = rows[0].type;
                 return Q(Tags.findAll({ where: { object_id: objectId } }))
                     .then(function(tags) {
                         res.render('pin/new', {
@@ -51,7 +51,7 @@ exports.newPinsPage = function(req, res) {
                             pins: rows,
                             boards: acc.boards,
                             tags: _.map(tags, function(tag) { return tag.tag; }),
-                            objectType: pin.type
+                            objectType: objectType
                         })
                     })
             }

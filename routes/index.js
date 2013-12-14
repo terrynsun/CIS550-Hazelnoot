@@ -52,7 +52,7 @@ var renderLoggedInPage = function(req, res) {
     })
     .then(function() {
           res.render('index', { 
-          title: 'Hazlenoot',
+          title: 'Hazelnoot',
           friendPins: display.friendPins,
           newPins: display.newPins,
           interestingPins: display.interestingPins,
@@ -76,7 +76,7 @@ var renderLoggedOutPage = function(req, res) {
     })
     .then(function() {
           res.render('index', { 
-          title: 'Hazlenoot',
+          title: 'Hazelnoot',
           newPins: display.newPins
         });
     })

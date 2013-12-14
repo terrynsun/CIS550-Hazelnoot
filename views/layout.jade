@@ -31,6 +31,8 @@ html(lang='en')
                         span(class='glyphicon glyphicon-user')= ' Profile'
                     li: a(href='/user/me/interests')
                         span(class='glyphicon glyphicon-star')= ' Interests'
+                    li: a(href="/user/me/boards")
+                        span(class='glyphicon glyphicon-list-alt')= ' Boards'
                     if !!current_user.affiliation
                       li: a(href='/affiliation/#{current_user.affiliation}')
                         span(class='glyphicon glyphicon-globe')= ' ' + current_user.affiliation

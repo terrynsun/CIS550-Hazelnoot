@@ -271,4 +271,75 @@ exports.updateInterestsRemove = function(req, res) {
 
 
 
+var renderUserBoard = function(current_user, res) {
+    return Q(current_user.nsa())
+    .then(function(info) {
+        var board_names = _.map(info.boards, function(board) {
+            return board.name;
+        });
+        res.render('user/editBoards', {
+            title: 'Your Boards',
+            boards: board_names
+        });
+    })
+    .fail(function(err) {
+        console.error(err);
+        res.render('user/error', {
+            title: 'Oh noes!',
+            message: 'Something went wrong on our end while loading your interests. ' +
+                'Please try again later.'
+        });
+    });
+};
+
+/*
+ * GET user/me/boards
+ */
+exports.updateBoardPage = function(req, res) {
+    renderUserBoard(req.user, res).done();
+};
+
+
+/*
+ * POST user/me/boards/add
+ */
+
+exports.updateBoardAdd = function(req, res) {
+    var newBoard = req.body.newBoard;
+    var current_name = req.user.user_name;
+
+    return Q(Interest.findByBoardName(current_name, newBoard))
+    .then(function(wasThere) {
+        if(wasThere) {
+            var e = new Error('You already have a board named that.');
+            e.name = 'AlreadyOwnBoardError';
+            throw e;
+        }
+        var board = Board.build({
+            owner_name: current_name,
+            name: newBoard
+        });
+        return !(board.save());
+    })
+    .then(function(board) {
+        req.flash('info', 'You\'ve made ' + board.name + ', a new board!');
+        return;
+    })
+    .fail(function (err) {
+        console.error(err);
+        req.flash('error', err.message);
+        return;
+    })
+    .done(function() {
+        res.redirect('/user/me/boards');
+        return;
+    });
+};
+
+
+/*
+ * POST user/me/boards/remove
+ */
+exports.updateBoardRemove = function(req, res) {
+};
 

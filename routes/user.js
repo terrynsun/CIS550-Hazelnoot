@@ -190,7 +190,7 @@ var renderUserInterests = function(current_user, res) {
         })
         .fail(function(err) {
             console.error(err);
-            res.render('user/error', {
+            res.render('error', {
                 title: 'Oh noes!',
                 message: 'Something went wrong on our end while loading your interests. ' +
                     'Please try again later.'
@@ -228,7 +228,7 @@ exports.updateInterestsAdd = function(req, res) {
         return Q(interest.save());
     })
     .then(function(interest) {
-        req.flash('info', 'You\'re now interested in ' + interest.name + ' !');
+        req.flash('success', 'You\'re now interested in ' + interest.name + ' !');
         return;
     })
     .fail(function(err) {
@@ -256,7 +256,7 @@ exports.updateInterestsRemove = function(req, res) {
     return Q(Interest.findByUserInterest(current_name, oldInterest))
     .then(function(removed) {
         removed.destroy();
-        req.flash('info', 'You have removed ' + oldInterest + ' from your interests.');
+        req.flash('success', 'You have removed ' + oldInterest + ' from your interests.');
         return;
     })
     .fail(function(err) {
@@ -285,7 +285,7 @@ var renderUserBoard = function(current_user, res) {
     })
     .fail(function(err) {
         console.error(err);
-        res.render('user/error', {
+        res.render('error', {
             title: 'Oh noes!',
             message: 'Something went wrong on our end while loading your interests. ' +
                 'Please try again later.'
@@ -325,7 +325,7 @@ exports.updateBoardAdd = function(req, res) {
         return !(board.save());
     })
     .then(function(board) {
-        req.flash('info', 'You\'ve made ' + board.name + ', a new board!');
+        req.flash('success', 'You\'ve made ' + newBoard + ', a new board!');
         return;
     })
     .fail(function (err) {
@@ -353,7 +353,7 @@ exports.updateBoardRemove = function(req, res) {
     })
     .then(function(removedBoard) {
         removedBoard.destroy();
-        req.flash('info', 'You have removed ' + oldBoard + ' from your boards.');
+        req.flash('success', 'You have removed ' + oldBoard + ' from your boards.');
         return;
     })
     .fail(function(err) {

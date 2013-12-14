@@ -6,12 +6,12 @@ block header
 
 block content
   - if (boards.length > 0)
-    h4 Boards
+    div.alert.alert-warning Once you delete a board, asscoiated pins cannot be recovered.
     - for (var i = 0; i < boards.length; i += 1)
         .btn-group-horizontal
-          a(href="/user/#{current_user.user_name}/#{boards[i]}")
-            .btn.btn-default(type='button', sty;e"width: 35%")= boards[i]
           form(role='form', method='POST', action='/user/me/boards/remove')
+            a(href="/user/#{current_user.user_name}/#{boards[i]}")
+              .btn.btn-default(type='button', style="width: 35%")= boards[i]
             button.btn.btn-danger(type='submit', name='oldBoard', value=boards[i])
               span.glyphicon.glyphicon-remove-circle
 

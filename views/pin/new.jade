@@ -23,7 +23,7 @@ block content
               .btn-group(data-toggle='buttons')
                 - for(var k = 0; k < boards.length; k+=1)
                   label.btn.btn-primary
-                    <input type="radio" name="board_name" value="#{boards[k].name}"> #{boards[k].name}
+                    input(type="radio", name="board_name", value="#{boards[k].name}")= boards[k].name
 
             .form-group
               label(for='description') Description

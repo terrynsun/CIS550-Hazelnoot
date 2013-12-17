@@ -25,8 +25,11 @@ mixin pin ( image, board )
           a(href="/pin/#{image.user_name}/#{image.board_name}/#{image.source}/#{image.id}")
             img.img-responsive(src=cachedUrl).tiles
         else
-          p
-            | No preview for this - have a <a href=#{cachedUrl}>link</a> instead!
+          a(href="/pin/#{image.user_name}/#{image.board_name}/#{image.source}/#{image.id}")
+            img.img-responsive(src="/images/no_preview.jpg").tiles
+          center
+            h4
+              | Have a <a href=#{cachedUrl}>link</a> instead!
 
       if current_user
         center

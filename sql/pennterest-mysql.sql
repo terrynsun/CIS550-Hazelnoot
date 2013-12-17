@@ -45,7 +45,7 @@ CREATE TABLE Board (
 
 CREATE TABLE Object (
     id INTEGER              NOT NULL AUTO_INCREMENT,
-    source VARCHAR(32)      DEFAULT 'Hazelnoot'
+    source VARCHAR(32)      DEFAULT 'Hazelnoot',
     type VARCHAR(16)        NOT NULL,
     url VARCHAR(256)        NOT NULL,
     created_at TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,

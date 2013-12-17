@@ -5,7 +5,7 @@ var Rating = models.Rating;
 
 
 /*
- *  POST /rating/:id
+ *  POST /rating/:source/:id
  */
 exports.changeRating = function(req, res) {
     var id = req.params.id;

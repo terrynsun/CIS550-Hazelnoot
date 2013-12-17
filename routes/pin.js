@@ -160,7 +160,6 @@ exports.newPin = function(req, res) {
     });
 };
 
-
 var getURL = function(obj) {
     if (obj.is_cached) {
         return '/cached/retrieve?url=' + obj.url;
@@ -171,17 +170,23 @@ var getURL = function(obj) {
 
 /*
  * GET /pin/:user_name/:board_name/:source/:object_id
+ *
+ * pin display page
  */
 exports.getPin = function(req, res) {
     var user_name = req.params.user_name;
     var board_name = req.params.board_name;
     var source = req.params.source;
     var object_id = parseInt(req.params.object_id, 10);
-    var avgRating;
+    var avgRating, lastRated;
 
     Q(Rating.getAverage(object_id, source))
     .then(function(avgResult) {
         avgRating = avgResult[0] ? avgResult[0].avg : 0;
+        return Q(Rating.findByUserID(req.user.user_name, object_id, source));
+    })
+    .then(function(lastRated) {
+        lastRated = lastRated;
         return Q(Pin.findByKeys(user_name, board_name, source, object_id))
     })
     .then(function(pin) {
@@ -196,9 +201,11 @@ exports.getPin = function(req, res) {
                 pin_created_at: pin.pin_created_at,
                 source: pin.source,
                 tags: _.map(tags, function(tag) { return tag.tag; }),
-                avgDisplay: avgRating,
                 url: getURL(pin),
-                is_cached: pin.is_cached
+                rating_url: format('/rating/%s/%d', source, object_id),
+                is_cached: pin.is_cached,
+                avgDisplay: avgRating,
+                lastRated: lastRated
             });
         });
     })

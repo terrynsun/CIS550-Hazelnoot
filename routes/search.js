@@ -2,16 +2,6 @@ var Q = require('q');
 var _ = require('underscore');
 var sequelize = require('../app_config/sequelize');
 
-// get all images tagged with a certain term
-var getTagged = function(term) {
-    var query = 'SELECT * FROM Object, Tags ' +
-                'WHERE Object.id = Tags.object_id ' +
-                'AND   Tags.tag = :term ' +
-                'ORDER BY Object.created_at DESC';
-    var parms = { term: term };
-    return Q(sequelize.query(query, null, { raw: true }, parms));
-};
-
 /*
  * GET /search?term=<term>
  */

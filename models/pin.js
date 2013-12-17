@@ -1,4 +1,5 @@
 var sequelize = require('../app_config/sequelize');
+var Q = require('q');
 
 module.exports = function(sequelize, DataTypes) {
     return sequelize.define('Pin', {
@@ -77,7 +78,35 @@ module.exports = function(sequelize, DataTypes) {
                             'AND board_name = :board';
                 var params = { name: user_name, board: board_name };
                 return sequelize.query(query, null, { raw: true }, params);
+            },
+            getFriendPins: function(username, n) {
+                var query = 'SELECT * FROM Object, Pin, Friendship ' +
+                            'WHERE Friendship.user_name = :name ' +
+                            'AND Friendship.friend_name = Pin.user_name ' +
+                            'AND Pin.object_id = Object.id ' +
+                            'ORDER BY Pin.created_at DESC ' +
+                            'LIMIT :num';
+                var parms = { name: username, num: n };
+                return Q(sequelize.query(query, null, { raw: true }, parms));
+            },
+            getNewest: function(n) {
+                var query = 'SELECT * FROM Pin, Object ' +
+                            'WHERE Pin.object_id = Object.id ' +
+                            'ORDER BY Pin.created_at DESC ' +
+                            'LIMIT :num';
+                var parms = { num: n };
+                return Q(sequelize.query(query, null, { raw: true }, parms));
+            },
+            getByUserInterest: function(username, n) {
+                var query = 'SELECT * FROM Object, Tags, Interest ' +
+                    'WHERE Interest.user_name = :name ' +
+                    'AND   Tags.tag = Interest.name ' +
+                    'AND   Tags.object_id = Object.id ' +
+                    'ORDER BY Object.created_at DESC ' +
+                    'LIMIT :num';
+                var parms = { name: username, num:n };
+                return Q(sequelize.query(query, null, { raw: true }, parms));
             }
         }
-    });
+    })
 };

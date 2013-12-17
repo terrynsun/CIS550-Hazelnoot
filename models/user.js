@@ -1,4 +1,5 @@
 var Q = require('q');
+var sequelize = require('../app_config/sequelize');
 
 module.exports = function(sequelize, DataTypes) {
     return sequelize.define("User", {
@@ -64,6 +65,14 @@ module.exports = function(sequelize, DataTypes) {
 
             findByUsername: function(user_name) {
                 return this.find({ where: { user_name: user_name } });
+            },
+
+            // gets all users who are part of a affiliation group
+            getAffiliationMembers: function(groupName) {
+                var query = 'SELECT * FROM Users ' +
+                            'WHERE affiliation = :name';
+                var parms = { name: groupName };
+                return Q(sequelize.query(query, null, { raw: true }, parms));
             }
         },
         instanceMethods: {

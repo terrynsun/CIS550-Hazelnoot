@@ -3,26 +3,6 @@ var Q = require('q');
 var sequelize = require('../app_config/sequelize');
 var _ = require('underscore');
 
-// get all pinned objects of a board, newest first
-var getPinnedObjects = function(board) {
-    var query = 'SELECT * from Pin, Object ' + 
-                 'WHERE Pin.user_name = :user_name ' + 
-                 'AND   Pin.board_name = :board_name ' + 
-                 'AND   Object.id = Pin.object_id ' +
-                 'ORDER BY Pin.created_at DESC';
-    var params = { user_name: board.owner_name, board_name: board.name };
-    return Q(sequelize.query(query, null, { raw: true }, params));
-};
-
-var changeBoardDescription = function(name, user, newDesc) {
-    var query = "UPDATE Board " + 
-                "SET description = :description " +
-                "WHERE name = :name " +
-                "AND   owner_name = :user";
-    var params = { name: name, user: user, description: newDesc };
-    return sequelize.query(query, null, { raw: true }, params);
-};
-
 var renderBoard = function(board, res) {
     getPinnedObjects(board)
     .then(function(pinnedObjects) {

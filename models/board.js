@@ -29,6 +29,23 @@ module.exports = function(sequelize, DataTypes) {
             findByBoardName: function(user_name, board_name) {
                 var query = { owner_name: user_name, name: board_name };
                 return this.find({ where: query });
+            },
+            getPinnedObjects: function(board) {
+                var query = 'SELECT * from Pin, Object ' + 
+                            'WHERE Pin.user_name = :user_name ' + 
+                            'AND   Pin.board_name = :board_name ' + 
+                            'AND   Object.id = Pin.object_id ' +
+                            'ORDER BY Pin.created_at DESC';
+                var params = { user_name: board.owner_name, board_name: board.name };
+                return Q(sequelize.query(query, null, { raw: true }, params));
+            },
+            changeBoardDescription: function(name, user, newDesc) {
+               var query = "UPDATE Board " + 
+                           "SET description = :description " +
+                           "WHERE name = :name " +
+                           "AND   owner_name = :user";
+               var params = { name: name, user: user, description: newDesc };
+               return sequelize.query(query, null, { raw: true }, params);
             }
         }
     });

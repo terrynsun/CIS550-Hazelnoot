@@ -176,7 +176,6 @@ exports.updatePassword = function(req, res) {
         .done();
 };
 
-
 var renderUserInterests = function(current_user, res) {
     return Q(current_user.nsa())
         .then(function(info) {
@@ -204,7 +203,6 @@ var renderUserInterests = function(current_user, res) {
 exports.updateInterestsPage = function(req, res) {
     renderUserInterests(req.user, res).done();
 };
-
 
 /*
  * POST user/me/interests/add
@@ -243,8 +241,6 @@ exports.updateInterestsAdd = function(req, res) {
     
 };
 
-
-
 /* 
  * POST user/me/interests/remove
  */
@@ -269,8 +265,6 @@ exports.updateInterestsRemove = function(req, res) {
         return;
     });
 };
-
-
 
 var renderUserBoard = function(current_user, res) {
     return Q(current_user.nsa())
@@ -366,4 +360,3 @@ exports.updateBoardRemove = function(req, res) {
         return;
     });
 };
-

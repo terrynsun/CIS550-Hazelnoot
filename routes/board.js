@@ -1,4 +1,3 @@
-var User  = require('../models').User;
 var Board = require('../models').Board;
 var Q = require('q');
 var sequelize = require('../app_config/sequelize');
@@ -15,14 +14,22 @@ var getPinnedObjects = function(board) {
     return Q(sequelize.query(query, null, { raw: true }, params));
 };
 
+var changeBoardDescription = function(name, user, newDesc) {
+    var query = "UPDATE Board " + 
+                "SET description = :description " +
+                "WHERE name = :name " +
+                "AND   owner_name = :user";
+    var params = { name: name, user: user, description: newDesc };
+    return sequelize.query(query, null, { raw: true }, params);
+};
+
 var renderBoard = function(board, res) {
     getPinnedObjects(board)
     .then(function(pinnedObjects) {
         return res.render('user/board', {
             title: board.name,
             board: board,
-            images: pinnedObjects,
-            isEdit: res.get('show-edit')
+            images: pinnedObjects
         });
     })
     .done();
@@ -39,11 +46,34 @@ exports.index = function(req, res) {
         return renderBoard(board, res);
     })
     .fail(function(err) {
+        console.error(err);
         res.render('error', {
             title: 'Sorry, this board is gone!',
             message: 'I guess someone ate it. Sorry. You should look at ' +
                 'some gifs instead.'
-        })
+        });
     })
     .done();
+};
+
+/*
+ * POST /user/:user_name/:board_name/edit
+ */
+exports.edit = function(req, res) {
+    var userName = req.params.user_name;
+    var boardName = req.params.board_name;
+    var newDescription = req.body.desc;
+    Q(changeBoardDescription(boardName, userName, newDescription))
+    .then(function() {
+        res.redirect('/user/' + userName + '/' + boardName);
+    })
+    .fail(function(err) {
+        console.error(err);
+        res.render('error', {
+            title: 'Sorry, something has gone wrong!',
+            message: 'Something\'s going wrong on our end now.'
+        });
+    })
+    .done();
+
 };

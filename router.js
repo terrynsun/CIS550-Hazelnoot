@@ -92,4 +92,11 @@ module.exports = function(app) {
             title: '404'
         });
     });
+
+    // Catch-all for 404 handling. Requires that static files be mounted first
+    app.get('*', function(req, res) {
+        res.render('404', {
+            title: '404'
+        })
+    })
 };

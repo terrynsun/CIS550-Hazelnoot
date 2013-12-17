@@ -43,14 +43,13 @@ module.exports = function(app) {
         };
         next();
     });
-    app.use(app.router);
     app.use(express.static(path.join(__dirname, '..', 'public')));
+    app.use(app.router);
 
-    app.use(function(req, res) {
-        res.status(404);
-        res.render('404', {
-            title: '404'
-        })
+    app.use(function(err, req, res, next) {
+        console.error(err.stack);
+        res.render_error('Something went really wrong :(');
+        next();
     });
 
     // development only

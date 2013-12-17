@@ -9,3 +9,7 @@ mysql:
   password: redacted
   hostname: cis550-project-2.c7sfruawvmcm.us-east-1.rds.amazonaws.com
   database: redacted
+
+mongo:
+  readonly: redacted
+  redacted: your_info_here

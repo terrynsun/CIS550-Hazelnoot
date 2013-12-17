@@ -33,12 +33,12 @@ module.exports = function(sequelize, DataTypes) {
     }, {
         tableName: 'Rating',
         classMethods: {
-            getAverageByID: function(lookup_id) {
+            getAverage: function(lookup_id, source) {
                 var query = 'SELECT AVG(rating) AS avg ' +
                     'FROM Rating ' +
-                    'GROUP BY object_id ' +
-                    'HAVING object_id = :id';
-                var params = { id: lookup_id };
+                    'WHERE object_id = :id AND source = :source ' +
+                    'GROUP BY object_id';
+                var params = { id: lookup_id, source: source };
                 return sequelize.query(query, null, { raw: true }, params);
             },
             findByUserID: function(user_name, object_id) {

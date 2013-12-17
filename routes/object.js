@@ -23,7 +23,7 @@ exports.index = function(req, res) {
         return;
     }
 
-    Q(Rating.getAverageByID(id))
+    Q(Rating.getAverage(id, source))
     .then(function(avgLoc) {
         avgVar = avgLoc;
         

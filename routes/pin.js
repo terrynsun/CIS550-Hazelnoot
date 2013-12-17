@@ -33,6 +33,7 @@ exports.newPinsPage = function(req, res) {
             return Q(Pin.allByURL(url));
         })
         .then(function(rows) {
+            console.log(rows);
             if (rows.length == 0) {
                 var type = utils.isImage(url) ? "photo" : "object";
                 res.render('pin/new', {
@@ -117,6 +118,7 @@ exports.newPin = function(req, res) {
                         return Pin.create({
                             user_name: req.user.user_name,
                             object_id: pinObject.id,
+                            source: pinObject.source,
                             board_name: board_name,
                             description: description
                         });
@@ -130,7 +132,7 @@ exports.newPin = function(req, res) {
                             res.redirect(format('/pin/%s/%s/%s/%d',
                                 req.user.user_name,
                                 board_name,
-                                'Hazelnoot',
+                                pinObject.source,
                                 pinObject.id
                             ));
                         };

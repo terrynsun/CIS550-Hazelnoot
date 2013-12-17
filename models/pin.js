@@ -75,7 +75,8 @@ module.exports = function(sequelize, DataTypes) {
                     'O.created_at AS obj_created_at, P.user_name, P.board_name,' +
                     'P.created_at, P.updated_at, P.description ' +
                     'FROM Object O, Pin P ' +
-                    'WHERE O.url = ? AND O.id = P.object_id';
+                    'WHERE O.url = ? AND O.id = P.object_id ' +
+                    'ORDER BY P.created_at DESC';
                 var queryParams = [url];
                 return sequelize.query(query, null, {raw: true}, queryParams);
             },
@@ -86,7 +87,8 @@ module.exports = function(sequelize, DataTypes) {
                     'P.created_at, P.updated_at, P.description ' +
                     'FROM Object O, Pin P ' +
                     'WHERE O.source = P.source AND O.id = P.object_id ' +
-                    'AND   O.source = :source AND O.id = :id';
+                    'AND   O.source = :source AND O.id = :id ' + 
+                    'ORDER BY P.created_at DESC';
                 var queryParams = { source: source, id: id };
                 return sequelize.query(query, null, {raw: true}, queryParams);
             },

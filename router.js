@@ -59,6 +59,7 @@ module.exports = function(app) {
     app.post('/user/me/boards/remove', ensureAuthenticated, user.updateBoardRemove);
 
     app.get('/user/:user_name/:board_name', board.index);
+    app.post('/user/:user_name/:board_name/edit', ensureAuthenticated, board.edit);
 
     app.get('/search', search.getSearch);
 

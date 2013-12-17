@@ -6,15 +6,39 @@ block header
 
   if !!current_user && current_user.user_name == board.owner_name
     a.btn.btn-default(onclick="$('.rm-pin').toggle('blind'); return false;") Edit pins
+    a.btn.btn-default(onclick="$('.edit-desc').toggle('blind'); return false;") Edit board
+
+  .well.well-sm
+    p
+      | #{board.description}
 
 block content
-  if !!current_user && current_user.user_name == board.owner_name
-    mixin displayPins (images, board)
+  .row
+    if !!current_user && current_user.user_name == board.owner_name
+      form.edit-desc.well(role='form', method='POST',
+        action='/user/#{current_user.user_name}/#{board.name}/edit')
+        .form-group
+          label(for='desc') Board Description
+          input.form-control(name='desc', type='textarea', value=board.description)
+          button.btn.btn-default(type='submit') Change Description
+
+  if images.length > 0
+    if !!current_user && current_user.user_name == board.owner_name
+      // put a form here for editing board description
+      mixin displayPins (images, board)
+    else
+      mixin displayPins (images)
   else
-    mixin displayPins (images)
+    if !!current_user && current_user.user_name == board.owner_name
+      p
+        | No pins here yet! Why don't you pin something?
+    else
+      p
+        | No pins here yet!
 
 block scripts
   script.
     $(document).ready(function() {
       $('.rm-pin').toggle();
+      $('.edit-desc').toggle();
     });

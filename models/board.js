@@ -17,6 +17,11 @@ module.exports = function(sequelize, DataTypes) {
                 notEmpty: true,
                 max: 64
             }
+        },
+        description: {
+            type: DataTypes.STRING(512),
+            primaryKey: false,
+            allowNull: false
         }
     }, {
         tableName: "Board",

@@ -30,9 +30,9 @@ var httpGet = function(url) {
     return deferred.promise;
 };
 
-exports.store = function(url) {
+exports.store = function(url, cb) {
     var acc = {};
-    return write_connect
+    var promise = write_connect
         .then(function(db) {
             var gridStore = new GridStore(db, url, 'w');
             acc.db = db;
@@ -47,13 +47,17 @@ exports.store = function(url) {
                 .then(function(gridStore) {
                     return Q.ninvoke(gridStore, 'close');
                 })
-        })
+        });
+    return cb(promise)
+        .finally(function() {
+            acc.db.close();
+        });
 };
 
 
-exports.fetch = function(url) {
+exports.fetch = function(url, cb) {
     var acc = {};
-    return read_connect
+    var promise = read_connect
         .then(function(db) {
             var gridStore = new GridStore(db, url, 'r');
             acc.db = db;
@@ -61,5 +65,9 @@ exports.fetch = function(url) {
         })
         .then(function(gridStore) {
             return Q.ninvoke(GridStore, 'read', acc.db, url);
-        })
+        });
+    return cb(promise)
+        .finally(function() {
+            acc.db.close();
+        });
 };

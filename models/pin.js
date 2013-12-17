@@ -115,7 +115,7 @@ module.exports = function(sequelize, DataTypes) {
                 return sequelize.query(query, null, { raw: true }, params);
             },
             getFriendPins: function(username, n) {
-                var query = 'SELECT O.id, O.source, O.type, O.url, O.is_cached ' +
+                var query = 'SELECT O.id, O.source, O.type, O.url, O.is_cached, ' +
                     'O.created_at AS obj_created_at, P.user_name, P.board_name,' +
                     'P.created_at, P.updated_at, P.description ' +
                     'FROM Object O, Pin P, Friendship F ' +

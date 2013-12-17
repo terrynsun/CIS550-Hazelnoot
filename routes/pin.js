@@ -100,7 +100,8 @@ exports.newPin = function(req, res) {
     var url = req.body.url;
     var board_name = req.body.board_name;
     var description = req.body.description;
-    var tags = (req.body.tags || '').split(' ');
+    var tags = _.filter((req.body.tags || '').split(' '),
+        function(tag) { return tag.length > 0; });
 
     sequelize.transaction({
         isolationLevel: 'READ UNCOMMITTED'  // TODO: replace with Transaction constant

@@ -13,12 +13,13 @@ exports.changeRating = function(req, res) {
     var rating = req.body.rating;
     var userName = req.user.user_name;
 
-    Q(Rating.findByUserID(userName, id))
+    Q(Rating.findByUserID(userName, id, source))
         .then(function (oldRating) {
             if(!oldRating){
                 oldRating = Rating.build({
                     user_name: userName,
-                    object_id: id
+                    object_id: id,
+                    source: source
                 });
             }
 

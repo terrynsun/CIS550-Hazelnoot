@@ -41,8 +41,12 @@ module.exports = function(sequelize, DataTypes) {
                 var params = { id: lookup_id, source: source };
                 return sequelize.query(query, null, { raw: true }, params);
             },
-            findByUserID: function(user_name, object_id) {
-                return this.find({ where: { object_id: object_id, user_name: user_name } });
+            findByUserID: function(user_name, object_id, source) {
+                return this.find({ where: {
+                    object_id: object_id,
+                    source: source,
+                    user_name: user_name }
+                });
             }
         }
     });

@@ -8,6 +8,7 @@ var getPinsByFriends = function(username, n) {
                 'WHERE Friendship.user_name = :name ' +
                 'AND Friendship.friend_name = Pin.user_name ' +
                 'AND Pin.object_id = Object.id ' +
+                'AND Pin.source = Object.source ' +
                 'ORDER BY Pin.created_at DESC ' +
                 'LIMIT :num';
     var parms = { name: username, num: n };
@@ -18,6 +19,7 @@ var getPinsByFriends = function(username, n) {
 var getNewPins = function(n) {
     var query = 'SELECT * FROM Pin, Object ' +
                 'WHERE Pin.object_id = Object.id ' +
+                'AND Pin.source = Object.source ' +
                 'ORDER BY Pin.created_at DESC ' +
                 'LIMIT :num';
     var parms = { num: n };
@@ -30,6 +32,7 @@ var getInterestingPins = function(username, n) {
                 'WHERE Interest.user_name = :name ' +
                 'AND   Tags.tag = Interest.name ' +
                 'AND   Tags.object_id = Object.id ' +
+                'AND   Tags.source = Object.source ' +
                 'ORDER BY Object.created_at DESC ' +
                 'LIMIT :num';
     var parms = { name: username, num:n };

@@ -44,8 +44,14 @@ module.exports = function(sequelize, DataTypes) {
                     'P.created_at AS pin_created_at, P.updated_at ' +
                     'FROM Pin P, Object O ' +
                     'WHERE P.object_id = O.id AND P.source = O.source ' +
-                    'AND P.user_name = ? AND P.board_name = ? AND P.source = ? AND P.object_id = ?';
-                var queryParams = [user_name, board_name, source, object_id];
+                    'AND P.user_name = :user_name AND P.board_name = :board_name ' +
+                    'AND P.source = :source AND P.object_id = :object_id';
+                var queryParams = {
+                    user_name: user_name,
+                    board_name: board_name,
+                    source: source,
+                    object_id: object_id
+                };
                 return sequelize.query(query, null, {raw: true}, queryParams)
                     .then(function(rows) {
                         if (rows.length != 1) {
@@ -68,12 +74,18 @@ module.exports = function(sequelize, DataTypes) {
                 return sequelize.query(query, null, {raw: true}, queryParams);
             },
 
-            deleteWithName: function(user_name, board_name, object_id) {
+            deleteWithName: function(user_name, board_name, source, object_id) {
                 var query = 'DELETE FROM Pin ' +
                             'WHERE user_name = :name ' +
                             'AND   board_name = :board ' +
-                            'AND   object_id = :obj_id';
-                var params = { name: user_name, board: board_name, obj_id: object_id };
+                            'AND   object_id = :obj_id ' +
+                            'AND   source = :source';
+                var params = {
+                    name: user_name,
+                    board: board_name,
+                    obj_id: object_id,
+                    source: source
+                };
                 return sequelize.query(query, null, { raw: true }, params);
             },
             deleteFromBoard: function(user_name, board_name) {

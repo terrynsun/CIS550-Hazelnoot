@@ -6,6 +6,7 @@ var sequelize = require('../app_config/sequelize');
 var getTagged = function(term) {
     var query = 'SELECT * FROM Object, Tags ' +
                 'WHERE Object.id = Tags.object_id ' +
+                'AND Object.source = Tags.source ' +
                 'AND   Tags.tag = :term ' +
                 'ORDER BY Object.created_at DESC';
     var parms = { term: term };

@@ -99,9 +99,10 @@ exports.newPin = function(req, res) {
 
                         var performRedirect = function() {
                             req.flash('success', 'Successfully pinned!');
-                            res.redirect(format('/pin/%s/%s/%d',
+                            res.redirect(format('/pin/%s/%s/%s/%d',
                                 req.user.user_name,
                                 board_name,
+                                'Hazelnoot',
                                 pinObject.id
                             ));
                         };
@@ -164,8 +165,9 @@ exports.getPin = function(req, res) {
 exports.removePin = function(req, res) {
   var current_name = req.user.user_name;
   var board_name = req.body.board;
+  var source = req.body.source;
   var object_id = req.body.obj_id;
-  return Q(Pin.deleteWithName(current_name, board_name, object_id))
+  return Q(Pin.deleteWithName(current_name, board_name, source, object_id))
       .then(function() {
           req.flash('info', 'You have removed something from your board.');
           res.set('show-edit', true);

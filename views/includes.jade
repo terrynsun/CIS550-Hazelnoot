@@ -21,13 +21,14 @@ mixin pin ( image, board )
       if current_user
         center
           form(role='form', method='GET', action='/pin/new')
-            input.sr-only.form-control#url-inpput(name='url', value=image.url)
+            input.form-control#url-inpput(type='hidden', name='url', value=image.url)
             button.btn.btn-default(type='submit') Pin It!
 
         if board
           form.form-inline.rm-pin(role='form', method='POST', action='/pin/remove')
-            input.sr-only.form-control(name='board', value=board.name)
-            button.btn.btn-danger(style="position: absolute; top: 10px; left: 5%;", 
+            input.form-control(type='hidden', name='board', value=board.name)
+            input.form-control(type='hidden', name='source', value=image.source)
+            button.btn.btn-danger(style="position: absolute; top: 10px; left: 5%;",
                                   type='submit', name='obj_id', value=image.id)
               span.glyphicon.glyphicon-remove-circle
 

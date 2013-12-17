@@ -4,7 +4,7 @@ var sequelize = require('../app_config/sequelize');
 var _ = require('underscore');
 
 var renderBoard = function(board, res) {
-    getPinnedObjects(board)
+    Board.getPinnedObjects(board)
     .then(function(pinnedObjects) {
         return res.render('user/board', {
             title: board.name,

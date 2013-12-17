@@ -74,6 +74,8 @@ exports.register = function(req, res) {
     var user_name = req.body.user_name;
     var email = req.body.email;
     var password = req.body.password;
+    var birthday = req.body.birthday;
+    var regbirth = new RegExp("(19|20)[0-9][0-9][-](0[1-9]|10|11|12)[-]([120][0-9]|3[01])"); 
 
     // Check a user doesn't already exist
     Q(User.exists(user_name, email))
@@ -83,6 +85,11 @@ exports.register = function(req, res) {
                 var error = new Error('User already exists');
                 error.name = 'UserAlreadyExistsError';
                 throw error;
+            }
+            if(!regbirth.exec(birthday)){
+                var e = new Error('You entered an invalid birthday.');
+                e.name = 'BadBirthdayError';
+                throw e;
             }
 
             // Hash password with bcrypt
@@ -95,7 +102,8 @@ exports.register = function(req, res) {
                 last_name: req.body.last_name,
                 user_name: user_name,
                 email: email,
-                password_hash: hash
+                password_hash: hash,
+                birthday: birthday
             });
 
             return Q(user.save());

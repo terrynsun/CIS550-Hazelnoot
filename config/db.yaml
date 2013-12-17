@@ -7,5 +7,5 @@ oracle:
 mysql:
   user: redacted
   password: redacted
-  hostname: cis550project-mysql.c7sfruawvmcm.us-east-1.rds.amazonaws.com
+  hostname: cis550-project-2.c7sfruawvmcm.us-east-1.rds.amazonaws.com
   database: redacted

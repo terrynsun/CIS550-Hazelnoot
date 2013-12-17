@@ -32,7 +32,7 @@ exports.newPinsPage = function(req, res) {
         })
         .then(function(rows) {
             if (rows.length == 0) {
-                var type = utils.isImage(url) ? "image" : "object";
+                var type = utils.isImage(url) ? "photo" : "object";
                 res.render('pin/new', {
                     title: 'New pin',
                     url: url,

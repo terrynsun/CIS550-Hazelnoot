@@ -105,11 +105,24 @@ exports.updateProfile = function(req, res) {
     var lastName = req.body.lastName;
     var email = req.body.email;
     var affiliation = req.body.affiliation;
+    var birthday = req.body.birthday;
+    var regbirth = new RegExp("(19|20)[0-9][0-9][-](0[1-9]|10|11|12)[-]([120][0-9]|3[01])");
 
     if(firstName) req.user.first_name = firstName;
     if(lastName) req.user.last_name = lastName;
     if(email) req.user.email = email;
     if(affiliation) req.user.affiliation = affiliation;
+    if(birthday){
+        if(regbirth.exec(birthday)){
+            req.user.birthday = birthday;
+        }
+        else{
+            var e = new Error('BadBirthdayError', 'You entered an improper birthday.');
+            console.error(e);
+            req.flash('error', e.message);
+            return res.redirect('/user/me/update');
+        }
+    }
 
     Q(req.user.save())
         .then(function(user) {

@@ -11,10 +11,13 @@ block content
     - var lastName = current_user.last_name
     - var email = current_user.email
     - var affiliation = current_user.affiliation
+    - var birthday = moment(current_user.birthday).format("YYYY-MM-DD")
+
     mixin formTextElem('firstName', 'First Name', firstName)
     mixin formTextElem('lastName', 'Last Name', lastName)
     mixin formTextElem('email', 'Email address', email)
     mixin formTextElem('affiliation', 'Network', affiliation)
+    mixin formTextElem('birthday', 'Birthday(yyyy-mm-dd)', birthday)
 
     input.btn.btn-primary.btn-block(type='submit', value='Save Changes')
     p: a(href='/user/me') Ignore Changes

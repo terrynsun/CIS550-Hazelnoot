@@ -25,6 +25,7 @@ var ensureAuthenticated = function(req, res, next) {
 module.exports = function(app) {
     app.get('/', routes.index);
 
+    // check if password is valid to see if password change should be prompted
     app.post('/login', auth.checkNullPassword, 
     passport.authenticate('local', {
         failureRedirect: '/login',
@@ -77,4 +78,20 @@ module.exports = function(app) {
     // requests have to be of type /mongo/bigtest?url=<url>, where <url> is properly encoded
     app.get('/cached/bigtest', mongo.cache);
     app.get('/cached/retrieve', mongo.get);
+
+    app.get('/mongo/bigtest', mongo.cache);
+    app.get('/mongo/retrieve', mongo.get);
+
+    app.get('/error', function(req, res) {
+        res.render('error', {
+            title: 'Error page',
+            message: 'Pretty appropriate gif, huh?'
+        });
+    });
+
+    app.get('/404', function(req, res) {
+        res.render('404', {
+            title: '404'
+        });
+    });
 };

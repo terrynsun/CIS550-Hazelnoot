@@ -14,7 +14,7 @@ block content
       .panel.panel-default
         h3 
           a(href='user/#{user_name}/#{board_name}') #{board_name} 
-          if source
+          if source != 'Hazelnoot'
               <small>Imported from #{source}</small>
 
         h5 Pinned on #{moment(pin_created_at).format("MMMM D, YYYY")}

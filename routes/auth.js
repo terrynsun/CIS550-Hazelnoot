@@ -7,7 +7,7 @@ var Q = require('q');
  * If so, prompt password change.
  */
 exports.checkNullPassword = function(req, res, next) {
-    if(req.body.password == 'null') {
+    if(req.body.password === 'null') {
       Q(User.findByUsername(req.body.username))
       .then(function(user) {
           if(user.password_hash.length < 60) {

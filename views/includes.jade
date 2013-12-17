@@ -12,7 +12,7 @@ mixin pin ( image, board )
     if (image)
       .imgtile
         if (image.type === 'photo')
-          a(href="/object/#{image.source}/#{image.id}")
+          a(href="/pin/#{image.user_name}/#{image.board_name}/#{image.source}/#{image.id}")
             img.img-responsive(src=image.url).tiles
         else
           p

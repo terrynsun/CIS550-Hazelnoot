@@ -163,11 +163,7 @@ exports.newPin = function(req, res) {
 };
 
 var getURL = function(obj) {
-    if (obj.is_cached) {
-        return '/cached/retrieve?url=' + obj.url;
-    } else{
-        return obj.url;
-    }
+    return utils.urlOrCache(obj.url, obj.is_cached);
 };
 
 /*

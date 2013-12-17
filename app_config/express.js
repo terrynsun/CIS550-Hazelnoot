@@ -7,7 +7,8 @@ var utils = require('../utils');
 
 var locals = {
     moment: require('moment'),
-    isImage: utils.isImage
+    isImage: utils.isImage,
+    urlOrCache: utils.urlOrCache
 };
 
 module.exports = function(app) {

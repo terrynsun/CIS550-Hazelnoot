@@ -6,3 +6,11 @@ exports.isImage = function(filepath) {
     ext = ext[ext.length - 1];
     return _.contains(['jpg', 'png', 'gif'], ext);
 };
+
+exports.urlOrCache = function(url, isCached) {
+    if (isCached) {
+        return '/cached/retrieve?url=' + obj.url;
+    } else{
+        return url;
+    }
+};

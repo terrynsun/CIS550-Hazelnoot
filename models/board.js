@@ -40,6 +40,7 @@ module.exports = function(sequelize, DataTypes) {
                             'WHERE Pin.user_name = :user_name ' + 
                             'AND   Pin.board_name = :board_name ' + 
                             'AND   Object.id = Pin.object_id ' +
+                            'AND   Object.source = Pin.source ' +
                             'ORDER BY Pin.created_at DESC';
                 var params = { user_name: board.owner_name, board_name: board.name };
                 return Q(sequelize.query(query, null, { raw: true }, params));

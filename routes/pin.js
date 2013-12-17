@@ -127,16 +127,17 @@ exports.newPin = function(req, res) {
 };
 
 /*
- * GET /pin/:user_name/:board_name/:object_id
+ * GET /pin/:user_name/:board_name/:source/:object_id
  */
 exports.getPin = function(req, res) {
     var user_name = req.params.user_name;
     var board_name = req.params.board_name;
+    var source = req.params.source;
     var object_id = parseInt(req.params.object_id, 10);
 
-    Q(Pin.findByKeys(user_name, board_name, object_id))
+    Q(Pin.findByKeys(user_name, board_name, source, object_id))
     .then(function(pin) {
-        return Tags.findAll({ where: { object_id: object_id } })
+        return Tags.findAll({ where: { object_id: object_id, source: source } })
         .then(function(tags) {
             res.render('pin/pin', {
                 board_name: board_name,

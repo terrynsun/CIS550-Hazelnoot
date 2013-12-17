@@ -38,14 +38,14 @@ module.exports = function(sequelize, DataTypes) {
     }, {
         tableName: "Pin",
         classMethods: {
-            findByKeys: function(user_name, board_name, object_id) {
+            findByKeys: function(user_name, board_name, source, object_id) {
                 var query = 'SELECT O.source, O.type, O.url, ' +
                     'O.created_at AS obj_created_at, P.description, ' +
                     'P.created_at AS pin_created_at, P.updated_at ' +
                     'FROM Pin P, Object O ' +
-                    'WHERE P.object_id = O.id ' +
-                    'AND P.user_name = ? AND P.board_name = ? AND P.object_id = ?';
-                var queryParams = [user_name, board_name, object_id];
+                    'WHERE P.object_id = O.id AND P.source = O.source ' +
+                    'AND P.user_name = ? AND P.board_name = ? AND P.source = ? AND P.object_id = ?';
+                var queryParams = [user_name, board_name, source, object_id];
                 return sequelize.query(query, null, {raw: true}, queryParams)
                     .then(function(rows) {
                         if (rows.length != 1) {

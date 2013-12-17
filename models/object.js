@@ -4,7 +4,7 @@ var utils = require('../utils');
 
 module.exports = function(sequelize, DataTypes) {
     return sequelize.define("PinObject", {
-        other_id: {
+        id: {
             type: DataTypes.INTEGER(11),
             allowNull: false,
 
@@ -42,7 +42,7 @@ module.exports = function(sequelize, DataTypes) {
             findOrCreateByURL: function(url) {
                 var type = 'object';
                 if (utils.isImage(url)) {
-                    type = 'image';
+                    type = 'photo';
                 }
                 var deferred = Q.defer();
                 var self = this;

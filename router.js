@@ -9,6 +9,7 @@ var search = require('./routes/search');
 var object = require('./routes/object');
 var affiliation = require('./routes/affiliation');
 var mongo = require('./routes/mongo');
+var rating = require('./routes/rating');
 var retrieve = require('./routes/retrieve');
 
 var ensureAuthenticated = function(req, res, next) {
@@ -64,7 +65,7 @@ module.exports = function(app) {
     app.get('/search', search.getSearch);
 
     app.get('/object/:id', object.index);
-    app.post('/object/', ensureAuthenticated, object.changeRating);
+    app.post('/rating/:id', ensureAuthenticated, rating.changeRating);
 
     app.get('/affiliation/:name', affiliation.index);
 

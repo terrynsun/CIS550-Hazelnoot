@@ -37,7 +37,7 @@ var renderLoggedInPage = function(req, res) {
 
 var renderLoggedOutPage = function(req, res) {
     var display = {};
-    Pin.getNewPins(20)
+    Pin.getNewest(20)
     .then(function(results) {
         display.newPins = results;
     })

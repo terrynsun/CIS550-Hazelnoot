@@ -304,7 +304,7 @@ exports.updateBoardAdd = function(req, res) {
     var newDescription = req.body.newDescription;
     var current_name = req.user.user_name;
 
-    return Q(Board.findByBoardName(current_name, newBoard))
+    return Q(Board.findByBoardAndUsername(current_name, newBoard))
     .then(function(wasThere) {
         if(wasThere) {
             var e = new Error('You already have a board named that.');
@@ -343,7 +343,7 @@ exports.updateBoardRemove = function(req, res) {
 
     return Q(Pin.deleteFromBoard(current_name, oldBoard))
     .then(function(removedPins) {
-        return Q(Board.findByBoardName(current_name, oldBoard));
+        return Q(Board.findByBoardAndUsername(current_name, oldBoard));
     })
     .then(function(removedBoard) {
         removedBoard.destroy();

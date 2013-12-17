@@ -28,8 +28,12 @@ module.exports = function(sequelize, DataTypes) {
     }, {
         tableName: "Board",
         classMethods: {
-            findByBoardName: function(user_name, board_name) {
+            findByBoardAndUsername: function(user_name, board_name) {
                 var query = { owner_name: user_name, name: board_name };
+                return this.find({ where: query });
+            },
+            findByBoardName: function(board_name) {
+                var query = { name: board_name };
                 return this.find({ where: query });
             },
             getPinnedObjects: function(board) {

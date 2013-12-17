@@ -43,7 +43,7 @@ exports.edit = function(req, res) {
     var userName = req.params.user_name;
     var boardName = req.params.board_name;
     var newDescription = req.body.desc;
-    Q(changeBoardDescription(boardName, userName, newDescription))
+    Q(Board.changeBoardDescription(boardName, userName, newDescription))
     .then(function() {
         res.redirect('/user/' + userName + '/' + boardName);
     })

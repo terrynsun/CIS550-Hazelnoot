@@ -7,6 +7,10 @@ var Board = require('../models').Board;
 var Interest = require('../models').Interest;
 var Pin = require('../models').Pin;
 
+
+/* 
+ * Put together the user profile page.
+ */
 var render_user = function(user, res) {
     return Q(user.nsa())
         .then(function(info) {
@@ -180,6 +184,7 @@ exports.updatePassword = function(req, res) {
             go_back('Successfully updated your password!', 'success');
         })
         .fail(function(err) {
+            console.error(err);
             if (err.name === 'PEBKACError') {
                 go_back(err.message);
             } else {
@@ -187,6 +192,63 @@ exports.updatePassword = function(req, res) {
             }
         })
         .done();
+};
+
+/*
+ * GET: /user/setpassword
+ */
+exports.setPasswordPage = function(req, res) {
+    res.render('user/setPassword', {
+        title: 'Password Update NOW',
+        user: req.session.username
+    });
+};
+
+/*
+ * POST: /user/setpassword
+ */
+exports.setNewPassword = function(req, res) {
+    var newPassword = req.body.new_password;
+    var confirmPassword = req.body.new_password_confirm;
+    var user;
+
+    var go_back = function(message, flash_type) {
+        flash_type = flash_type || 'error';
+        req.flash(flash_type, message);
+        res.redirect('/login');
+    };
+
+    if (!(newPassword && confirmPassword)) {
+        go_back('You need to fill out both password fields');
+        return;
+    }
+
+    if (newPassword !== confirmPassword) {
+        go_back('New passwords did not match.');
+        return;
+    }
+
+    Q(User.findByUsername(req.session.username))
+        .then(function(foundUser) {
+            user = foundUser;
+            return Q.nfcall(bcrypt.hash, newPassword, 10)
+        })
+        .then(function(hash) {
+            user.password_hash = hash;
+            return Q(user.save());
+        })
+        .then(function() {
+            go_back('Successfully set your password!', 'success');
+        })
+        .fail(function(err) {
+            console.error(err);
+            if (err.name === 'PEBKACError') {
+                go_back(err.message);
+            } else {
+                go_back('Something went wrong on our end :(');
+            }
+        })
+        .done();   
 };
 
 var renderUserInterests = function(current_user, res) {

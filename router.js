@@ -25,13 +25,15 @@ var ensureAuthenticated = function(req, res, next) {
 module.exports = function(app) {
     app.get('/', routes.index);
 
-    app.post('/login', passport.authenticate('local', {
+    app.post('/login', auth.checkNullPassword, 
+    passport.authenticate('local', {
         failureRedirect: '/login',
         failureFlash: true
     }), function(req, res) {
         var redirect_url = req.query.redirect || '/';
         res.redirect(redirect_url);
     });
+
     app.get('/login', auth.login_page);
     app.get('/logout', auth.logout);
     app.get('/register', auth.register_page);
@@ -39,6 +41,8 @@ module.exports = function(app) {
 
     // Order matters here
     app.get('/user/me', ensureAuthenticated, user.me);
+    app.get('/user/setPassword', user.setPasswordPage);
+    app.post('/user/setNewPassword', user.setNewPassword);
     app.get('/user/:user_name', user.index);
 
     app.get('/pin/new', ensureAuthenticated, pin.newPinsPage);

@@ -3,6 +3,30 @@ var bcrypt = require('bcrypt');
 var Q = require('q');
 
 /*
+ * Check to see if someone is logging in with a null or invalid password.
+ * If so, prompt password change.
+ */
+exports.checkNullPassword = function(req, res, next) {
+    if(req.body.password == 'null') {
+      Q(User.findByUsername(req.body.username))
+      .then(function(user) {
+          if(user.password_hash.length < 60) {
+              req.session.username = req.body.username;
+              res.redirect('/user/setPassword');
+          } else {
+              next();
+          }
+      })
+      .fail(function() {
+        next();
+      })
+      .done();
+    } else {
+        next();
+    }
+};
+
+/*
  * GET /login
  *
  * The login page. Use POST /login for actual logging in.

@@ -13,6 +13,7 @@ module.exports = function(sequelize, DataTypes) {
         },
         source: {
             type: DataTypes.STRING(32),
+            primaryKey: true,
             allowNull: false,
             defaultValue: 'Hazelnoot'
         },

@@ -15,14 +15,19 @@ module.exports = function(sequelize, DataTypes) {
             // will just assume that you want an ID column >_>
             primaryKey: true
         },
-        object_id: DataTypes.INTEGER(11),
+        object_id: {
+            type: DataTypes.INTEGER(11),
+            primaryKey: true
+        },
         source: {
             type: DataTypes.STRING(32),
             allowNull: false,
+            primaryKey: true,
             defaultValue: 'Hazelnoot'
         },
         board_name: {
             type: DataTypes.STRING(32),
+            primaryKey: true,
             allowNull: false,
             validate: {
                 notEmpty: true,

@@ -3,12 +3,12 @@ extends ../layout
 block content
   .pin-object.row.well
     .col-md-6
-      .preview-container
-        a(href=url)
-          if objectType === 'photo'
-            img(src=url, style="max-width: 100%")
-          else
-            p.no-preview No preview available for this content
+      .preview-container(style="text-align: center")
+          a(href=url)
+            if objectType === 'photo'
+              img(src=url, style="max-width: 100%")
+            else
+              p.no-preview No preview available for this content
 
     .col-md-6.pin-descr-container
       .panel.panel-default(style="padding: 10px")

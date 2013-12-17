@@ -1,3 +1,5 @@
+var Q = require('q');
+
 module.exports = function(sequelize, DataTypes) {
     return sequelize.define("Board", {
         owner_name: {

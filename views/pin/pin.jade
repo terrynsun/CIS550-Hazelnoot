@@ -9,11 +9,10 @@ block content
               img(src=url, style="max-width: 100%")
             else
               p.no-preview No preview available for this content
-
     .col-md-6.pin-descr-container
       .panel.panel-default(style="padding: 10px")
         h3 
-          a(href='user/#{user_name}/#{board_name}') #{board_name} 
+          a(href='/user/#{user_name}/#{board_name}') #{board_name} 
           if source != 'Hazelnoot'
               <small>Imported from #{source}</small>
 

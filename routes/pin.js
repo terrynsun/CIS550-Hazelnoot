@@ -149,6 +149,7 @@ exports.getPin = function(req, res) {
             res.render('pin/pin', {
                 board_name: board_name,
                 description: pin.description,
+                user_name: req.params.user_name,
                 objectType: pin.type,
                 object_created_at: pin.obj_created_at,
                 pin_created_at: pin.pin_created_at,

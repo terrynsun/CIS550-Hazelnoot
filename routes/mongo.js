@@ -1,22 +1,16 @@
+var path = require('path');
 var cache = require('../cache');
-
-exports.cache = function(req, res) {
-    cache.store(decodeURIComponent(req.query.url))
-        .then(function(result) {
-            res.send(200, result);
-        })
-        .fail(function(err) {
-            res.send(500, err);
-        })
-        .done();
-};
+var utils = require('../utils');
 
 exports.get = function(req, res) {
     cache.fetch(decodeURIComponent(req.query.url))
         .then(function(fileData) {
+            var ext = path.extname(req.query.url).split('.');
+            ext = ext[ext.length - 1];
+
             res.writeHead(200, {
-                'Content-Type': 'image/jpeg',
-                'Content-Length':fileData.length
+                'Content-Type': utils.extToMimeType(ext),
+                'Content-Length': fileData.length
             });
 
             console.log("File length is " +fileData.length);

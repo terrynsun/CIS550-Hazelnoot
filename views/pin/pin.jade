@@ -6,8 +6,9 @@ block content
     .col-md-6
       .preview-container(style="text-align: center")
           a(href=url)
+            - var cachedUrl = urlOrCache(url, is_cached)
             if objectType === 'photo'
-              img(src=url, style="max-width: 100%")
+              img(src=cachedUrl, style="max-width: 100%")
             else
               p.no-preview No preview available for this content
     .col-md-6.pin-descr-container

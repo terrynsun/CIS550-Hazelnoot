@@ -162,10 +162,6 @@ exports.newPin = function(req, res) {
     });
 };
 
-var getURL = function(obj) {
-    return utils.urlOrCache(obj.url, obj.is_cached);
-};
-
 /*
  * GET /pin/:user_name/:board_name/:source/:object_id
  *
@@ -204,7 +200,7 @@ exports.getPin = function(req, res) {
                 pin_created_at: pin.pin_created_at,
                 source: pin.source,
                 tags: _.map(tags, function(tag) { return tag.tag; }),
-                url: getURL(pin),
+                url: pin.url,
                 rating_url: format('/rating/%s/%d', source, object_id),
                 is_cached: pin.is_cached,
                 avgDisplay: avgRating,

@@ -14,3 +14,14 @@ exports.urlOrCache = function(url, isCached) {
         return url;
     }
 };
+
+exports.extToMimeType = function(ext) {
+    switch (ext) {
+        case "jpg": // Intentional fall-through
+        case "jpeg": return "image/jpeg";
+        case "gif": return "image/gif";
+        case "png": return "image/png";
+        case "pdf": return "application/pdf";
+        default: return null;
+    }
+}

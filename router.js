@@ -77,9 +77,6 @@ module.exports = function(app) {
 
     app.get('/cached/retrieve', mongo.get);
 
-    app.get('/mongo/bigtest', mongo.cache);
-    app.get('/mongo/retrieve', mongo.get);
-
     app.get('/error', function(req, res) {
         res.render('error', {
             title: 'Error page',

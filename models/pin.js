@@ -45,7 +45,7 @@ module.exports = function(sequelize, DataTypes) {
         tableName: "Pin",
         classMethods: {
             findByKeys: function(user_name, board_name, source, object_id) {
-                var query = 'SELECT O.source, O.type, O.url, ' +
+                var query = 'SELECT O.source, O.type, O.url, O.is_cached, ' +
                     'O.created_at AS obj_created_at, P.description, ' +
                     'P.created_at AS pin_created_at, P.updated_at ' +
                     'FROM Pin P, Object O ' +

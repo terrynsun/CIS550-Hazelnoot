@@ -71,6 +71,6 @@ module.exports = function(app) {
     app.get('/search', search.getSearch);
 
     // requests have to be of type /mongo/bigtest?url=<url>, where <url> is properly encoded
-    app.get('/mongo/bigtest', mongo.cache);
-    app.get('/mongo/retrieve', mongo.get);
+    app.get('/cached/bigtest', mongo.cache);
+    app.get('/cached/retrieve', mongo.get);
 };

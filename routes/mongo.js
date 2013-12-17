@@ -1,7 +1,7 @@
 var cache = require('../cache');
 
 exports.cache = function(req, res) {
-    cache.store(req.query.url)
+    cache.store(decodeURIComponent(req.query.url))
         .then(function(result) {
             res.send(200, result);
         })
@@ -12,7 +12,7 @@ exports.cache = function(req, res) {
 };
 
 exports.get = function(req, res) {
-    cache.fetch(req.query.url)
+    cache.fetch(decodeURIComponent(req.query.url))
         .then(function(fileData) {
             res.writeHead(200, {
                 'Content-Type': 'image/jpeg',

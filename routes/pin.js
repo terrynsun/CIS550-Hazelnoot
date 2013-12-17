@@ -1,5 +1,6 @@
 var Q = require('q');
 var _ = require('underscore');
+var cache = require('../cache');
 var format = require('util').format;
 
 var models = require('../models');
@@ -65,6 +66,32 @@ exports.newPinsPage = function(req, res) {
         .done();
 };
 
+
+var CACHE_THRESHOLD = 5;
+
+var cacheObject = function(pinObject) {
+    Q(pinObject.pinCount())
+        .then(function(rows) {
+            var count = rows[0].count;
+            if (count >= CACHE_THRESHOLD) {
+                cache.store(pinObject.url)
+                    .then(function() {
+                        pinObject.is_cached = true;
+                        return Q(pinObject.save());
+                    })
+                    .then(function() {
+                        console.log("Cached " + pinObject.url);
+                    })
+                    .fail(function(err) {
+                        console.error(err);
+                        console.error('Caching oops');
+                    })
+                    .done();
+            }
+        })
+        .done();
+};
+
 /*
  * POST /pin/new
  */
@@ -120,12 +147,26 @@ exports.newPin = function(req, res) {
                         } else {
                             performRedirect();
                         }
+
+                        // Perform caching separately
+                        if (!pinObject.is_cached) {
+                            process.nextTick(cacheObject.bind(null, pinObject));
+                        }
                     })
                     .fail(rollback);
             })
             .fail(rollback)
             .done();
     });
+};
+
+
+var getURL = function(obj) {
+    if (obj.is_cached) {
+        return '/cached/retrieve?url=' + obj.url;
+    } else{
+        return obj.url;
+    }
 };
 
 /*
@@ -156,7 +197,8 @@ exports.getPin = function(req, res) {
                 source: pin.source,
                 tags: _.map(tags, function(tag) { return tag.tag; }),
                 avgDisplay: avgRating,
-                url: pin.url
+                url: getURL(pin),
+                is_cached: pin.is_cached
             });
         });
     })

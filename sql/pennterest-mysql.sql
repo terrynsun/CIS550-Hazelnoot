@@ -48,6 +48,7 @@ CREATE TABLE Object (
     source VARCHAR(32)      DEFAULT 'Hazelnoot',
     type VARCHAR(16)        NOT NULL,
     url VARCHAR(256)        NOT NULL,
+    is_cached BOOLEAN       NOT NULL DEFAULT FALSE,
     created_at TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id, source),

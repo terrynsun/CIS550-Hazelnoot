@@ -32,6 +32,11 @@ module.exports = function(sequelize, DataTypes) {
                 isUrl: true,
                 max: 256
             }
+        },
+        is_cached: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false
         }
     }, {
         tableName: "Object",
@@ -90,6 +95,16 @@ module.exports = function(sequelize, DataTypes) {
                     'ORDER BY Object.created_at DESC';
                 var parms = { term: term };
                 return Q(sequelize.query(query, null, { raw: true }, parms));
+            }
+        },
+
+        instanceMethods: {
+            pinCount: function() {
+                var query = 'SELECT COUNT(*) AS count FROM Object, Pin ' +
+                    'WHERE Object.id = Pin.object_id AND Object.source = Pin.source ' +
+                    'AND Object.id = :id AND Object.source = :source';
+                var params = { id: this.id, source: this.source };
+                return sequelize.query(query, null, { raw: true }, params);
             }
         }
     })

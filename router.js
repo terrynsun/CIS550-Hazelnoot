@@ -10,7 +10,6 @@ var object = require('./routes/object');
 var affiliation = require('./routes/affiliation');
 var mongo = require('./routes/mongo');
 var rating = require('./routes/rating');
-var retrieve = require('./routes/retrieve');
 
 var ensureAuthenticated = function(req, res, next) {
     if (req.isAuthenticated()) {
@@ -64,7 +63,7 @@ module.exports = function(app) {
 
     app.get('/search', search.getSearch);
 
-    app.get('/object/:source/:id', object.index);
+    app.get('/object/:source/:id', object.index); //currently unused
     app.post('/rating/:source/:id', ensureAuthenticated, rating.changeRating);
 
     app.get('/affiliation/:name', affiliation.index);
@@ -73,5 +72,5 @@ module.exports = function(app) {
 
     // requests have to be of type /mongo/bigtest?url=<url>, where <url> is properly encoded
     app.get('/mongo/bigtest', mongo.cache);
-    app.get('/mongo/retrieve', retrieve.do_work);
+    app.get('/mongo/retrieve', mongo.get);
 };

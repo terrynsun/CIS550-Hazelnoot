@@ -5,6 +5,7 @@ var format = require('util').format;
 var models = require('../models');
 var Board = models.Board;
 var Pin = models.Pin;
+var Rating = models.Rating;
 var PinObject = models.PinObject;
 var Tags = models.Tags;
 var sequelize = require('../app_config/sequelize');
@@ -84,7 +85,7 @@ exports.newPin = function(req, res) {
         };
         Q(PinObject.findOrCreateByURL(url))
             .then(function(pinObject) {
-                return Q(Board.findByBoardName(req.user.user_name, board_name))
+                return Q(Board.findByBoardAndUsername(req.user.user_name, board_name))
                     .then(function(board) {
                         return Pin.create({
                             user_name: req.user.user_name,
@@ -135,8 +136,13 @@ exports.getPin = function(req, res) {
     var board_name = req.params.board_name;
     var source = req.params.source;
     var object_id = parseInt(req.params.object_id, 10);
+    var avgRating;
 
-    Q(Pin.findByKeys(user_name, board_name, source, object_id))
+    Q(Rating.getAverage(object_id, source))
+    .then(function(avgResult) {
+        avgRating = avgResult[0].avg;
+        return Q(Pin.findByKeys(user_name, board_name, source, object_id))
+    })
     .then(function(pin) {
         return Tags.findAll({ where: { object_id: object_id, source: source } })
         .then(function(tags) {
@@ -148,6 +154,7 @@ exports.getPin = function(req, res) {
                 pin_created_at: pin.pin_created_at,
                 source: pin.source,
                 tags: _.map(tags, function(tag) { return tag.tag; }),
+                avgDisplay: avgRating,
                 url: pin.url
             });
         });

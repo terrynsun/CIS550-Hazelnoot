@@ -7,6 +7,15 @@ mixin displayPins ( images, board )
         else
           mixin pin (images[i+k])
 
+mixin displayUser ( user )
+  .btn-group
+    a.list-group-item(href="/user/#{user.dataValues.user_name}")= user.dataValues.user_name
+
+mixin displayBoards ( boards )
+  .btn-group
+    - for (var i = 0; i < boards.length; i += 1)
+      a.btn.btn-default(href="/user/#{boards[i].dataValues.owner_name}/#{boards[i].dataValues.name}")= boards[i].dataValues.name
+
 mixin pin ( image, board )
   .col-4.col-sm-4.col-lg-3.tile
     if (image)

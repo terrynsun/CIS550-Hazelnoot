@@ -5,6 +5,21 @@ block header
   h1 Search results for '#{searchTerm}'
 
 block content
+  h4 Users
+  if (user != null)
+    mixin displayUser (user)
+  else
+    p
+      | No users named '#{searchTerm}'
+  
+  h4 Boards
+  if (boards.length > 0)
+    mixin displayBoards (boards)
+  else
+    p
+      | No boards related to '#{searchTerm}'
+
+  h4 Pins
   if (images.length > 0)
     mixin displayPins (images)
   else

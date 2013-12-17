@@ -33,8 +33,7 @@ module.exports = function(sequelize, DataTypes) {
                 return this.find({ where: query });
             },
             findByBoardName: function(board_name) {
-                var query = { name: board_name };
-                return this.find({ where: query });
+                return this.findAll({ where: ["name LIKE ?", '%' + board_name + '%'] });
             },
             getPinnedObjects: function(board) {
                 var query = 'SELECT * from Pin, Object ' + 

@@ -1,4 +1,5 @@
 extends ../layout
+include ../includes
 
 block content
   .pin-object.row
@@ -42,14 +43,7 @@ block content
             button.btn.btn-success(type='submit') Pin It!
 
   if !!pins
-    .pins.row
-      - for (var i = 0; i < pins.length; i++)
-        ul.list-group
-          li.list-group-item
-            | #{pins[i].user_name} &#8212
-            | <a href="/pin/#{pins[i].user_name}/#{pins[i].board_name}/#{pins[i].object_id}">#{moment(pins[i].created_at).format("MMM DD YYYY")}</a>
-            if pins[i].description
-              | &#8212 #{pins[i].description}
+    mixin displayOldPins (pins)
   else
     .pins.row
       p You're the first to pin this!

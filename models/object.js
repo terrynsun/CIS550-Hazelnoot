@@ -81,6 +81,15 @@ module.exports = function(sequelize, DataTypes) {
             },
             findByID: function(id) {
                 return this.find({ where: { id: id } });
+            },
+            getByTag: function(term) {
+                var query = 'SELECT * FROM Object, Tags ' +
+                    'WHERE Object.id = Tags.object_id ' +
+                    'AND Object.source = Tags.source ' +
+                    'AND   Tags.tag = :term ' +
+                    'ORDER BY Object.created_at DESC';
+                var parms = { term: term };
+                return Q(sequelize.query(query, null, { raw: true }, parms));
             }
         }
     })

@@ -1,17 +1,10 @@
 var sequelize = require('../app_config/sequelize');
+var User = require('../models').User;
 var Q = require('q');
 var _ = require('underscore');
 
-// get all users of a certain affiliation
-var getAffiliationMembers = function(groupName) {
-    var query = 'SELECT * FROM Users ' +
-                'WHERE affiliation = :name';
-    var parms = { name: groupName };
-    return Q(sequelize.query(query, null, { raw: true }, parms));
-};
-
 var renderAffiliation = function(name, res) {
-    getAffiliationMembers(name)
+    User.getAffiliationMembers(name)
     .then(function(members) {
         var memberUsernames = _.map(members, function(member) {
             return member.user_name;

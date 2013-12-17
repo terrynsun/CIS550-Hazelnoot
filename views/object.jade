@@ -20,5 +20,9 @@ block content
 
         a.btn.btn-default(href='/pin/new?url=#{pic.url}') Pin It!
 
+
+  if !!pins
+    mixin displayOldPins (pins)
+          
 block scripts
   script(src='/javascripts/rating.js')

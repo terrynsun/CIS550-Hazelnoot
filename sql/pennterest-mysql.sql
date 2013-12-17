@@ -77,7 +77,7 @@ CREATE TABLE Pin (
     PRIMARY KEY (object_id, source, user_name, board_name),
     FOREIGN KEY (object_id, source) REFERENCES Object(id, source),
     FOREIGN KEY (user_name) REFERENCES Users(user_name),
-    FOREIGN KEY (user_name, board_name) REFERENCES BoaRD(owner_name, name)
+    FOREIGN KEY (user_name, board_name) REFERENCES Board(owner_name, name)
 );
 
 CREATE TABLE Tags (

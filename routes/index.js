@@ -1,49 +1,51 @@
-var PinObject = require('../models').PinObject;
-var Pin = require('../models').Pin;
-var Friendship = require('../models').Friendship;
 var sequelize = require('../app_config/sequelize');
 var Q = require('q');
 var _ = require('underscore');
 
-var getPinsByFriends = function(username) {
+// n objects pinned by friends, newest first
+var getPinsByFriends = function(username, n) {
     var query = 'SELECT * FROM Object, Pin, Friendship ' +
                 'WHERE Friendship.user_name = :name ' +
                 'AND Friendship.friend_name = Pin.user_name ' +
                 'AND Pin.object_id = Object.id ' +
-                'LIMIT 5';
-    var parms = { name: username };
+                'ORDER BY Pin.created_at DESC ' +
+                'LIMIT :num';
+    var parms = { name: username, num: n };
     return Q(sequelize.query(query, null, { raw: true }, parms));
 };
 
+// n newest pins
 var getNewPins = function(n) {
     var query = 'SELECT * FROM Pin, Object ' +
                 'WHERE Pin.object_id = Object.id ' +
                 'ORDER BY Pin.created_at DESC ' +
-                'LIMIT 20';
+                'LIMIT :num';
     var parms = { num: n };
     return Q(sequelize.query(query, null, { raw: true }, parms));
 };
 
-var getInterestingPins = function(username) {
+// given a user, n objects that are tagged with their interests, newest first
+var getInterestingPins = function(username, n) {
     var query = 'SELECT * FROM Object, Tags, Interest ' +
                 'WHERE Interest.user_name = :name ' +
                 'AND   Tags.tag = Interest.name ' +
                 'AND   Tags.object_id = Object.id ' +
-                'LIMIT 5';
-    var parms = { name: username };
+                'ORDER BY Object.created_at DESC ' +
+                'LIMIT :num';
+    var parms = { name: username, num:n };
     return Q(sequelize.query(query, null, { raw: true }, parms));
 };
 
 var renderLoggedInPage = function(req, res) {
     var display = {};
-    getPinsByFriends(req.user.user_name)
+    getPinsByFriends(req.user.user_name, 8)
     .then(function(results) {
         display.friendPins = results;
-        return getNewPins(5);
+        return getNewPins(8);
     })
     .then(function(results) {
         display.newPins = results;
-        return getInterestingPins(req.user.user_name);
+        return getInterestingPins(req.user.user_name, 8);
     })
     .then(function(results) {
         display.interestingPins = results;
@@ -51,10 +53,16 @@ var renderLoggedInPage = function(req, res) {
     .then(function() {
           res.render('index', { 
           title: 'Hazlenoot',
-          col1: display.friendPins,
-          col2: display.newPins,
-          col3: display.interestingPins,
-          col4: display.newPins
+          friendPins: display.friendPins,
+          newPins: display.newPins,
+          interestingPins: display.interestingPins,
+        });
+    })
+    .fail(function(err) {
+        console.error(err);
+        res.render('error', {
+            title: 'Something has gone terribly wrong.',
+            message: 'Our bad! Try again in a little while.'
         });
     })
     .done();
@@ -73,7 +81,11 @@ var renderLoggedOutPage = function(req, res) {
         });
     })
     .fail(function(err) {
-        console.log("Error: " + err);
+        console.error(err);
+        res.render('error', {
+            title: 'Something has gone terribly wrong.',
+            message: 'Our bad! Try again in a little while.'
+        });
     })
     .done();
 };

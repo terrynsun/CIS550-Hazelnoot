@@ -6,8 +6,10 @@ var user = require('./routes/user');
 var pin = require('./routes/pin');
 var board = require('./routes/board');
 var search = require('./routes/search');
-var rating = require('./routes/rating');
+var object = require('./routes/object');
 var affiliation = require('./routes/affiliation');
+var mongo = require('./routes/mongo');
+var retrieve = require('./routes/retrieve');
 
 var ensureAuthenticated = function(req, res, next) {
     if (req.isAuthenticated()) {
@@ -41,18 +43,33 @@ module.exports = function(app) {
 
     app.get('/pin/new', ensureAuthenticated, pin.newPinsPage);
     app.post('/pin/new', ensureAuthenticated, pin.newPin);
+    app.post('/pin/remove', ensureAuthenticated, pin.removePin);
     app.get('/pin/:user_name/:board_name/:object_id', pin.getPin);
 
     app.get('/user/me/update', ensureAuthenticated, user.updateProfilePage);
     app.post('/user/me/update', ensureAuthenticated, user.updateProfile);
     app.post('/user/me/update/password', ensureAuthenticated, user.updatePassword);
 
+    app.get('/user/me/interests', ensureAuthenticated, user.updateInterestsPage);
+    app.post('/user/me/interests/add', ensureAuthenticated, user.updateInterestsAdd);
+    app.post('/user/me/interests/remove', ensureAuthenticated, user.updateInterestsRemove);
+
+    app.get('/user/me/boards', ensureAuthenticated, user.updateBoardPage);
+    app.post('/user/me/boards/add', ensureAuthenticated, user.updateBoardAdd);
+    app.post('/user/me/boards/remove', ensureAuthenticated, user.updateBoardRemove);
+
     app.get('/user/:user_name/:board_name', board.index);
 
     app.get('/search', search.getSearch);
 
-    app.get('/rating/:id', rating.rating);
-    app.post('/rating/:id', ensureAuthenticated, rating.changeRating);
+    app.get('/object/:id', object.index);
+    app.post('/object/', ensureAuthenticated, object.changeRating);
 
     app.get('/affiliation/:name', affiliation.index);
+
+    app.get('/search', search.getSearch);
+
+    // requests have to be of type /mongo/bigtest?url=<url>, where <url> is properly encoded
+    app.get('/mongo/bigtest', mongo.cache);
+    app.get('/mongo/retrieve', retrieve.do_work);
 };

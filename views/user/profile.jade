@@ -7,20 +7,29 @@ block content
   - if (user.affiliation)
     p Network: 
       a(href="/affiliation/#{user.affiliation}") #{user.affiliation}
+
   - if (!!current_user && user.birthday)
-    p Birthday: #{moment(user.birthday).format("MMM YYYY")}
-  p User since: #{moment(user.time_created).format("MMM D YYYY")}
+    p Birthday: #{moment(user.birthday).format("MMM D, YYYY")}
+
+  p User since: #{moment(user.time_created).format("MMM D, YYYY")}
+
   - if (interests.length > 0)
-    p Interests: #{interests.join(", ")}
+    h4 Interests
+    .btn-group
+      - for (var i = 0; i < interests.length; i += 1)
+        a.btn.btn-default(href="/search?term=#{interests[i]}")= interests[i]
   - else
-    p Interests: (None)
+    p
+      | Interests: (None)
 
   - if (friends.length > 0)
     h4 Friends
-    ul
+    .list-group
       - for (var i = 0; i < friends.length; i += 1)
-        li: a(href="/user/#{friends[i]}")= friends[i]
+        a.list-group-item(href="/user/#{friends[i]}", style="width: 25%;")= friends[i]
+
+  - if (boards.length > 0)
     h4 Boards
-    ul
+    .list-group
       - for (var i = 0; i < boards.length; i += 1)
-        li: a(href="/user/#{user.user_name}/#{boards[i]}")= boards[i]
+        a.list-group-item(href="/user/#{user.user_name}/#{boards[i]}", style="width: 25%;")= boards[i]

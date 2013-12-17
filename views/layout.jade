@@ -23,8 +23,22 @@ html(lang='en')
 
           ul.nav.navbar-nav.navbar-right
             if !!current_user
-              li: a(href='/user/me')= current_user.full_name()
-              li: a(href='/user/me/update') Update Profile
+              li.dropdown
+                  a.dropdown-toggle(data-toggle='dropdown')= current_user.full_name()
+                    b.caret
+                  ul.dropdown-menu
+                    li: a(href='/user/me') 
+                        span(class='glyphicon glyphicon-user')= ' Profile'
+                    li: a(href='/user/me/interests')
+                        span(class='glyphicon glyphicon-star')= ' Interests'
+                    li: a(href="/user/me/boards")
+                        span(class='glyphicon glyphicon-list-alt')= ' Boards'
+                    if !!current_user.affiliation
+                      li: a(href='/affiliation/#{current_user.affiliation}')
+                        span(class='glyphicon glyphicon-globe')= ' ' + current_user.affiliation
+                    li.divider
+                    li: a(href='/user/me/update') 
+                        span(class='glyphicon glyphicon-edit')= ' Update Profile'
               li: a(href='/logout') Logout
             else
               li: a(href='/login') Login

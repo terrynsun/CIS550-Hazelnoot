@@ -1,4 +1,4 @@
-var Q = require('q');
+var sequelize = require('../app_config/sequelize');
 
 module.exports = function(sequelize, DataTypes) {
     return sequelize.define('Pin', {
@@ -33,7 +33,7 @@ module.exports = function(sequelize, DataTypes) {
     }, {
         tableName: "Pin",
         classMethods: {
-            findWithObject: function(user_name, board_name, object_id) {
+            findByKeys: function(user_name, board_name, object_id) {
                 var query = 'SELECT O.source, O.type, O.url, ' +
                     'O.created_at AS obj_created_at, P.description, ' +
                     'P.created_at AS pin_created_at, P.updated_at ' +
@@ -41,7 +41,7 @@ module.exports = function(sequelize, DataTypes) {
                     'WHERE P.object_id = O.id ' +
                     'AND P.user_name = ? AND P.board_name = ? AND P.object_id = ?';
                 var queryParams = [user_name, board_name, object_id];
-                return Q(sequelize.query(query, null, {raw: true}, queryParams))
+                return sequelize.query(query, null, {raw: true}, queryParams)
                     .then(function(rows) {
                         if (rows.length != 1) {
                             var e = new Error('Unexpected result from query');
@@ -51,6 +51,32 @@ module.exports = function(sequelize, DataTypes) {
                         var pin = rows[0];
                         return pin;
                     });
+            },
+
+            allByURL: function(url) {
+                var query = 'SELECT O.id, O.source, O.type, O.url, ' +
+                    'O.created_at AS obj_created_at, P.user_name, P.board_name,' +
+                    'P.created_at, P.updated_at, P.description ' +
+                    'FROM Object O, Pin P ' +
+                    'WHERE O.url = ? AND O.id = P.object_id';
+                var queryParams = [url];
+                return sequelize.query(query, null, {raw: true}, queryParams);
+            },
+
+            deleteWithName: function(user_name, board_name, object_id) {
+                var query = 'DELETE FROM Pin ' +
+                            'WHERE user_name = :name ' +
+                            'AND   board_name = :board ' +
+                            'AND   object_id = :obj_id';
+                var params = { name: user_name, board: board_name, obj_id: object_id };
+                return sequelize.query(query, null, { raw: true }, params);
+            },
+            deleteFromBoard: function(user_name, board_name) {
+                var query = 'DELETE FROM Pin ' +
+                            'WHERE user_name = :name ' +
+                            'AND board_name = :board';
+                var params = { name: user_name, board: board_name };
+                return sequelize.query(query, null, { raw: true }, params);
             }
         }
     });

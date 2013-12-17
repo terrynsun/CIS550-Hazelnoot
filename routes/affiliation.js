@@ -2,6 +2,7 @@ var sequelize = require('../app_config/sequelize');
 var Q = require('q');
 var _ = require('underscore');
 
+// get all users of a certain affiliation
 var getAffiliationMembers = function(groupName) {
     var query = 'SELECT * FROM Users ' +
                 'WHERE affiliation = :name';
@@ -16,15 +17,14 @@ var renderAffiliation = function(name, res) {
             return member.user_name;
         });
 
-        console.log(members);
         res.render('affiliation', {
-            title: 'Affiliation page', 
+            title: 'Affiliation Page' + name, 
             users: memberUsernames,
             affiliation: name
         });
     })
     .fail(function(err) {
-        console.log(err);
+        console.error(err);
         res.render('error', {
             title: 'Affiliation does not exist',
             message: 'Maybe you should join this group.'

@@ -5,14 +5,12 @@ var models = require('../models');
 var PinObject = models.PinObject;
 var Rating = models.Rating;
 var User = models.User;
-
-
 var utils = require('../utils');
 
 /*
  * GET /rating/:id
  */
-exports.rating = function(req, res) {
+exports.index = function(req, res) {
     var id = req.params.id;
     var avgVar;
     var pic;
@@ -23,9 +21,8 @@ exports.rating = function(req, res) {
         return;
     }
 
-    Rating.getAverageByID(id)
+    Q(Rating.getAverageByID(id))
     .then(function(avgLoc) {
-        
         avgVar = avgLoc;
         
         return(PinObject.findByID(id));
@@ -34,13 +31,11 @@ exports.rating = function(req, res) {
         if(curObj){
             if(avgVar[0]){
                 avgVar = avgVar[0].avg;
-            }
-            else{
+            } else{
                 avgVar = 0;
             }
-            pic = curObj.url;
-        }
-        else{
+            pic = curObj;
+        } else{
             res.render('error', {
                 title: 'This photo doesn\'t appear to exist!',
                 message: 'The link you followed may be broken, or this page may ' +
@@ -50,17 +45,16 @@ exports.rating = function(req, res) {
         }
 
         if(req.user){
-            return(Rating.findByUserID(req.user.user_name, id));
-        }
-        else{
-            return(null);
+            return Q(Rating.findByUserID(req.user.user_name, id));
+        } else {
+            return null;
         }
     })
     .then(function(prevRating){
         if(prevRating){
             lastRating = prevRating.rating;
         }
-        res.render('rating', {
+        res.render('object', {
             id: id,
             avgDisplay: avgVar,
             pic: pic,
@@ -68,28 +62,26 @@ exports.rating = function(req, res) {
         });
     })
     .fail(function(err) {
-        console.log(err);
+        console.error(err);
         res.render('error', {
             title: 'An error occured while looking up ratings',
             message: 'The link you followed may be broken, or this page may ' +
                 'have been deleted.'
-            })
+        });
     })
     .done();
 };
 
 
 /*
- *  POST /rating/:id
+ *  POST /rating/:obj_id
  */
 exports.changeRating = function(req, res) {
-
-    /*TODO ID = ':id' ALWAYS. How can we get the actual object id? */
-
-    var id = req.params.id;
+    var id = req.body.id;
+    var rating = req.body.rating;
     var userName = req.user.user_name;
 
-    Rating.findByUserID(userName, id)
+    Q(Rating.findByUserID(userName, id))
     .then(function (oldRating) {
         if(!oldRating){
             var oldRating = Rating.build({
@@ -98,13 +90,16 @@ exports.changeRating = function(req, res) {
             });
         }
 
-        /*TODO Fix this to get the actual rating and not just 1! */
-        oldRating.rating = 1;
+        oldRating.rating = rating;
 
         return Q(oldRating.save());
     })
+    .then(function() {
+        req.flash('success', "Saved your rating: " + rating);
+        res.redirect('/object/' + id);
+    })
     .fail(function(err) {
-        console.log(err);
+        console.error(err);
         res.render('error', {
             title: 'An error occured while rating this object.',
             message: 'The link you followed may be broken, or this page may ' +
@@ -112,5 +107,4 @@ exports.changeRating = function(req, res) {
         });
     })
     .done();
-
 };

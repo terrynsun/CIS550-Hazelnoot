@@ -32,7 +32,7 @@ module.exports = function(sequelize, DataTypes) {
 
         classMethods: {
             findByURL: function(url) {
-                return Q(this.find({ where: { url: url } }));
+                return this.find({ where: { url: url } });
             },
             findOrCreateByURL: function(url) {
                 var type = 'object';
@@ -74,7 +74,7 @@ module.exports = function(sequelize, DataTypes) {
                 return deferred.promise;
             },
             findByID: function(id) {
-                return Q(this.find({ where: { id: id } }));
+                return this.find({ where: { id: id } });
             }
         }
     })

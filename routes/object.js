@@ -8,10 +8,11 @@ var User = models.User;
 var utils = require('../utils');
 
 /*
- * GET /rating/:id
+ * GET /object/:source/:id
  */
 exports.index = function(req, res) {
     var id = req.params.id;
+    var source = req.params.source;
     var avgVar;
     var pic;
     var lastRating = 0;
@@ -25,7 +26,7 @@ exports.index = function(req, res) {
     .then(function(avgLoc) {
         avgVar = avgLoc;
         
-        return(PinObject.findByID(id));
+        return(PinObject.find({ where: { id: id, source: source } }));
     })
     .then(function(curObj) {
         if(curObj){

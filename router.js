@@ -64,7 +64,7 @@ module.exports = function(app) {
 
     app.get('/search', search.getSearch);
 
-    app.get('/object/:id', object.index);
+    app.get('/object/:source/:id', object.index);
     app.post('/rating/:id', ensureAuthenticated, rating.changeRating);
 
     app.get('/affiliation/:name', affiliation.index);

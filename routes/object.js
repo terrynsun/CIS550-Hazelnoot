@@ -47,7 +47,7 @@ exports.index = function(req, res) {
         }
 
         if(req.user){
-            return Q(Rating.findByUserID(req.user.user_name, id));
+            return Q(Rating.findByUserID(req.user.user_name, id, source));
         } else {
             return null;
         }

@@ -140,7 +140,7 @@ exports.getPin = function(req, res) {
 
     Q(Rating.getAverage(object_id, source))
     .then(function(avgResult) {
-        avgRating = avgResult[0].avg;
+        avgRating = avgResult[0] ? avgResult[0].avg : 0;
         return Q(Pin.findByKeys(user_name, board_name, source, object_id))
     })
     .then(function(pin) {

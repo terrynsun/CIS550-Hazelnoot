@@ -8,9 +8,10 @@ block header
     a.btn.btn-default(onclick="$('.rm-pin').toggle('blind'); return false;") Edit pins
     a.btn.btn-default(onclick="$('.edit-desc').toggle('blind'); return false;") Edit board
 
-  .well.well-sm
-    p
-      | #{board.description}
+  if board.description
+    .well.well-sm
+      p
+        | #{board.description}
 
 block content
   .row

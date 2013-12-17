@@ -9,6 +9,7 @@ var Rating = models.Rating;
  */
 exports.changeRating = function(req, res) {
     var id = req.params.id;
+    var source = req.params.source;
     var rating = req.body.rating;
     var userName = req.user.user_name;
 

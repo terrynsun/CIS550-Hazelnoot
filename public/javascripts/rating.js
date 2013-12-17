@@ -1,6 +1,6 @@
 $(document).ready(function() {
     var $ratings = $('#ratings');
-    var id = $ratings.data('id');
+    var rating_url = $ratings.data('url');
     var last_rating = $ratings.data('current-rating');
 
     $('#ratings button').each(function(){
@@ -21,7 +21,7 @@ $(document).ready(function() {
             console.log('clicked ' + rating);
             // Asynchronous POST request
             // See http://api.jquery.com/jQuery.post/
-            $.post('/rating/' + id, { rating: rating }, success);
+            $.post(rating_url, { rating: rating }, success);
             e.preventDefault();
         });
     })

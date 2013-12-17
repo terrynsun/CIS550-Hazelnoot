@@ -11,7 +11,7 @@ block content
         p No ratings yet!
 
       if !!current_user
-        .btn-group#ratings(data-id=id, data-current-rating=lastRating)
+        .btn-group#ratings(data-url=rating_url, data-current-rating=lastRating)
             button.btn.btn-default(type='submit', name='rating', data-rating=1) 1
             button.btn.btn-default(type='submit', name='rating', data-rating=2) 2
             button.btn.btn-default(type='submit', name='rating', data-rating=3) 3

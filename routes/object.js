@@ -1,5 +1,6 @@
 var Q = require('q');
 var _ = require('underscore');
+var util = require('util');
 
 var models = require('../models');
 var PinObject = models.PinObject;
@@ -56,7 +57,7 @@ exports.index = function(req, res) {
             lastRating = prevRating.rating;
         }
         res.render('object', {
-            id: id,
+            rating_url: util.format('/rating/%s/%d', source, id),
             avgDisplay: avgVar,
             pic: pic,
             lastRating: lastRating

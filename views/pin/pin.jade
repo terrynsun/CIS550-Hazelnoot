@@ -14,8 +14,8 @@ block content
       .panel.panel-default(style="padding: 10px")
         h3 
           a(href='/user/#{user_name}/#{board_name}') #{board_name} 
-          if source != 'Hazelnoot'
-              <small>Imported from #{source}</small>
+          if source !== 'Hazelnoot'
+              small Imported from #{source}
 
         h5 Pinned on #{moment(pin_created_at).format("MMMM D, YYYY")}
         p.lead= description

@@ -190,10 +190,10 @@ exports.getPin = function(req, res) {
     })
     .then(function(returned) {
         oldPinsResult = returned;
-        return Q(Rating.findByUserID(req.user.user_name, object_id, source));
+        return Q(Rating.findByUserID(user_name, object_id, source));
     })
-    .then(function(lastRated) {
-        lastRated = lastRated;
+    .then(function(_lastRated) {
+        lastRated = _lastRated;
         return Q(Pin.findByKeys(user_name, board_name, source, object_id))
     })
     .then(function(pin) {

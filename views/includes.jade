@@ -52,6 +52,6 @@ mixin displayOldPins ( pins )
       - for (var i = 0; i < pins.length; i++)
         li.list-group-item
           | #{pins[i].user_name} &#8212
-          | <a href="/pin/#{pins[i].user_name}/#{pins[i].board_name}/#{pins[i].object_id}">#{moment(pins[i].created_at).format("MMM DD YYYY")}</a>
+          | <a | href="/pin/#{pins[i].user_name}/#{pins[i].board_name}/#{pins[i].source}/#{pins[i].id}">#{moment(pins[i].created_at).format("MMM DD YYYY")}</a>
           if pins[i].description
-            | &#8212 #{pins[i].description}
+            |  &#8212 #{pins[i].description}

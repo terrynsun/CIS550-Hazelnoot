@@ -80,6 +80,17 @@ module.exports = function(sequelize, DataTypes) {
                 return sequelize.query(query, null, {raw: true}, queryParams);
             },
 
+            allBySourceID: function(source, id) {
+                var query = 'SELECT O.id, O.source, O.type, O.url, ' +
+                    'O.created_at AS obj_created_at, P.user_name, P.board_name,' +
+                    'P.created_at, P.updated_at, P.description ' +
+                    'FROM Object O, Pin P ' +
+                    'WHERE O.source = P.source AND O.id = P.object_id ' +
+                    'AND   O.source = :source AND O.id = :id';
+                var queryParams = { source: source, id: id };
+                return sequelize.query(query, null, {raw: true}, queryParams);
+            },
+
             deleteWithName: function(user_name, board_name, source, object_id) {
                 var query = 'DELETE FROM Pin ' +
                             'WHERE user_name = :name ' +
@@ -102,12 +113,15 @@ module.exports = function(sequelize, DataTypes) {
                 return sequelize.query(query, null, { raw: true }, params);
             },
             getFriendPins: function(username, n) {
-                var query = 'SELECT * FROM Object, Pin, Friendship ' +
-                    'WHERE Friendship.user_name = :name ' +
-                    'AND Friendship.friend_name = Pin.user_name ' +
-                    'AND Pin.object_id = Object.id ' +
-                    'AND Pin.source = Object.source ' +
-                    'ORDER BY Pin.created_at DESC ' +
+                var query = 'SELECT O.id, O.source, O.type, O.url, ' +
+                    'O.created_at AS obj_created_at, P.user_name, P.board_name,' +
+                    'P.created_at, P.updated_at, P.description ' +
+                    'FROM Object O, Pin P, Friendship F ' +
+                    'WHERE F.user_name = :name ' +
+                    'AND F.friend_name = P.user_name ' +
+                    'AND P.object_id = O.id ' +
+                    'AND P.source = O.source ' +
+                    'ORDER BY P.created_at DESC ' +
                     'LIMIT :num';
                 var parms = { name: username, num: n };
                 return Q(sequelize.query(query, null, { raw: true }, parms));

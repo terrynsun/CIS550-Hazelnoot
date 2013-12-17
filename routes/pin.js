@@ -179,10 +179,15 @@ exports.getPin = function(req, res) {
     var source = req.params.source;
     var object_id = parseInt(req.params.object_id, 10);
     var avgRating, lastRated;
+    var oldPinsResult;
 
     Q(Rating.getAverage(object_id, source))
     .then(function(avgResult) {
         avgRating = avgResult[0] ? avgResult[0].avg : 0;
+        return Q(Pin.allBySourceID(source, object_id));
+    })
+    .then(function(returned) {
+        oldPinsResult = returned;
         return Q(Rating.findByUserID(req.user.user_name, object_id, source));
     })
     .then(function(lastRated) {
@@ -205,7 +210,8 @@ exports.getPin = function(req, res) {
                 rating_url: format('/rating/%s/%d', source, object_id),
                 is_cached: pin.is_cached,
                 avgDisplay: avgRating,
-                lastRated: lastRated
+                lastRated: lastRated,
+                oldPins: oldPinsResult
             });
         });
     })

@@ -1,4 +1,5 @@
 extends ../layout
+include ../includes
 
 block content
   .pin-object.row.well
@@ -40,8 +41,8 @@ block content
 
           a.btn.btn-default(href='/pin/new?url=#{url}') Pin It!
 
-  if !!pins
-    mixin displayOldPins (pins)
+      if !!oldPins
+        mixin displayOldPins (oldPins)
           
 block scripts
   script(src='/javascripts/rating.js')

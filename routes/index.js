@@ -8,6 +8,7 @@ var renderLoggedInPage = function(req, res) {
     Pin.getFriendPins(req.user.user_name, 8)
     .then(function(results) {
         display.friendPins = results;
+        console.log(results);
         return Pin.getNewest(8);
     })
     .then(function(results) {

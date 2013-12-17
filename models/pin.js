@@ -16,6 +16,11 @@ module.exports = function(sequelize, DataTypes) {
             primaryKey: true
         },
         object_id: DataTypes.INTEGER(11),
+        source: {
+            type: DataTypes.STRING(32),
+            allowNull: false,
+            defaultValue: 'Hazelnoot'
+        },
         board_name: {
             type: DataTypes.STRING(32),
             allowNull: false,

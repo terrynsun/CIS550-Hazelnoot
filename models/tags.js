@@ -8,6 +8,11 @@ module.exports = function(sequelize, DataTypes) {
             // Sequelize wants to insert an 'id' column if we don't have this
             primaryKey: true
         },
+        source: {
+            type: DataTypes.STRING(32),
+            allowNull: false,
+            defaultValue: 'Hazelnoot'
+        },
         tag: {
             type: DataTypes.STRING(64),
             allowNull: false,

@@ -4,13 +4,18 @@ var utils = require('../utils');
 
 module.exports = function(sequelize, DataTypes) {
     return sequelize.define("PinObject", {
-        id: {
+        other_id: {
             type: DataTypes.INTEGER(11),
-            primaryKey: true,
-            allowNull: false
+            allowNull: false,
+
+            // Retarded hack yet again
+            primaryKey: true
         },
-        other_id: DataTypes.INTEGER(11),
-        source: DataTypes.STRING(32),
+        source: {
+            type: DataTypes.STRING(32),
+            allowNull: false,
+            defaultValue: 'Hazelnoot'
+        },
         type: {
             type: DataTypes.STRING(16),
             allowNull : false,

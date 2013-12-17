@@ -8,6 +8,11 @@ module.exports = function(sequelize, DataTypes) {
             primaryKey: true,
             allowNull: false
         },
+        source: {
+            type: DataTypes.STRING(32),
+            allowNull: false,
+            defaultValue: 'Hazelnoot'
+        },
         user_name: {
             type: DataTypes.STRING(32),
             primaryKey: true,

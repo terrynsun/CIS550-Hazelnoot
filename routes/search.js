@@ -18,9 +18,6 @@ exports.getSearch = function(req, res) {
             .then(function(boardNames) {
                 return User.findByUsername(term)
                 .then(function(username) {
-                    // console.log(boardNames);
-                    // console.log(taggedImages);
-                    // console.log(username.dataValues);
                     return res.render('search', {
                         searchTerm: term,
                         images: taggedImages, // this is an array

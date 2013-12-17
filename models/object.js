@@ -88,11 +88,13 @@ module.exports = function(sequelize, DataTypes) {
                 return this.find({ where: { id: id } });
             },
             getByTag: function(term) {
-                var query = 'SELECT * FROM Object, Tags ' +
-                    'WHERE Object.id = Tags.object_id ' +
-                    'AND Object.source = Tags.source ' +
-                    'AND   Tags.tag = :term ' +
-                    'ORDER BY Object.created_at DESC';
+                var query = 'SELECT * FROM Object O, Tags T, Pin P ' +
+                    'WHERE O.id = T.object_id ' +
+                    'AND O.source = T.source ' +
+                    'AND T.object_id = P.object_id ' +
+                    'AND T.source = P.source ' +
+                    'AND T.tag = :term ' +
+                    'ORDER BY O.created_at DESC ';
                 var parms = { term: term };
                 return Q(sequelize.query(query, null, { raw: true }, parms));
             }

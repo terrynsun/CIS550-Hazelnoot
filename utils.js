@@ -9,7 +9,7 @@ exports.isImage = function(filepath) {
 
 exports.urlOrCache = function(url, isCached) {
     if (isCached) {
-        return '/cached/retrieve?url=' + obj.url;
+        return '/cached/retrieve?url=' + url;
     } else{
         return url;
     }

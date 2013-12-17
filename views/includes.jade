@@ -20,12 +20,13 @@ mixin pin ( image, board )
   .col-4.col-sm-4.col-lg-3.tile
     if (image)
       .imgtile
+        - var cachedUrl = urlOrCache(image.url, image.is_cached)
         if (image.type === 'photo')
           a(href="/pin/#{image.user_name}/#{image.board_name}/#{image.source}/#{image.id}")
-            img.img-responsive(src=image.url).tiles
+            img.img-responsive(src=cachedUrl).tiles
         else
           p
-            | No preview for this - have a <a href=#{image.url}>link</a> instead!
+            | No preview for this - have a <a href=#{cachedUrl}>link</a> instead!
 
       if current_user
         center

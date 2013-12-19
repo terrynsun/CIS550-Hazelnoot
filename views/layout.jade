@@ -11,10 +11,15 @@ html(lang='en')
     nav.navbar.navbar-inverse(role='navigation')
       .container
         .navbar-header
+          button.navbar-toggle(type="button", data-toggle="collapse", data-target="#navbar-collapse")
+            span.sr-only Toggle navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
           a(href='/')
             img(src="/images/HazelnootLogoSmall.png", height=50)
 
-        .collapse.navbar-collapse
+        .collapse.navbar-collapse#navbar-collapse
           form.navbar-form.navbar-left(role='form', method='GET', action='/search')
             .form-group
               label.sr-only(for='term') Search

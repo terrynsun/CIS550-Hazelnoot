@@ -13,9 +13,7 @@ exports.get = function(req, res) {
                 'Content-Length': fileData.length
             });
 
-            console.log("File length is " +fileData.length);
             res.end(fileData,"binary");
-            console.log('Really done');
         })
         .fail(function(err) {
             console.error(err);

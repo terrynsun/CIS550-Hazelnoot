@@ -52,7 +52,6 @@ module.exports = function(sequelize, DataTypes) {
                 }
                 var deferred = Q.defer();
                 var self = this;
-                console.log("findOrCreateByURL");
 
                 self.find({ where: { url: url } })
                     .success(function(obj) {

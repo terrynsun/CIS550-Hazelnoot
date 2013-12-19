@@ -33,7 +33,6 @@ exports.newPinsPage = function(req, res) {
             return Q(Pin.allByURL(url));
         })
         .then(function(rows) {
-            console.log(rows);
             if (rows.length == 0) {
                 var type = utils.isImage(url) ? "photo" : "object";
                 res.render('pin/new', {

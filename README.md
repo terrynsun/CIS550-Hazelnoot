@@ -1,4 +1,10 @@
-Nodjes-Mysqueel
-===============
+Hazelnoot
+=========
 
-CIS550 Final Project, hw6-node branch
+A CIS550 Final Project.
+
+A Pinterest clone built in NodeJS, MySQL, and MongoDB.
+
+A labor of love, but mostly hatred, pain, and sadness.
+
+Live at [pennterest.dge.io](pennterest.dge.io)
